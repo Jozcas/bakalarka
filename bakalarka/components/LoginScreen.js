@@ -13,7 +13,7 @@ const LoginScreen = ({ navigation }) => {
     
     const unsubscribe = auth.onAuthStateChanged(async user => {
       if (user) {
-        navigation.replace("Home")
+        navigation.replace("HistoryExercise")
       } else {
         updateLoading(false)
       }

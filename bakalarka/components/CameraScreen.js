@@ -4,13 +4,15 @@ import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { RNCamera } from 'react-native-camera';
 import { useNavigation} from '@react-navigation/core'
 import Icon from 'react-native-vector-icons/Ionicons';
+import { useIsFocused } from '@react-navigation/native';
 
-const CameraScreen = () => {
+const CameraScreen = ({route}) => {
     const [type, setType] = useState(RNCamera.Constants.Type.back);
 	const [flash, setFlash] = useState("off");
 
 	const navigation = useNavigation();
     let camera = RNCamera
+	const isFocused = useIsFocused();
 
     const pictureUri = [];
 
@@ -23,10 +25,12 @@ const CameraScreen = () => {
 	//when timer is active
 	const timerTakePicture = async () => {
 		for (let index = 0; index < route.params.photoCount; index++) {
-			const data = await camera.takePictureAsync();
-			console.log(data.uri);
-			pictureUri.push({id: index + 1, picture: data.uri})
-			//await savePicture(data.uri);
+			if(camera){
+				const data = await camera.takePictureAsync();
+				console.log(data.uri);
+				pictureUri.push({id: index + 1, picture: data.uri})
+				//await savePicture(data.uri);
+			}
 		}
 	}
 
@@ -39,26 +43,28 @@ const CameraScreen = () => {
 
 	const takePicture = async () => {
 		//const options = { quality: 0.5, base64: true, skipProcessing: true };
-		//if(route.params == null){
-			const data = await camera.takePictureAsync();
-			console.log(data.uri);
-			//pictureUri.push({id: '1', picture: data.uri})
+		if(route.params == null){
+			if(camera){
+				const data = await camera.takePictureAsync();
+				console.log(data.uri);
+				pictureUri.push({id: '1', picture: data.uri})
+			}
 			//await savePicture(data.uri);
-		/*}
+		}
 		else {
 			if(route.params.timer != '0'){
 				await setAsyncTimeout(() => {
 					console.log('timer end');
 				}, route.params.timer*1000);
-				await timerTakePicture();
-				/*setTimeout(() => {console.log('timer'); timerTakePicture(); 				
-				}, route.params.timer*1000)*/
-			/*}
+				if(camera) {
+					await timerTakePicture();
+				}
+			}
 			else {
 				await timerTakePicture();
 			}
 		}
-		await picture();*/
+		await picture();
 		//console.log(FileSystem.documentDirectory)
 		/*
 		FileSystem.moveAsync({
@@ -84,6 +90,7 @@ const CameraScreen = () => {
 	} 
 
     return (
+		isFocused ?
         <View style={styles.container}>
             <RNCamera 
             ref={(ref) => {
@@ -104,8 +111,8 @@ const CameraScreen = () => {
 					<TouchableOpacity
 						style={styles.flash}
 						onPress={() => {
-							//settingTimer()
-							setFlash(flash === "off" ? "on" : "off");
+							settingTimer()
+							//setFlash(flash === "off" ? "on" : "off");
 						}}
 					>
 						{ flash === "off" ? 
@@ -158,7 +165,8 @@ const CameraScreen = () => {
 					</View>
 				</View>
             </RNCamera>
-        </View>
+        </View> :
+		<View></View>
     );
 }
 export default CameraScreen
