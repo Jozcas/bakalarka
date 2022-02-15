@@ -4,11 +4,14 @@ import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { RNCamera } from 'react-native-camera';
 import { useNavigation} from '@react-navigation/core'
 import Icon from 'react-native-vector-icons/Ionicons';
-import { useIsFocused } from '@react-navigation/native';
+import { useIsFocused, useFocusEffect } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const CameraScreen = ({route}) => {
+const CameraScreen = () => {
     const [type, setType] = useState(RNCamera.Constants.Type.back);
 	const [flash, setFlash] = useState("off");
+	const [photoCount, setPhotoCount] = useState('1')
+    const [timerValue, setTimerValue] = useState('0')
 
 	const navigation = useNavigation();
     let camera = RNCamera
@@ -16,15 +19,47 @@ const CameraScreen = ({route}) => {
 
     const pictureUri = [];
 
-    const settingTimer = () => {
-		if(route.params == null)
-		console.log('null')
-		console.log(route.params)
+	//to set timerValue and photoCount when return from TimerScreen 
+	useFocusEffect(
+		React.useCallback(() => {
+			const firstLoad = async () => {
+				try {
+					const timer = await AsyncStorage.getItem('timerValue');
+					setTimerValue(timer);
+					const photo = await AsyncStorage.getItem('photoCount');
+					setPhotoCount(photo);
+				} catch (err) {
+					console.log(err);
+				}
+			};
+
+			firstLoad();
+		}, [])
+	);
+
+	//to set timerValue and photoCount when first time is screen render
+	useEffect(() => {
+        const firstLoad = async () => {
+            try {
+                const timer = await AsyncStorage.getItem('timerValue');
+                setTimerValue(timer);
+                const photo = await AsyncStorage.getItem('photoCount');
+                setPhotoCount(photo);
+            } catch (err) {
+                console.log(err);
+            }
+        };
+
+        firstLoad();
+    }, []);
+
+    const settingTimer = async() => {
+		console.log(photoCount + 'a' + timerValue)
 	}
 
-	//when timer is active
+	//when timer is active or need to take more photos than one
 	const timerTakePicture = async () => {
-		for (let index = 0; index < route.params.photoCount; index++) {
+		for (let index = 0; index < photoCount; index++) {
 			if(camera){
 				const data = await camera.takePictureAsync();
 				console.log(data.uri);
@@ -34,6 +69,7 @@ const CameraScreen = ({route}) => {
 		}
 	}
 
+	//wait for timer end
 	const setAsyncTimeout = (cb, timeout = 0) => new Promise(resolve => {
 		setTimeout(() => {
 			cb();
@@ -41,21 +77,21 @@ const CameraScreen = ({route}) => {
 		}, timeout);
 	});
 
+	//take picture function, 
 	const takePicture = async () => {
 		//const options = { quality: 0.5, base64: true, skipProcessing: true };
-		if(route.params == null){
+		if(photoCount == '1' && timerValue == '0'){
 			if(camera){
 				const data = await camera.takePictureAsync();
 				console.log(data.uri);
 				pictureUri.push({id: '1', picture: data.uri})
 			}
-			//await savePicture(data.uri);
 		}
 		else {
-			if(route.params.timer != '0'){
+			if(timerValue != '0'){
 				await setAsyncTimeout(() => {
 					console.log('timer end');
-				}, route.params.timer*1000);
+				}, timerValue*1000);
 				if(camera) {
 					await timerTakePicture();
 				}
@@ -75,13 +111,7 @@ const CameraScreen = ({route}) => {
 		});*/
 	};
 
-	const savePicture = async (photo) => {
-		/*const assert = await MediaLibrary.createAssetAsync(photo);
-		console.log(assert)*/
-		//await MediaLibrary.createAlbumAsync("BPGallery", assert);
-		//MediaLibrary.deleteAssetsAsync(assert)		
-	};
-
+	//go to PictureScreen when photos are taken
 	const picture = async () => {
 		console.log(pictureUri)
 		navigation.navigate('Picture', {

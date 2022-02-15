@@ -1,12 +1,29 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, TextInput } from "react-native";
-import { useNavigation } from '@react-navigation/core'
-import Icon from "react-native-vector-icons/Ionicons"
+import { useNavigation } from '@react-navigation/core';
+import Icon from "react-native-vector-icons/Ionicons";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const TimerScreen = () => {
     const [photoCount, setPhotoCount] = useState('1')
     const [timerValue, setTimerValue] = useState('0')
     const navigation = useNavigation();
+
+    //get users previos settings of timerValue and photoCount
+    useEffect(() => {
+        const firstLoad = async () => {
+            try {
+                const timer = await AsyncStorage.getItem('timerValue');
+                setTimerValue(timer);
+                const photo = await AsyncStorage.getItem('photoCount');
+                setPhotoCount(photo);
+            } catch (err) {
+                console.log(err);
+            }
+        };
+
+        firstLoad();
+    }, []);
 
     return (
         <View style={stylesTimer.container}>
@@ -15,7 +32,9 @@ const TimerScreen = () => {
                 <TouchableOpacity
                     style={stylesTimer.timer}
                     onPress={() => {
-                        navigation.navigate("Camera", {timer: timerValue, photoCount: photoCount})                        
+                        AsyncStorage.setItem('timerValue', timerValue);
+                        AsyncStorage.setItem('photoCount', photoCount);
+                        navigation.navigate("Camera")                        
                     }}
                 >
                     <Icon name="timer-outline" size={40} color="white" />

@@ -16,8 +16,8 @@ const HistoryExerciseScreen = () => {
                 </View>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-around'}}>
                     <Image source={{uri: "file:///data/user/0/com.bakalarka/cache/Camera/4ea8ad56-3fed-45f0-b920-f9bc4640605f.jpg"}} style={styles.image} />
-                    <Image source={{uri: "file:///data/user/0/com.bakalarka/cache/Camera/4ea8ad56-3fed-45f0-b920-f9bc4640605f.jpg"}} style={styles.image} />
-                    <Image source={{uri: "file:///data/user/0/com.bakalarka/cache/Camera/4ea8ad56-3fed-45f0-b920-f9bc4640605f.jpg"}} style={styles.image} />
+                    <Image source={{uri: "file:///data/user/0/com.bakalarka/files/MyTes.jpg"}} style={styles.image} />
+                    <Image source={{uri: "file:///data/user/0/com.bakalarka/files/MyTest.jpg"}} style={styles.image} />
                 </View>
             </View>
 			<Menu />
