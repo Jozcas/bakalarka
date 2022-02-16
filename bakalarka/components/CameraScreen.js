@@ -55,6 +55,8 @@ const CameraScreen = () => {
 
     const settingTimer = async() => {
 		console.log(photoCount + 'a' + timerValue)
+		const categorie = await AsyncStorage.getItem('categorie')
+		console.log(categorie)
 	}
 
 	//when timer is active or need to take more photos than one
@@ -100,7 +102,23 @@ const CameraScreen = () => {
 				await timerTakePicture();
 			}
 		}
-		await picture();
+
+		//name of picture	
+		var year = new Date().getFullYear(); //Current Year
+		var month = new Date().getMonth() + 1; //Current Month
+		var day = new Date().getDate(); //Current Day
+        var hours = new Date().getHours(); //Current Hours
+        var min = new Date().getMinutes(); //Current Minutes
+        var sec = new Date().getSeconds(); //Current Seconds
+		var catype = null;
+		if(type == 0){
+			catype = 'b'
+		}
+		else {
+			catype = 'f'
+		}
+        const date = '/' + year + '_' + month + '_' + day + '-'+ hours + '_' + min + '_' + sec + '-' + catype + '.jpg'
+		await picture(date);
 		//console.log(FileSystem.documentDirectory)
 		/*
 		FileSystem.moveAsync({
@@ -112,10 +130,12 @@ const CameraScreen = () => {
 	};
 
 	//go to PictureScreen when photos are taken
-	const picture = async () => {
+	const picture = async (date) => {
 		console.log(pictureUri)
+		console.log(date)
 		navigation.navigate('Picture', {
 			pictureUri: pictureUri,
+			pname: date
 		})
 	} 
 

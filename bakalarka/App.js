@@ -7,6 +7,7 @@ import CameraScreen from './components/CameraScreen';
 import TimerScreen from './components/TimerScreen';
 import PictureScreen from './components/PictureScreen';
 import HistoryExerciseScreen from './components/HistoryExerciseScreen';
+import CategorieScreen from './components/CategorieScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -21,6 +22,7 @@ export default function App() {
         <Stack.Screen name="Camera" component={CameraScreen} options={{headerShown: false}}/>
         <Stack.Screen name="Timer" component={TimerScreen} options={{headerShown: false}}/>
         <Stack.Screen name="Picture" component={PictureScreen} options={{headerShown: true,  title: 'Odfotený cvik' }}/>
+        <Stack.Screen name="Categorie" component={CategorieScreen} options={{headerShown: false}}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -25,7 +25,9 @@ const PictureScreen = ({route}) => {
         try {
             //filePath = filePath.replace('file://')
             console.log(filePath.picture);
-            const newFilePath = RNFS.DocumentDirectoryPath + '/MyTes.jpg';
+            //const newFilePath = RNFS.DocumentDirectoryPath + '/MyTes.jpg';
+            const newFilePath = RNFS.DocumentDirectoryPath + route.params.pname;
+            console.log(newFilePath)
             RNFS.moveFile(filePath.picture, newFilePath)
                 .then(() => {
                     console.log('IMAGE MOVED', filePath, '-- to --', newFilePath);
@@ -36,7 +38,7 @@ const PictureScreen = ({route}) => {
         } catch (error) {
             console.log(error);
         }
-        navigation.navigate('Camera')
+        navigation.navigate('Categorie')
     };
 
     return (
