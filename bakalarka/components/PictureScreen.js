@@ -38,7 +38,7 @@ const PictureScreen = ({route}) => {
         } catch (error) {
             console.log(error);
         }
-        navigation.navigate('Categorie')
+        navigation.navigate('Category')
     };
 
     return (

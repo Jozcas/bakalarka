@@ -32,6 +32,8 @@ const LoginScreen = ({ navigation }) => {
         const user = res.user.email
         console.log('User: '+ user +' logged-in successfully!')
         AsyncStorage.setItem('user', user)
+        AsyncStorage.setItem('timerValue', '0');
+        AsyncStorage.setItem('photoCount', '1');
         updatePassword('')
         updateEmail('')
         navigation.navigate('Home')

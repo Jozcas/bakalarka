@@ -18,6 +18,8 @@ target 'bakalarka' do
 
   pod 'RNFS', :path => '../node_modules/react-native-fs'
 
+  pod 'RNReactNativeABeep', :path => '../node_modules/react-native-a-beep'
+
   target 'bakalarkaTests' do
     inherit! :complete
     # Pods for testing

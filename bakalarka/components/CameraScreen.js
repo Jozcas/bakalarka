@@ -6,6 +6,7 @@ import { useNavigation} from '@react-navigation/core'
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useIsFocused, useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import RNBeep from 'react-native-a-beep';
 
 const CameraScreen = () => {
     const [type, setType] = useState(RNCamera.Constants.Type.back);
@@ -63,6 +64,7 @@ const CameraScreen = () => {
 	const timerTakePicture = async () => {
 		for (let index = 0; index < photoCount; index++) {
 			if(camera){
+				RNBeep.beep();
 				const data = await camera.takePictureAsync();
 				console.log(data.uri);
 				pictureUri.push({id: index + 1, picture: data.uri})
@@ -84,6 +86,7 @@ const CameraScreen = () => {
 		//const options = { quality: 0.5, base64: true, skipProcessing: true };
 		if(photoCount == '1' && timerValue == '0'){
 			if(camera){
+				RNBeep.beep();
 				const data = await camera.takePictureAsync();
 				console.log(data.uri);
 				pictureUri.push({id: '1', picture: data.uri})
