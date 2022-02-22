@@ -8,6 +8,7 @@ import TimerScreen from './components/TimerScreen';
 import PictureScreen from './components/PictureScreen';
 import HistoryExerciseScreen from './components/HistoryExerciseScreen';
 import CategoryScreen from './components/CategoryScreen';
+import VoiceScreen from './components/Voice';
 
 const Stack = createNativeStackNavigator();
 
@@ -23,6 +24,7 @@ export default function App() {
         <Stack.Screen name="Timer" component={TimerScreen} options={{headerShown: false}}/>
         <Stack.Screen name="Picture" component={PictureScreen} options={{headerShown: true,  title: 'Odfotený cvik' }}/>
         <Stack.Screen name="Category" component={CategoryScreen} options={{headerShown: false}}/>
+        <Stack.Screen name="Voice" component={VoiceScreen} options={{headerShown: false}}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

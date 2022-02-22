@@ -8,6 +8,7 @@ import RNFS from 'react-native-fs';
 
 const PictureScreen = ({route}) => {
     const [ pictureUri, setPictureUri] = useState(route.params.pictureUri);
+    const [transform, setTransform] = useState(false)
 
     const [slideIndex, setSlideIndex] = useState(0);
     const { width: screenWidth } = Dimensions.get('window');
@@ -50,6 +51,9 @@ const PictureScreen = ({route}) => {
                     itemWidth={screenWidth}
                     data={pictureUri}
                     renderItem={({ item, index }) => (
+                        transform == true ?
+                        <Image key={index} style={{ width: '100%', height: '100%', transform: [{scaleX: -1}]}} resizeMode='contain' source={{uri: item.picture}}/>
+                        :
                         <Image key={index} style={{ width: '100%', height: '100%' }} resizeMode='contain' source={{uri: item.picture}}/>
                     )}
                     onSnapToItem={index => onSlide(index)}
@@ -60,7 +64,7 @@ const PictureScreen = ({route}) => {
             </View>                
             <View style={ styles.line}>
                 {/*<Icon name="pencil-outline" size={40} color="black" style={{paddingHorizontal: 20}}/>*/}
-                <Icon name="md-arrow-redo-outline" size={40} color="black" style={{paddingHorizontal: 30}}/>
+                <Icon name="md-arrow-redo-outline" size={40} color="black" style={{paddingHorizontal: 30}} onPress={() => {setTransform(!transform)}} />
                 <TouchableOpacity style={styles.buttonSave} onPress={() => {saveImage(pictureUri[slideIndex])}}>
                     <Text style={{paddingHorizontal: 40, paddingVertical: 7, color: 'black'}}>Uložiť</Text>
                 </TouchableOpacity>

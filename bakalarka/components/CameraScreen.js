@@ -7,12 +7,17 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { useIsFocused, useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import RNBeep from 'react-native-a-beep';
+import Voice from '@react-native-voice/voice';
 
 const CameraScreen = () => {
     const [type, setType] = useState(RNCamera.Constants.Type.back);
 	const [flash, setFlash] = useState("off");
 	const [photoCount, setPhotoCount] = useState('1')
     const [timerValue, setTimerValue] = useState('0')
+
+	//for voice command
+	const [results, setResults] = useState([]);
+	const [isRecord, setIsRecord] = useState(false);
 
 	const navigation = useNavigation();
     let camera = RNCamera
@@ -50,14 +55,96 @@ const CameraScreen = () => {
                 console.log(err);
             }
         };
+		firstLoad();
 
-        firstLoad();
+		//Setting callbacks for the process status
+		Voice.onSpeechResults = onSpeechResults;
+		Voice.onSpeechEnd = onSpeechEnd;
+		Voice.onSpeechError = onSpeechError;
+		Voice.onSpeechPartialResults = onSpeechPartialResults;
+	
+		return () => {
+		  	//destroy the process after switching the screen
+		  	Voice.destroy().then(Voice.removeAllListeners);
+		};
     }, []);
+
+	const _onRecordVoice = async () => {
+		console.log(camera)
+		if (isRecord) {
+			Voice.stop();
+		} else {
+			await Voice.start('sk-SK', { EXTRA_SPEECH_INPUT_MINIMUM_LENGTH_MILLIS: 10000 });
+			setResults([]);
+		}
+		//setIsRecord(!isRecord);
+	};
+
+	const onSpeechResults = async (e) => {
+		//Invoked when SpeechRecognizer is finished recognizing
+		console.log('onSpeechResults: ', e);
+		setResults(e.value);
+		if (e.value.toString().includes('foto')) {
+			await Voice.stop()
+			await Voice.destroy()
+			await Voice.cancel()
+			voicePicture()
+		}
+		else {
+			await _onRecordVoice()
+		}
+	};
+
+	const onSpeechEnd = async (e) => {
+		console.log(e)
+		await Voice.stop()
+	};
+
+	const onSpeechPartialResults = (e) => {
+		//Invoked when any results are computed
+		console.log('onSpeechPartialResults: ', e.value);
+		if (e.value.toString().includes('foto')) {
+			Voice.stop()
+		}
+	};
+
+	const onSpeechError = async (e) => {
+		//Invoked when an error occurs.
+		console.log('onSpeechError: ', e.error.code);
+		if (e.error.code == 7) {
+			await _onRecordVoice()
+		}
+	};
+
+	const voicePicture = async () => {
+		console.log(camera)
+			const data = await camera.takePictureAsync();
+			console.log(data.uri);
+			pictureUri.push({id: '1', picture: data.uri})
+		
+		/*//name of picture	
+		var year = new Date().getFullYear(); //Current Year
+		var month = new Date().getMonth() + 1; //Current Month
+		var day = new Date().getDate(); //Current Day
+        var hours = new Date().getHours(); //Current Hours
+        var min = new Date().getMinutes(); //Current Minutes
+        var sec = new Date().getSeconds(); //Current Seconds
+		var catype = null;
+		if(type == 0){
+			catype = 'b'
+		}
+		else {
+			catype = 'f'
+		}
+        const date = '/' + year + '_' + month + '_' + day + '-'+ hours + '_' + min + '_' + sec + '-' + catype + '.jpg'
+		await picture(date);*/
+	}
 
     const settingTimer = async() => {
 		console.log(photoCount + 'a' + timerValue)
 		const categorie = await AsyncStorage.getItem('categorie')
 		console.log(categorie)
+		console.log(results)
 	}
 
 	//when timer is active or need to take more photos than one
@@ -122,14 +209,6 @@ const CameraScreen = () => {
 		}
         const date = '/' + year + '_' + month + '_' + day + '-'+ hours + '_' + min + '_' + sec + '-' + catype + '.jpg'
 		await picture(date);
-		//console.log(FileSystem.documentDirectory)
-		/*
-		FileSystem.moveAsync({
-			from: data.uri,
-			to: `${FileSystem.documentDirectory}photos/Photo_${
-				count
-			}.jpg`
-		});*/
 	};
 
 	//go to PictureScreen when photos are taken
@@ -173,6 +252,18 @@ const CameraScreen = () => {
 							: 
 							<Icon name="flash-outline" size={40} color="white" /> 
 						}					
+					</TouchableOpacity>
+
+					<TouchableOpacity
+						style={styles.mic}
+						onPress={() =>
+							{
+								_onRecordVoice()
+								//voicePicture()
+							}
+						}
+					>
+						<Icon name="mic-outline" size={40} color="white" /> 				
 					</TouchableOpacity>
 					
 					<TouchableOpacity
@@ -275,4 +366,9 @@ const styles = StyleSheet.create({
 		bottom: 5,
 		left: 0,
 	},
+	mic: {
+		top: 0,
+		marginTop: 20,
+		alignSelf: 'center'
+	}
 });

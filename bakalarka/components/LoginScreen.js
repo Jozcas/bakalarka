@@ -36,7 +36,7 @@ const LoginScreen = ({ navigation }) => {
         AsyncStorage.setItem('photoCount', '1');
         updatePassword('')
         updateEmail('')
-        navigation.navigate('Home')
+        navigation.navigate('HistoryExercise')
       })
       .catch(error => alert(error.message))    
     }
