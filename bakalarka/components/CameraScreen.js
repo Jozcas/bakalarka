@@ -8,12 +8,14 @@ import { useIsFocused, useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import RNBeep from 'react-native-a-beep';
 import Voice from '@react-native-voice/voice';
+import { useCamera } from 'react-native-camera-hooks';
 
 const CameraScreen = () => {
     const [type, setType] = useState(RNCamera.Constants.Type.back);
 	const [flash, setFlash] = useState("off");
 	const [photoCount, setPhotoCount] = useState('1')
     const [timerValue, setTimerValue] = useState('0')
+	const [{ cameraRef }, { takePicture }] = useCamera(null);
 
 	//for voice command
 	const [results, setResults] = useState([]);
@@ -118,11 +120,11 @@ const CameraScreen = () => {
 
 	const voicePicture = async () => {
 		console.log(camera)
-			const data = await camera.takePictureAsync();
+			const data = await takePicture();
 			console.log(data.uri);
 			pictureUri.push({id: '1', picture: data.uri})
 		
-		/*//name of picture	
+		//name of picture	
 		var year = new Date().getFullYear(); //Current Year
 		var month = new Date().getMonth() + 1; //Current Month
 		var day = new Date().getDate(); //Current Day
@@ -137,7 +139,7 @@ const CameraScreen = () => {
 			catype = 'f'
 		}
         const date = '/' + year + '_' + month + '_' + day + '-'+ hours + '_' + min + '_' + sec + '-' + catype + '.jpg'
-		await picture(date);*/
+		await picture(date);
 	}
 
     const settingTimer = async() => {
@@ -145,6 +147,8 @@ const CameraScreen = () => {
 		const categorie = await AsyncStorage.getItem('categorie')
 		console.log(categorie)
 		console.log(results)
+		const categorise = await AsyncStorage.getItem('Drep')
+		console.log(categorise)
 	}
 
 	//when timer is active or need to take more photos than one
@@ -152,7 +156,7 @@ const CameraScreen = () => {
 		for (let index = 0; index < photoCount; index++) {
 			if(camera){
 				RNBeep.beep();
-				const data = await camera.takePictureAsync();
+				const data = await takePicture();
 				console.log(data.uri);
 				pictureUri.push({id: index + 1, picture: data.uri})
 				//await savePicture(data.uri);
@@ -169,12 +173,12 @@ const CameraScreen = () => {
 	});
 
 	//take picture function, 
-	const takePicture = async () => {
+	const takePictures = async () => {
 		//const options = { quality: 0.5, base64: true, skipProcessing: true };
 		if(photoCount == '1' && timerValue == '0'){
 			if(camera){
 				RNBeep.beep();
-				const data = await camera.takePictureAsync();
+				const data = await takePicture();
 				console.log(data.uri);
 				pictureUri.push({id: '1', picture: data.uri})
 			}
@@ -225,9 +229,7 @@ const CameraScreen = () => {
 		isFocused ?
         <View style={styles.container}>
             <RNCamera 
-            ref={(ref) => {
-                camera = ref;
-            }}
+            ref={cameraRef}
             captureAudio={false}
             style={styles.camera}
             flashMode={flash}
@@ -279,7 +281,7 @@ const CameraScreen = () => {
 					</TouchableOpacity>
 					
 					<View style={styles.takeButton}>
-						<TouchableOpacity onPress={takePicture} style={styles.takeBStyle} />
+						<TouchableOpacity onPress={takePictures} style={styles.takeBStyle} />
 					</View>
 					
 					<View style={styles.flip}>

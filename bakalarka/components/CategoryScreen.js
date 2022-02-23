@@ -3,11 +3,15 @@ import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Dimensions } from
 import Icon from "react-native-vector-icons/Ionicons"
 import Dialog from "react-native-dialog"
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Menu from "../static/menu";
+import { useNavigation} from '@react-navigation/core'
 
-const CategoryScreen = () => {
+const CategoryScreen = ({route}) => {
     const [visible, setVisible] = useState(false)
     const [categorie, setCategories] = useState()
     const [name, setName] = useState()
+
+    const navigation = useNavigation()
     
     const getCategories = async () => {
         try {
@@ -43,6 +47,10 @@ const CategoryScreen = () => {
         setName(null);
         console.log(category)
         await AsyncStorage.setItem('categorie', JSON.stringify(category))
+        console.log(route.params.path)
+        var array = [];
+        array.push(route.params.path)
+        await AsyncStorage.setItem(name, JSON.stringify(array))
         getCategories();        
     }
 
@@ -85,16 +93,24 @@ const CategoryScreen = () => {
                 <View style={{flex: 1, flexDirection: 'row', alignSelf: 'center', flexWrap: 'wrap'}}>
                     {
                         categorie.map((element) => (
-                            <TouchableOpacity style={[styles.categorieBox, {backgroundColor: generateColor()}]} key={element}>
+                            <TouchableOpacity style={[styles.categorieBox, {backgroundColor: generateColor()}]} key={element} 
+                                onPress={async () => {
+                                    var array = JSON.parse(await AsyncStorage.getItem(element));
+                                    array.push(route.params.path)
+                                    await AsyncStorage.setItem(element , JSON.stringify(array))
+                                    navigation.navigate('HistoryExercise')}
+                                }
+                            >
                                 <Text style={styles.name}>{element}</Text>
                             </TouchableOpacity>
                         ))
                     }
                 </View>
             </ScrollView>
-            <TouchableOpacity style={{flex: 1, position: 'absolute', bottom: 20, right: 20}}>
+            <TouchableOpacity style={{flex: 1, position: 'absolute', bottom: 80, right: 20}}>
                 <Icon name='add-circle' size={60} color='#ff9999' onPress={() => {setVisible(true)}}/>
             </TouchableOpacity>
+            <Menu/>
         </View>
     )
 }

@@ -23,11 +23,12 @@ const PictureScreen = ({route}) => {
     //savePicture
     const saveImage = async (filePath) => {
         console.log(RNFS.DocumentDirectoryPath)
+        let newFilePath = null; 
         try {
             //filePath = filePath.replace('file://')
             console.log(filePath.picture);
             //const newFilePath = RNFS.DocumentDirectoryPath + '/MyTes.jpg';
-            const newFilePath = RNFS.DocumentDirectoryPath + route.params.pname;
+            newFilePath = RNFS.DocumentDirectoryPath + route.params.pname;
             console.log(newFilePath)
             RNFS.moveFile(filePath.picture, newFilePath)
                 .then(() => {
@@ -39,7 +40,9 @@ const PictureScreen = ({route}) => {
         } catch (error) {
             console.log(error);
         }
-        navigation.navigate('Category')
+        navigation.navigate('Category', {
+			path: route.params.pname
+		})
     };
 
     return (
