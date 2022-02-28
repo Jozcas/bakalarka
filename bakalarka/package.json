@@ -21,6 +21,7 @@
     "react-native-camera": "^4.2.1",
     "react-native-camera-hooks": "^0.5.3",
     "react-native-dialog": "^9.2.1",
+    "react-native-elements": "^3.4.2",
     "react-native-fs": "^2.18.0",
     "react-native-ionicons": "^4.6.5",
     "react-native-safe-area-context": "^3.3.2",

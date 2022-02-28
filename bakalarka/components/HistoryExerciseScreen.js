@@ -1,42 +1,101 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, Image, StatusBar, Dimensions } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Image, StatusBar, Dimensions, ScrollView } from "react-native";
 import Menu from "../static/menu";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {Card} from 'react-native-elements';
+import Carousel from 'react-native-snap-carousel';
 
 const HistoryExerciseScreen = () => {
-    const [image, setImage] = useState([])
+    //const [image, setImage] = useState([])
+    const [categorie, setCategorie] = useState()
+    const [pictures, setPictures] = useState({})
     const [loading, isLoading] = useState(true)
-
-    const getImage = async () => {
-        try {
-            const categories = JSON.parse(await AsyncStorage.getItem('categorie'));
-            categories.forEach(async element => {
-                const cat = JSON.parse(await AsyncStorage.getItem(element));
-                console.log(cat)
-                cat.forEach(
-                    elem => {
-                        image.push(elem)
-                        setImage(image)
-                        console.log(image)
-                    }
-                )
-            });
-            isLoading(false)
-        } catch (err) {
-            console.log(err);
-        }
-    };
-
-    useEffect(
-        () => {    
-            getImage();
-        }, []
-    );
 
     const getWidth = () => {
         Image.getSize("file:///data/user/0/com.bakalarka/files/MyTes.jpg", (width, height) => {console.log(width + "a" + height)})
     }
-	return (
+
+    const [slideIndex, setSlideIndex] = useState(0);
+    const { width: screenWidth } = Dimensions.get('window');
+
+    //used for Carousel and Pagination
+    const onSlide = slideIndex => {
+        setSlideIndex(slideIndex);
+    };
+    /*const getImage = async () => {
+        try {
+            const categories = JSON.parse(await AsyncStorage.getItem('categorie'));
+            setCategorie(categories);
+            categories.forEach(async element => {
+                const cat = JSON.parse(await AsyncStorage.getItem(element));
+                pictures[element] = cat;
+                /*await cat.forEach(
+                    elem => {
+                        image.push(elem)
+                        setImage(image)
+                        //console.log(image)
+                    }
+                )*/
+           /* });
+            setPictures(pictures)
+            //console.log(pictures['Drep'][0])
+        } catch (err) {
+            console.log(err);
+        }
+    };*/
+
+    let tempPic = {}
+    console.log('useEffect', pictures)
+    console.log('temp', tempPic)
+    useEffect(
+        async () => { 
+            try {   
+                const categories = await JSON.parse(await AsyncStorage.getItem('categorie'));
+                setCategorie(categories);
+                await categories.map(async element => {
+                    const cat = await JSON.parse(await AsyncStorage.getItem(element));
+                    console.log('cat', cat)
+                    //console.log(element)
+                    tempPic[element] = cat;
+                    setPictures(tempPic)                
+                });
+                isLoading(false)
+            }
+            catch (err) {
+                console.log(err);
+            }
+        }, []
+    );
+
+    if(loading){
+        return (
+            <View>
+                <Text>Loading</Text>
+            </View>
+        )
+    }
+    else{
+    return (
+        <View style={{flex: 1}}>
+            <ScrollView style={{flex: 1}}>
+                {categorie.map((element) => (
+                    <Card key={element} style={{flex: 1}}>
+                        <Card.Title style={{alignSelf: 'flex-start'}}>{element}</Card.Title>
+                        <Text>{pictures[element]}</Text>
+                        {
+                            pictures[element] && <Image source={{uri: "file:///data/user/0/com.bakalarka/files" + pictures[element][0]}} style={styles.image}/>
+                        }
+                    </Card>
+                ))}            
+                <Text>{JSON.stringify(pictures)}</Text>
+                <View style={{marginTop:90}}></View>
+            </ScrollView>
+            <Menu/>
+        </View>
+    );
+    }
+
+	/*return (
         loading ? <View></View> :
 		<View style={{ flex: 1, marginTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0}}>
             <View style={{flex: 1, flexDirection: 'column'}}>
@@ -54,7 +113,7 @@ const HistoryExerciseScreen = () => {
 			<Menu />
 		</View>
 
-	);
+	);*/
 };
 export default HistoryExerciseScreen
 
