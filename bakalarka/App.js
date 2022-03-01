@@ -9,6 +9,7 @@ import PictureScreen from './components/PictureScreen';
 import HistoryExerciseScreen from './components/HistoryExerciseScreen';
 import CategoryScreen from './components/CategoryScreen';
 import VoiceScreen from './components/Voice';
+import HisScreen from './components/His';
 
 const Stack = createNativeStackNavigator();
 
@@ -19,7 +20,7 @@ export default function App() {
         
         <Stack.Screen name="Login" component={LoginScreen} options={{headerShown: false}}/>
         <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'Welcome' }}/>
-        <Stack.Screen name="HistoryExercise" component={HistoryExerciseScreen} options={{ headerShown: false }}/>
+        <Stack.Screen name="HistoryExercise" component={HisScreen} options={{ headerShown: false }}/>
         <Stack.Screen name="Camera" component={CameraScreen} options={{headerShown: false}}/>
         <Stack.Screen name="Timer" component={TimerScreen} options={{headerShown: false}}/>
         <Stack.Screen name="Picture" component={PictureScreen} options={{headerShown: true,  title: 'Odfotený cvik' }}/>

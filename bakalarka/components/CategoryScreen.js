@@ -51,7 +51,8 @@ const CategoryScreen = ({route}) => {
         var array = [];
         array.push(route.params.path)
         await AsyncStorage.setItem(name, JSON.stringify(array))
-        getCategories();        
+        //getCategories();
+        navigation.navigate('HistoryExercise')        
     }
 
     return (
