@@ -111,6 +111,7 @@ const CategoryScreen = ({route}) => {
             <TouchableOpacity style={{flex: 1, position: 'absolute', bottom: 80, right: 20}}>
                 <Icon name='add-circle' size={60} color='#ff9999' onPress={() => {setVisible(true)}}/>
             </TouchableOpacity>
+            <View style={{marginTop:90}}></View>
             <Menu/>
         </View>
     )
