@@ -67,10 +67,32 @@ const HisScreen = () => {
         }, [set]
     );
 
-    const renameCategorie = async () => {
-        setVisible(false)
-        let category = JSON.parse(await AsyncStorage.getItem('categorie'))
-        console.log(category)        
+    const renameCategorie = async (newName) => {
+        //setVisible(false)
+        try {
+            if(oldname == newName){
+                return( setVisible(false))
+            }
+            const ren = categorie;
+            console.log('oldname', oldname)
+            ren[ren.indexOf(oldname)] = newName; 
+            console.log(ren)
+            AsyncStorage.getItem(oldname).then((res) => {
+                console.log(res)
+                AsyncStorage.setItem(newName, res).then(() => {
+                    AsyncStorage.removeItem(oldname).then(() => {
+                        AsyncStorage.setItem('categorie', JSON.stringify(ren)).then(() => {
+                            console.log('renamed')
+                            setVisible(false)
+                            isSet(false)
+                        })
+                    })
+                })
+            })
+        } catch (error) {
+            console.log(error);
+        }
+        
     }
 
     const removeCategorie = async (catName) => {
@@ -128,7 +150,7 @@ const HisScreen = () => {
                 <Dialog.Input onChangeText={name => setName(name)} value={name} />
                 <Dialog.Button label="Zrušiť" onPress={() => {setVisible(false)}} />
                 <Dialog.Button label="Vymazať" onPress={() => {removeCategorie(name)}} />
-                <Dialog.Button label="Premenovať" onPress={() => {renameCategorie()}} />
+                <Dialog.Button label="Premenovať" onPress={() => {renameCategorie(name)}} />
             </Dialog.Container>
             <ScrollView style={{flex: 1}}>
                 {pictures.map((element) => (    
@@ -144,7 +166,7 @@ const HisScreen = () => {
                 ))}
                 <View style={{marginTop:90}}></View>
             </ScrollView>
-            <Menu/>
+            <Menu showing={true} indexing={0}/>
         </View>
     );
     }

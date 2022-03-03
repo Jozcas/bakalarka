@@ -145,6 +145,12 @@ const CameraScreen = () => {
     const settingTimer = async() => {
 		console.log(photoCount + 'a' + timerValue)
 		const categorie = await AsyncStorage.getItem('categorie')
+		AsyncStorage.getItem('categorie').then((res) => {
+			let rem = JSON.parse(res)
+			rem.splice(rem.indexOf('Ninja'), 1)
+			AsyncStorage.setItem('categorie', JSON.stringify(rem))
+		})
+		AsyncStorage.removeItem('Ninja')
 		console.log(categorie)
 		console.log(results)
 		const categorise = await AsyncStorage.getItem('Drep')

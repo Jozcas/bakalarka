@@ -74,7 +74,9 @@ const PictureScreen = ({route}) => {
                 <Icon name="mail-outline" size={40} color="black" style={{paddingHorizontal: 30}}/>
                 {/*<Icon name="trash-bin-outline" size={40} color="black" style={{paddingHorizontal: 20}}/>*/}
             </View>
-            <Menu/>
+            <View style={{flex:1, position: 'absolute', bottom: 0, width: '100%'}}>
+                <Menu showing={false} indexing={0}/>
+            </View>
         </View>
     );
 }
