@@ -10,12 +10,14 @@ const Menu = ({showing, indexing}) => {
     const [show, setShow] = useState(showing);
     const navigation = useNavigation()
 
+    //changing backgroun color
     const theme = {
         colors: {
           primary: '#ff9999',
         },
     };    
-    
+
+    //show indicator
     if(show){
         return (
             <View>

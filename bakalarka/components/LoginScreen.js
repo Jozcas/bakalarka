@@ -34,6 +34,7 @@ const LoginScreen = ({ navigation }) => {
         AsyncStorage.setItem('user', user)
         AsyncStorage.setItem('timerValue', '0');
         AsyncStorage.setItem('photoCount', '1');
+        AsyncStorage.setItem('voiceFlag', JSON.stringify(false));
         updatePassword('')
         updateEmail('')
         navigation.navigate('HistoryExercise')

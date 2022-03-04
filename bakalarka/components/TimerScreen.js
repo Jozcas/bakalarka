@@ -7,6 +7,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const TimerScreen = () => {
     const [photoCount, setPhotoCount] = useState('1')
     const [timerValue, setTimerValue] = useState('0')
+    const [voiceFlag, setVoiceFlag] = useState(false)
+    //const [voiceCommand, setVoiceCommand] = useState('foto')
     const navigation = useNavigation();
 
     //get users previos settings of timerValue and photoCount
@@ -17,6 +19,10 @@ const TimerScreen = () => {
                 setTimerValue(timer);
                 const photo = await AsyncStorage.getItem('photoCount');
                 setPhotoCount(photo);
+                const voice = await AsyncStorage.getItem('voiceFlag');
+                setVoiceFlag(JSON.parse(voice));
+                //const command = await AsyncStorage.getItem('voiceCommand');
+                //setVoiceCommand(command);
             } catch (err) {
                 console.log(err);
             }
@@ -34,6 +40,8 @@ const TimerScreen = () => {
                     onPress={() => {
                         AsyncStorage.setItem('timerValue', timerValue);
                         AsyncStorage.setItem('photoCount', photoCount);
+                        AsyncStorage.setItem('voiceFlag', JSON.stringify(voiceFlag));
+                        //AsyncStorage.setItem('voiceCommand', voiceCommand);
                         navigation.navigate("Camera")                        
                     }}
                 >
@@ -48,13 +56,13 @@ const TimerScreen = () => {
                         <TouchableOpacity style={{backgroundColor: timerValue === '0' ? '#5c5b5a' : '#737270', justifyContent: 'center', padding: 10}} onPress={() => setTimerValue('0')}>
                             <Text style={{color: 'white', fontSize: 20}}>Vyp.</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={{backgroundColor: timerValue === '5' ? '#5c5b5a' : '#737270', justifyContent: 'center', padding: 10}} onPress={() => setTimerValue('5')}>
+                        <TouchableOpacity style={{backgroundColor: timerValue === '5' ? '#5c5b5a' : '#737270', justifyContent: 'center', padding: 10}} onPress={() => {setTimerValue('5'); setVoiceFlag(false)}}>
                             <Text style={{color: 'white', fontSize: 20}}>5s</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={{backgroundColor: timerValue === '10' ? '#5c5b5a' : '#737270', justifyContent: 'center', padding: 10}} onPress={() => setTimerValue('10')}>
+                        <TouchableOpacity style={{backgroundColor: timerValue === '10' ? '#5c5b5a' : '#737270', justifyContent: 'center', padding: 10}} onPress={() => {setTimerValue('10'); setVoiceFlag(false)}}>
                             <Text style={{color: 'white', fontSize: 20}}>10s</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={{backgroundColor: timerValue === '15' ? '#5c5b5a' : '#737270', justifyContent: 'center', padding: 10}} onPress={() => setTimerValue('15')}>
+                        <TouchableOpacity style={{backgroundColor: timerValue === '15' ? '#5c5b5a' : '#737270', justifyContent: 'center', padding: 10}} onPress={() => {setTimerValue('15'); setVoiceFlag(false)}}>
                             <Text style={{color: 'white', fontSize: 20}}>15s</Text>
                         </TouchableOpacity>
                     </View>
@@ -66,16 +74,37 @@ const TimerScreen = () => {
                         <TouchableOpacity style={{backgroundColor: photoCount === '1' ? '#5c5b5a' : '#737270', justifyContent: 'center', padding: 10}} onPress={() => setPhotoCount('1')}>
                             <Text style={{color: 'white', fontSize: 20}}>1</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={{backgroundColor: photoCount === '2' ? '#5c5b5a' : '#737270', justifyContent: 'center', padding: 10}} onPress={() => setPhotoCount('2')}>
+                        <TouchableOpacity style={{backgroundColor: photoCount === '2' ? '#5c5b5a' : '#737270', justifyContent: 'center', padding: 10}} onPress={() => {setPhotoCount('2'); setVoiceFlag(false)}}>
                             <Text style={{color: 'white', fontSize: 20}}>2</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={{backgroundColor: photoCount === '3' ? '#5c5b5a' : '#737270', justifyContent: 'center', padding: 10}} onPress={() => setPhotoCount('3')}>
+                        <TouchableOpacity style={{backgroundColor: photoCount === '3' ? '#5c5b5a' : '#737270', justifyContent: 'center', padding: 10}} onPress={() => {setPhotoCount('3'); setVoiceFlag(false)}}>
                             <Text style={{color: 'white', fontSize: 20}}>3</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={{backgroundColor: photoCount === '4' ? '#5c5b5a' : '#737270', justifyContent: 'center', padding: 10}} onPress={() => setPhotoCount('4')}>
+                        <TouchableOpacity style={{backgroundColor: photoCount === '4' ? '#5c5b5a' : '#737270', justifyContent: 'center', padding: 10}} onPress={() => {setPhotoCount('4'); setVoiceFlag(false)}}>
                             <Text style={{color: 'white', fontSize: 20}}>4</Text>
                         </TouchableOpacity>
                     </View>
+
+                    <Text style={{color: 'white', fontSize: 40, marginTop: 10}}>
+                        Hlasové ovládanie
+                    </Text>
+                    <View style={{flexDirection: 'row', width: '90%'}}>
+                        <TouchableOpacity style={{backgroundColor: voiceFlag === false ? '#5c5b5a' : '#737270', justifyContent: 'center', padding: 10}} onPress={() => setVoiceFlag(false)}>
+                            <Text style={{color: 'white', fontSize: 20}}>Vyp.</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={{backgroundColor: voiceFlag === true ? '#5c5b5a' : '#737270', justifyContent: 'center', padding: 10}} onPress={() => {setVoiceFlag(true); setTimerValue('0'); setPhotoCount('1')}}>
+                            <Text style={{color: 'white', fontSize: 20}}>Zap.</Text>
+                        </TouchableOpacity>
+                    </View>
+
+                    <Text style={{color: 'white', fontSize: 40, marginTop: 10}}>
+                        Hlasový pokyn
+                    </Text>
+                    <Text style={{color: 'white', fontSize: 20, marginTop: 10}}>
+                        Pre odfotenie povedz 'FOTO'
+                    </Text>
+                    {//<TextInput style={{width: '90%', color: 'white', borderColor: "#ccc", borderWidth: 2, backgroundColor: '#737270'}} placeholder="Pokyn pre vyhotovenie foto" onChangeText={setVoiceCommand} value={voiceCommand} />                    
+                    }
             </View>            
         </View>
     );

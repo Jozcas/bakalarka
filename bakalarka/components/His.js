@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, Image, StatusBar, Dimensions, ScrollView } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Image, StatusBar, Dimensions, ScrollView, ImageBackground } from "react-native";
 import Menu from "../static/menu";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Card} from 'react-native-elements';
@@ -18,10 +18,18 @@ const HisScreen = () => {
     const [oldname, setOldName] = useState()
     const [visible, setVisible] = useState(false)
 
+    const [first, setFirst] = useState(false)
     const getCategories = () => {
         try {
             AsyncStorage.getItem('categorie').then((res) => {
                 console.log(res);
+                if(res == null){
+                    setFirst(true)
+                    return
+                }
+                else{
+                    setFirst(false)
+                }
                 setCategorie(JSON.parse(res))
                 //isLoading(false)
                 isSet(true)
@@ -135,6 +143,21 @@ const HisScreen = () => {
             console.log(error);
         }
     }
+    if(first){
+        return (
+            <ImageBackground source={require('../static/images/background.jpg')}  style={{flex:1}} imageStyle={{ opacity: 0.1 }}>
+                <View style={{flex: 1}}>
+                    <View style={{flex: 1, alignSelf: 'center', justifyContent: 'center'}}>
+                        <Text style={{fontSize: 40}}>Najskôr si urob foto</Text>
+                    </View>
+                    <View style={{flex:1, position: 'absolute', bottom: 0, width: '100%'}}>
+                        <Menu showing={true} indexing={0}/>
+                    </View>
+                </View>
+            </ImageBackground>
+        )
+    }
+    else{
     if(loading){
         return (
             <View>
@@ -170,13 +193,17 @@ const HisScreen = () => {
         </View>
     );
     }
+    }
 }
 export default HisScreen
 
 const styles = StyleSheet.create({
     image: {
-        width: Dimensions.get('window').width/3-20, 
-        height: ((Dimensions.get('window').width/3-20)/1500)*2000,
+        aspectRatio: 1,
+        width: 150,
+        height: 150,
+        //width: Dimensions.get('window').width/3-20, 
+        //height: ((Dimensions.get('window').width/3-20)/1500)*2000,
         marginHorizontal: 10
     }
 })

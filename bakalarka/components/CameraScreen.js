@@ -15,6 +15,7 @@ const CameraScreen = () => {
 	const [flash, setFlash] = useState("off");
 	const [photoCount, setPhotoCount] = useState('1')
     const [timerValue, setTimerValue] = useState('0')
+	const [voiceFlag, setVoiceFlag] = useState(false)
 	const [{ cameraRef }, { takePicture }] = useCamera(null);
 
 	//for voice command
@@ -25,7 +26,7 @@ const CameraScreen = () => {
     let camera = RNCamera
 	const isFocused = useIsFocused();
 
-    const pictureUri = [];
+    let pictureUri = [];
 
 	//to set timerValue and photoCount when return from TimerScreen 
 	useFocusEffect(
@@ -36,6 +37,8 @@ const CameraScreen = () => {
 					setTimerValue(timer);
 					const photo = await AsyncStorage.getItem('photoCount');
 					setPhotoCount(photo);
+					const voice = await AsyncStorage.getItem('voiceFlag');
+                	setVoiceFlag(JSON.parse(voice));
 				} catch (err) {
 					console.log(err);
 				}
@@ -53,6 +56,8 @@ const CameraScreen = () => {
                 setTimerValue(timer);
                 const photo = await AsyncStorage.getItem('photoCount');
                 setPhotoCount(photo);
+				const voice = await AsyncStorage.getItem('voiceFlag');
+                setVoiceFlag(JSON.parse(voice));
             } catch (err) {
                 console.log(err);
             }
@@ -120,9 +125,17 @@ const CameraScreen = () => {
 
 	const voicePicture = async () => {
 		console.log(camera)
-			const data = await takePicture();
-			console.log(data.uri);
-			pictureUri.push({id: '1', picture: data.uri})
+		pictureUri = []
+		let options
+		if(type == RNCamera.Constants.Type.front){
+			options = {mirrorImage: true, fixOrientation: true}
+		}
+		if(type == RNCamera.Constants.Type.back){
+			options = {fixOrientation: true}
+		}
+		const data = await takePicture(options);
+		console.log(data.uri);
+		pictureUri.push({id: '1', picture: data.uri})
 		
 		//name of picture	
 		var year = new Date().getFullYear(); //Current Year
@@ -144,25 +157,18 @@ const CameraScreen = () => {
 
     const settingTimer = async() => {
 		console.log(photoCount + 'a' + timerValue)
-		const categorie = await AsyncStorage.getItem('categorie')
-		AsyncStorage.getItem('categorie').then((res) => {
-			let rem = JSON.parse(res)
-			rem.splice(rem.indexOf('Ninja'), 1)
-			AsyncStorage.setItem('categorie', JSON.stringify(rem))
-		})
-		AsyncStorage.removeItem('Ninja')
+		const categorie = await AsyncStorage.getItem('voiceFlag')
+		
 		console.log(categorie)
 		console.log(results)
-		const categorise = await AsyncStorage.getItem('Drep')
-		console.log(categorise)
 	}
 
 	//when timer is active or need to take more photos than one
-	const timerTakePicture = async () => {
+	const timerTakePicture = async (options) => {
 		for (let index = 0; index < photoCount; index++) {
 			if(camera){
 				RNBeep.beep();
-				const data = await takePicture();
+				const data = await takePicture(options);
 				console.log(data.uri);
 				pictureUri.push({id: index + 1, picture: data.uri})
 				//await savePicture(data.uri);
@@ -181,10 +187,19 @@ const CameraScreen = () => {
 	//take picture function, 
 	const takePictures = async () => {
 		//const options = { quality: 0.5, base64: true, skipProcessing: true };
+		let options
+		pictureUri = []
+		if(type == RNCamera.Constants.Type.front){
+			options = {mirrorImage: true, fixOrientation: true}
+		}
+		if(type == RNCamera.Constants.Type.back){
+			options = {fixOrientation: true}
+		}
+		
 		if(photoCount == '1' && timerValue == '0'){
 			if(camera){
 				RNBeep.beep();
-				const data = await takePicture();
+				const data = await takePicture(options);
 				console.log(data.uri);
 				pictureUri.push({id: '1', picture: data.uri})
 			}
@@ -195,11 +210,11 @@ const CameraScreen = () => {
 					console.log('timer end');
 				}, timerValue*1000);
 				if(camera) {
-					await timerTakePicture();
+					await timerTakePicture(options);
 				}
 			}
 			else {
-				await timerTakePicture();
+				await timerTakePicture(options);
 			}
 		}
 
@@ -287,7 +302,7 @@ const CameraScreen = () => {
 					</TouchableOpacity>
 					
 					<View style={styles.takeButton}>
-						<TouchableOpacity onPress={takePictures} style={styles.takeBStyle} />
+						<TouchableOpacity onPress={() => {if(voiceFlag == false){takePictures()}else{_onRecordVoice()}}} style={styles.takeBStyle} />
 					</View>
 					
 					<View style={styles.flip}>
