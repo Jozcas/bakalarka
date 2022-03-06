@@ -7,6 +7,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import Dialog from "react-native-dialog";
 import Icon from 'react-native-vector-icons/Entypo';
 import RNFS from 'react-native-fs';
+import { useNavigation} from '@react-navigation/core'
 
 const HisScreen = () => {
     const [loading, isLoading] = useState(true)
@@ -19,6 +20,8 @@ const HisScreen = () => {
     const [visible, setVisible] = useState(false)
 
     const [first, setFirst] = useState(false)
+    const navigation = useNavigation();
+    
     const getCategories = () => {
         try {
             AsyncStorage.getItem('categorie').then((res) => {
@@ -76,7 +79,6 @@ const HisScreen = () => {
     );
 
     const renameCategorie = async (newName) => {
-        //setVisible(false)
         try {
             if(oldname == newName){
                 return( setVisible(false))
@@ -145,7 +147,7 @@ const HisScreen = () => {
     }
     if(first){
         return (
-            <ImageBackground source={require('../static/images/background.jpg')}  style={{flex:1}} imageStyle={{ opacity: 0.1 }}>
+            <ImageBackground source={require('../static/images/background.jpg')}  style={{flex:1}} imageStyle={{ opacity: 0.3 }}>
                 <View style={{flex: 1}}>
                     <View style={{flex: 1, alignSelf: 'center', justifyContent: 'center'}}>
                         <Text style={{fontSize: 40}}>Najskôr si urob foto</Text>
@@ -167,6 +169,7 @@ const HisScreen = () => {
     }
     else{
     return (
+        <ImageBackground source={require('../static/images/background.jpg')}  style={{flex:1}} imageStyle={{ opacity: 0.3 }}>
         <View style={{flex: 1}}>
             <Dialog.Container visible={visible} onBackdropPress={() => {setVisible(false)}} contentStyle={{borderRadius: 10}}>
                 <Dialog.Description children="Zmeň názov kategórie cviku"/>
@@ -180,17 +183,20 @@ const HisScreen = () => {
                     <Card key={element[0]} style={{flex: 1}}>
                         <Card.Title style={{alignSelf: 'flex-start'}}>{element[0]}</Card.Title>
                         <Icon name="dots-three-vertical" size={20} color="black" style={{position: 'absolute', top: 0, right: 0 }} onPress={() => {setOldName(element[0]); setName(element[0]); setVisible(true)}} />
+                        <TouchableOpacity onPress={() => {navigation.navigate('HESGallery', {name: element[0], data: element[1]})}}>
                         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={{flex: 1}}>
                         {
                             element[1] && JSON.parse(element[1]).map((el) => (<Image key={el} source={{uri: "file:///data/user/0/com.bakalarka/files" + el}} style={styles.image}/>))
                         }
                         </ScrollView>
+                        </TouchableOpacity>
                     </Card>
                 ))}
                 <View style={{marginTop:90}}></View>
             </ScrollView>
             <Menu showing={true} indexing={0}/>
         </View>
+        </ImageBackground>
     );
     }
     }

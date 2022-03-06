@@ -49,8 +49,8 @@ const Menu = ({showing, indexing}) => {
             <View>
                 <ThemeProvider theme={theme}>
                 <Tab
-                    value={index}
-                    onChange={(e) => {setIndex(e); console.log(e)}}                    
+                    //value={index}
+                    //onChange={(e) => {setIndex(e); console.log(e)}}                    
                     variant="primary"
                 >
                     <Tab.Item

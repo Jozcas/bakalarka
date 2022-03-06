@@ -8,8 +8,9 @@ import TimerScreen from './components/TimerScreen';
 import PictureScreen from './components/PictureScreen';
 import HistoryExerciseScreen from './components/HistoryExerciseScreen';
 import CategoryScreen from './components/CategoryScreen';
-import VoiceScreen from './components/Voice';
 import HisScreen from './components/His';
+import HESGallery from './components/HESGallery';
+import CompareScreen from './components/CompareScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -25,7 +26,8 @@ export default function App() {
         <Stack.Screen name="Timer" component={TimerScreen} options={{headerShown: false}}/>
         <Stack.Screen name="Picture" component={PictureScreen} options={{headerShown: true,  title: 'Odfotený cvik' }}/>
         <Stack.Screen name="Category" component={CategoryScreen} options={{headerShown: false}}/>
-        <Stack.Screen name="Voice" component={VoiceScreen} options={{headerShown: false}}/>
+        <Stack.Screen name="HESGallery" component={HESGallery} options={({route}) => ({headerShown: true, title: route.params.name})}/>
+        <Stack.Screen name="Compare" component={CompareScreen} options={({route}) => ({headerShown: true, title: route.params.name})}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

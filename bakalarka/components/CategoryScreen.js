@@ -38,10 +38,14 @@ const CategoryScreen = ({route}) => {
     const newCategorie = async () => {
         setVisible(false)
         let category = JSON.parse(await AsyncStorage.getItem('categorie'))
+        let reference = JSON.parse(await AsyncStorage.getItem('reference'))
         if(category == null)
         {
+            reference = {};
             category = [];
         }
+        reference[name] = route.params.path
+        await AsyncStorage.setItem('reference', JSON.stringify(reference))
         console.log(name)
         category.push(name)
         setName(null);
@@ -97,7 +101,8 @@ const CategoryScreen = ({route}) => {
                             <TouchableOpacity style={[styles.categorieBox, {backgroundColor: generateColor()}]} key={element} 
                                 onPress={async () => {
                                     var array = JSON.parse(await AsyncStorage.getItem(element));
-                                    array.push(route.params.path)
+                                    //array.push(route.params.path)
+                                    array.unshift(route.params.path)
                                     await AsyncStorage.setItem(element , JSON.stringify(array))
                                     navigation.navigate('HistoryExercise')}
                                 }
