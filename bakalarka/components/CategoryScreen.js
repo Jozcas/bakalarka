@@ -59,6 +59,15 @@ const CategoryScreen = ({route}) => {
         navigation.navigate('HistoryExercise')        
     }
 
+    const styling = () => {
+        if (categorie.length != 1) {
+            return { flex: 1, flexDirection: 'row', alignSelf: 'center', flexWrap: 'wrap' }
+        }
+        if (categorie.length == 1) {
+            return { flex: 1, flexDirection: 'row', alignSelf: 'flex-start', flexWrap: 'wrap' }
+        }
+    }
+
     return (
         categorie == null ? 
         <View style={{flex: 1}}>
@@ -95,7 +104,7 @@ const CategoryScreen = ({route}) => {
                 <Text style={{fontSize: 20, paddingLeft: 20}}>
                     Vyber kam sa má cvik uložiť
                 </Text>
-                <View style={{flex: 1, flexDirection: 'row', alignSelf: 'center', flexWrap: 'wrap'}}>
+                <View style={styling()}>
                     {
                         categorie.map((element) => (
                             <TouchableOpacity style={[styles.categorieBox, {backgroundColor: generateColor()}]} key={element} 

@@ -25,7 +25,7 @@ const HisScreen = () => {
     const getCategories = () => {
         try {
             AsyncStorage.getItem('categorie').then((res) => {
-                console.log(res);
+                console.log('categorie his', res);
                 if(res == null){
                     setFirst(true)
                     return

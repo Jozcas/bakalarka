@@ -28,7 +28,7 @@ const CompareScreen = ({route}) => {
                 itemWidth={Dimensions.get('window').height/2-100}
                 data={JSON.parse(route.params.data)}
                 renderItem={({ item, index }) => (
-                    <Image key={index} style={{width: Dimensions.get('window').height/2-100, height: Dimensions.get('window').height/2-100}} resizeMode='contain' source={{uri: "file:///data/user/0/com.bakalarka/files" + item}}/>
+                    <Image key={index} style={{width: Dimensions.get('window').height/2-100, height: Dimensions.get('window').height/2-100}} source={{uri: "file:///data/user/0/com.bakalarka/files" + item}}/>
                 )}
                 onSnapToItem={index => onSlide(index)}
                 firstItem={route.params.index}
