@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Menu from "../static/menu";
 import RNFS from 'react-native-fs';
+import { storage, db } from "../firebaseConfig";
 
 const HESGallery = ({ route }) => {
     const [data, setData] = useState(JSON.parse(route.params.data))
@@ -14,6 +15,7 @@ const HESGallery = ({ route }) => {
     const navigation = useNavigation()
 
     const [check, setCheck] = useState(new Array(JSON.parse(route.params.data).length).fill(false));
+    const [imageUrl, setImageUrl] = useState()
 
     useEffect(
         () => {
@@ -123,6 +125,75 @@ const HESGallery = ({ route }) => {
         }
     }
 
+    const sendPictures = async () => {
+        try {
+            let ids = []
+            //get document id for controlling if collection already have this picture of exercise
+            await db.collection("cviky").doc('category').collection(route.params.name).get().then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    ids.push('/' + doc.id)
+                });
+            });
+            console.log(ids)
+
+            let pictures = data;
+            pictures.map((el, index) => {
+                //upload picked images
+                if (check[index]) {
+                    console.log(el)    
+                    //denied duplicity uploading images to database                
+                    if(ids.indexOf(el) == -1){
+                        uploadImageToStorage(el, el).then(() => {
+                            db.collection("cviky").doc('category').collection(route.params.name).doc(el).set({
+                                comment: "",
+                                image: imageUrl,
+                                name: el,
+                                state: false,
+                            })
+                            .then(() => {
+                                console.log("Document successfully written!");
+                            })
+                            .catch((error) => {
+                                console.error("Error writing document: ", error);
+                            });
+                            })
+                    }
+                }
+
+                if (index == (data.length - 1)) {
+
+                }
+            })
+            
+            //db.collection("cviky").doc('category').collection(route.params.name).get().then(snapshot => console.log(snapshot))
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const uploadImageToStorage = async (path, name) => {
+        const blob = await new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.onload = function () {
+                resolve(xhr.response);
+            };
+            xhr.onerror = function (e) {
+                console.log(e);
+                reject(new TypeError('Network request failed'));
+            };
+            xhr.responseType = 'blob';
+            xhr.open('GET', "file:///data/user/0/com.bakalarka/files"+path, true);
+            xhr.send(null);
+        });
+
+        let reference = storage.ref().child(name);
+        const snapshot = await reference.put(blob);
+        const imageurl = await snapshot.ref.getDownloadURL();
+        console.log(imageurl)
+        setImageUrl(imageurl)
+        blob.close();
+    }
+
     return (
         <ImageBackground source={require('../static/images/background.jpg')} style={{ flex: 1 }} imageStyle={{ opacity: 0.3 }}>
             <View style={{ flex: 1 }}>
@@ -158,8 +229,8 @@ const HESGallery = ({ route }) => {
                     action &&
                     <View style={{ marginTop: 35 }}>
                         <View style={styles.line}>
-                            <Icon name="trash-bin" size={40} color="black" onPress={() => { deletePictures() }} />
-                            <Icon name="send" size={40} color="black" />
+                            <Icon name="trash-bin" size={40} color="black" onPress={() => {deletePictures()}} />
+                            <Icon name="send" size={40} color="black" onPress={() => {sendPictures()}}/>
                             <Icon name="close" size={40} color="black" onPress={() => { setCheck(new Array(data.length).fill(false)); setAction(false) }} />
                         </View>
                     </View>

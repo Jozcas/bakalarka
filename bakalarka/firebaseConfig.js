@@ -19,7 +19,11 @@ if (firebase.apps.length === 0) {
 } else {
   app = firebase.app()
 }
+firebase.firestore().settings({experimentalForceLongPolling: true})
 
 const auth = firebase.auth()
+const db = firebase.firestore(app);
+const storage = firebase.storage(app)
+export const fCategory = db.collection('cviky');
 
-export { auth };
+export { auth, storage, db };
