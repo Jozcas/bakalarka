@@ -183,13 +183,17 @@ const HisScreen = () => {
                     <Card key={element[0]} style={{flex: 1}}>
                         <Card.Title style={{alignSelf: 'flex-start'}}>{element[0]}</Card.Title>
                         <Icon name="dots-three-vertical" size={20} color="black" style={{position: 'absolute', top: 0, right: 0 }} onPress={() => {setOldName(element[0]); setName(element[0]); setVisible(true)}} />
-                        <TouchableOpacity onPress={() => {navigation.navigate('HESGallery', {name: element[0], data: element[1]})}}>
+                        
                         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={{flex: 1}}>
                         {
-                            element[1] && JSON.parse(element[1]).map((el) => (<Image key={el} source={{uri: "file:///data/user/0/com.bakalarka/files" + el}} style={styles.image}/>))
+                            element[1] && JSON.parse(element[1]).map((el) => (
+                                <TouchableOpacity onPress={() => {navigation.navigate('HESGallery', {name: element[0], data: element[1]})}}>
+                                    <Image key={el} source={{uri: "file:///data/user/0/com.bakalarka/files" + el}} style={styles.image}/>
+                                </TouchableOpacity>        
+                            ))
                         }
                         </ScrollView>
-                        </TouchableOpacity>
+                        
                     </Card>
                 ))}
                 <View style={{marginTop:90}}></View>
@@ -206,10 +210,10 @@ export default HisScreen
 const styles = StyleSheet.create({
     image: {
         aspectRatio: 1,
-        width: 150,
-        height: 150,
-        //width: Dimensions.get('window').width/3-20, 
-        //height: ((Dimensions.get('window').width/3-20)/1500)*2000,
+        //width: 150,
+        //height: 150,
+        width: Dimensions.get('window').width/3-20, 
+        height: ((Dimensions.get('window').width/3-20)/1500)*2000,
         marginHorizontal: 10
     }
 })

@@ -38,6 +38,7 @@ const Menu = ({showing, indexing}) => {
                     icon={{ name: 'camera', type: 'ionicon', color: 'white', size: 45, onPress: () => navigation.navigate('Camera') }}
                     />
                     <Tab.Item
+                    icon={{ name: 'comment-check', type: 'material-community', color: 'white', size: 45, onPress: () => navigation.navigate('RatingGallery') }}
                     />
                 </Tab>
                 </ThemeProvider>
@@ -62,6 +63,7 @@ const Menu = ({showing, indexing}) => {
                     icon={{ name: 'camera', type: 'ionicon', color: 'white', size: 45, onPress: () => navigation.navigate('Camera') }}
                     />
                     <Tab.Item
+                    icon={{ name: 'comment-check', type: 'material-community', color: 'white', size: 45, onPress: () => navigation.navigate('RatingGallery') }}
                     />
                 </Tab>
                 </ThemeProvider>

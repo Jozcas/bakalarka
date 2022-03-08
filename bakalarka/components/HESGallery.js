@@ -7,6 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import Menu from "../static/menu";
 import RNFS from 'react-native-fs';
 import { storage, db } from "../firebaseConfig";
+import firebase from "firebase";
 
 const HESGallery = ({ route }) => {
     const [data, setData] = useState(JSON.parse(route.params.data))
@@ -134,34 +135,38 @@ const HESGallery = ({ route }) => {
                     ids.push('/' + doc.id)
                 });
             });
+
+            let insert = false;
+            let cat;
+            await db.collection("category").get().then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    //ids.push('/' + doc.id)
+                    cat = doc.data()['name']
+                    insert = true;
+                    console.log('datat', doc.data()['name'])
+                });
+            });
             console.log(ids)
 
             let pictures = data;
             pictures.map((el, index) => {
                 //upload picked images
                 if (check[index]) {
+                    if(insert){
+                        console.log('cate', cat.indexOf(route.params.name))
+                        if(cat.indexOf(route.params.name) == -1){
+                            db.collection("category").doc("9iNgWPVq54tw7SFebSfw").update({name: firebase.firestore.FieldValue.arrayUnion(route.params.name)})
+                        }
+                    }
                     console.log(el)    
                     //denied duplicity uploading images to database                
                     if(ids.indexOf(el) == -1){
-                        uploadImageToStorage(el, el).then(() => {
-                            db.collection("cviky").doc('category').collection(route.params.name).doc(el).set({
-                                comment: "",
-                                image: imageUrl,
-                                name: el,
-                                state: false,
-                            })
-                            .then(() => {
-                                console.log("Document successfully written!");
-                            })
-                            .catch((error) => {
-                                console.error("Error writing document: ", error);
-                            });
-                            })
+                        uploadImageToStorage(el, el)
                     }
                 }
 
                 if (index == (data.length - 1)) {
-
+                    setAction(false)
                 }
             })
             
@@ -190,6 +195,19 @@ const HESGallery = ({ route }) => {
         const snapshot = await reference.put(blob);
         const imageurl = await snapshot.ref.getDownloadURL();
         console.log(imageurl)
+        
+        db.collection("cviky").doc('category').collection(route.params.name).doc(name).set({
+            comment: "",
+            image: imageurl,
+            name: name,
+            state: false,
+        })
+        .then(() => {
+            console.log("Document successfully written!");
+        })
+        .catch((error) => {
+            console.error("Error writing document: ", error);
+        });
         setImageUrl(imageurl)
         blob.close();
     }
