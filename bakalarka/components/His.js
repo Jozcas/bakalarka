@@ -187,7 +187,7 @@ const HisScreen = () => {
                         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={{flex: 1}}>
                         {
                             element[1] && JSON.parse(element[1]).map((el) => (
-                                <TouchableOpacity onPress={() => {navigation.navigate('HESGallery', {name: element[0], data: element[1]})}}>
+                                <TouchableOpacity key={el} onPress={() => {navigation.navigate('HESGallery', {name: element[0], data: element[1]})}}>
                                     <Image key={el} source={{uri: "file:///data/user/0/com.bakalarka/files" + el}} style={styles.image}/>
                                 </TouchableOpacity>        
                             ))

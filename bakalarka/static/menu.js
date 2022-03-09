@@ -51,7 +51,11 @@ const Menu = ({showing, indexing}) => {
                 <ThemeProvider theme={theme}>
                 <Tab
                     //value={index}
-                    //onChange={(e) => {setIndex(e); console.log(e)}}                    
+                    //onChange={(e) => {setIndex(e); console.log(e)}}
+                    indicatorStyle={{
+                        backgroundColor: '#ff9999',
+                        height: 3,
+                    }}                  
                     variant="primary"
                 >
                     <Tab.Item

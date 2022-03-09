@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, ImageBackground, StyleSheet, Dimensions, ScrollView, Image } from "react-native";
+import { View, Text, ImageBackground, StyleSheet, Dimensions, ScrollView } from "react-native";
 import { db } from "../firebaseConfig";
 import {Card} from 'react-native-elements';
 import Menu from "../static/menu";
+import { Image } from "react-native-elements";
+import { useNavigation} from '@react-navigation/core'
 
 const RatingGalleryScreen = () => {
     const [cat, setCat] = useState()
     const [images, setImages] = useState()
     const [loading, isLoading] = useState(true)
+
+    const navigation = useNavigation()
 
     useEffect(() => {
         const fetchData = async () => {
@@ -71,7 +75,7 @@ const RatingGalleryScreen = () => {
                                     <Card.Title style={{alignSelf: 'flex-start'}}>{element}</Card.Title>
                                     <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={{flex: 1}}>
                                     {
-                                        images[element].map((el) => (<Image key={el['name']} source={{uri: el['image']}} style={styles.image}/>))
+                                        images[element].map((el) => (<Image key={el['name']} source={{uri: el['image']}} style={styles.image} onPress={() => {navigation.navigate('RGallery', {name: element, data: el})}}/>)).reverse()
                                     }
                                     </ScrollView>
                                 </Card>

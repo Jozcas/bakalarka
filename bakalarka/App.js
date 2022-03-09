@@ -12,6 +12,10 @@ import HisScreen from './components/His';
 import HESGallery from './components/HESGallery';
 import CompareScreen from './components/CompareScreen';
 import RatingGalleryScreen from './components/RatingGalleryScreen';
+import RGallery from './components/RGallery';
+import RCarouselScreen from './components/RCarouselScreen';
+
+import Logout from './components/Logout';
 
 const Stack = createNativeStackNavigator();
 
@@ -29,7 +33,9 @@ export default function App() {
         <Stack.Screen name="Category" component={CategoryScreen} options={{headerShown: false}}/>
         <Stack.Screen name="HESGallery" component={HESGallery} options={({route}) => ({headerShown: true, title: route.params.name})}/>
         <Stack.Screen name="Compare" component={CompareScreen} options={({route}) => ({headerShown: true, title: route.params.name})}/>
-        <Stack.Screen name="RatingGallery" component={RatingGalleryScreen} options={{headerShown: true,  title: 'Hodnotené cviky' }}/>
+        <Stack.Screen name="RatingGallery" component={RatingGalleryScreen} options={{headerShown: true,  title: 'Hodnotené cviky', headerRight: () => <Logout/>}}/>
+        <Stack.Screen name="RGallery" component={RGallery} options={({route}) => ({headerShown: true, title: route.params.name})}/>
+        <Stack.Screen name="RCarousel" component={RCarouselScreen} options={({route}) => ({headerShown: true, title: route.params.name})}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
