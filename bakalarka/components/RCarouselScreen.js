@@ -22,8 +22,8 @@ const RCarouselScreen = ({route}) => {
 
         return (
             <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                <Text>Dátum: {array[2] + '.' + array[1] + '.' + array[0]}</Text>
-                <Text>Čas: {time[0] + ':' + time[1] + ':' + time[2]}</Text>
+                <Text style={{color: 'black'}}>Dátum: {array[2] + '.' + array[1] + '.' + array[0]}</Text>
+                <Text style={{color: 'black'}}>Čas: {time[0] + ':' + time[1] + ':' + time[2]}</Text>
             </View>
         )
     } 
@@ -39,8 +39,8 @@ const RCarouselScreen = ({route}) => {
                     <View>
                     <Image key={index} style={{width: Dimensions.get('window').height/2-100, height: Dimensions.get('window').height/2-100}} source={{uri: "file:///data/user/0/com.bakalarka/files" + item.name}}/>
                     {getDate(item.name)}
-                    <Text style={{fontSize: 30}}>Hodnotenie:</Text>
-                    {item.comment == "" ? <Text>Hodnotenie zatiaľ nebolo zadané</Text> : <Text>{item.comment}</Text>}
+                    <Text style={{fontSize: 30, color: 'black'}}>Hodnotenie:</Text>
+                    {item.comment == "" ? <Text style={{color: 'black'}}>Hodnotenie zatiaľ nebolo zadané</Text> : <Text style={{color: 'black'}}>{item.comment}</Text>}
                     </View>
                 )}
                 onSnapToItem={index => onSlide(index)}

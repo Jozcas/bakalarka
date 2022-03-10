@@ -171,7 +171,6 @@ const CameraScreen = () => {
 				const data = await takePicture(options);
 				console.log(data.uri);
 				pictureUri.push({id: index + 1, picture: data.uri})
-				//await savePicture(data.uri);
 			}
 		}
 	}
@@ -276,21 +275,9 @@ const CameraScreen = () => {
 							<Icon name="flash-outline" size={40} color="white" /> 
 						}					
 					</TouchableOpacity>
-
-					<TouchableOpacity
-						style={styles.mic}
-						onPress={() =>
-							{
-								_onRecordVoice()
-								//voicePicture()
-							}
-						}
-					>
-						<Icon name="mic-outline" size={40} color="white" /> 				
-					</TouchableOpacity>
 					
 					<TouchableOpacity
-						style={styles.timer}
+						
 						onPress={() => {
 							navigation.navigate("Timer", {
 								paramKey: 'timer 5',
@@ -298,7 +285,11 @@ const CameraScreen = () => {
 							console.log("Timer pressed")
 						}}
 					>
-						<Icon name="timer-outline" size={40} color="white" />
+						{voiceFlag ? 
+							<Icon name="mic-outline" size={15} color="white" style={{position: 'absolute', top: 0, right: 0, marginTop: 15}}/>
+							: <Icon name="timer-outline" size={15} color="white" style={{position: 'absolute', top: 0, right: 0, marginTop: 15}}/>
+						}
+						<Icon name="menu" size={40} color="white" style={styles.timer}/>
 					</TouchableOpacity>
 					
 					<View style={styles.takeButton}>

@@ -66,13 +66,13 @@ const PictureScreen = ({route}) => {
                 <Pagination dotsLength={pictureUri.length} activeDotIndex={slideIndex} dotColor={'#ff9999'} inactiveDotColor='#737270'/>
             </View>                
             <View style={ styles.line}>
-                {/*<Icon name="pencil-outline" size={40} color="black" style={{paddingHorizontal: 20}}/>*/}
-                <Icon name="md-arrow-redo-outline" size={40} color="black" style={{paddingHorizontal: 30}} onPress={() => {setTransform(!transform)}} />
+                {/*<Icon name="pencil-outline" size={40} color="black" style={{paddingHorizontal: 20}}/>
+                <Icon name="md-arrow-redo-outline" size={40} color="black" style={{paddingHorizontal: 30}} onPress={() => {setTransform(!transform)}} />*/}
                 <TouchableOpacity style={styles.buttonSave} onPress={() => {saveImage(pictureUri[slideIndex])}}>
                     <Text style={{paddingHorizontal: 40, paddingVertical: 7, color: 'black'}}>Uložiť</Text>
                 </TouchableOpacity>
-                <Icon name="mail-outline" size={40} color="black" style={{paddingHorizontal: 30}}/>
-                {/*<Icon name="trash-bin-outline" size={40} color="black" style={{paddingHorizontal: 20}}/>*/}
+                {/*<Icon name="mail-outline" size={40} color="black" style={{paddingHorizontal: 30}}/>
+                <Icon name="trash-bin-outline" size={40} color="black" style={{paddingHorizontal: 20}}/>*/}
             </View>
             <View style={{flex:1, position: 'absolute', bottom: 0, width: '100%'}}>
                 <Menu showing={false} indexing={0}/>
