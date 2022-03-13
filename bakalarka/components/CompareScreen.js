@@ -23,7 +23,7 @@ const CompareScreen = ({route}) => {
             </View>
             <Text style={{fontSize: 25, color: 'black'}}>Odfotená fotografia cviku</Text>
             <Carousel                  
-                layout={'stack'}
+                layout={'default'}
                 sliderWidth={screenWidth}
                 itemWidth={Dimensions.get('window').height/2-100}
                 data={JSON.parse(route.params.data)}

@@ -14,6 +14,8 @@ import CompareScreen from './components/CompareScreen';
 import RatingGalleryScreen from './components/RatingGalleryScreen';
 import RGallery from './components/RGallery';
 import RCarouselScreen from './components/RCarouselScreen';
+import NoRatingScreen from './tComponents/noRatingScreen';
+import RatingScreen from './tComponents/RatingScreen';
 
 import Logout from './components/Logout';
 
@@ -36,6 +38,9 @@ export default function App() {
         <Stack.Screen name="RatingGallery" component={RatingGalleryScreen} options={{headerShown: true,  title: 'Hodnotené cviky', headerRight: () => <Logout/>}}/>
         <Stack.Screen name="RGallery" component={RGallery} options={({route}) => ({headerShown: true, title: route.params.name})}/>
         <Stack.Screen name="RCarousel" component={RCarouselScreen} options={({route}) => ({headerShown: true, title: route.params.name})}/>
+
+        <Stack.Screen name="NoRating" component={NoRatingScreen} options={{headerLeft: null, title: 'Nehodnotené cviky'}}/>
+        <Stack.Screen name="Rating" component={RatingScreen} options={{headerLeft: null, title: 'Hodnotené cviky', headerRight: () => <Logout/>}}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

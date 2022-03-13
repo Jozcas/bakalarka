@@ -12,8 +12,13 @@ const LoginScreen = ({ navigation }) => {
   useEffect(() => {
     
     const unsubscribe = auth.onAuthStateChanged(async user => {
-      if (user) {
-        navigation.replace("HistoryExercise")
+      if(user){
+        if (user.email == 'martin.trener@gmail.com') {
+          navigation.replace("NoRating")
+        } 
+        if(user.email == 'andrej.sport@gmail.com'){
+          navigation.navigate('HistoryExercise')
+        }
       } else {
         updateLoading(false)
       }
@@ -37,7 +42,12 @@ const LoginScreen = ({ navigation }) => {
         AsyncStorage.setItem('voiceFlag', JSON.stringify(false));
         updatePassword('')
         updateEmail('')
-        navigation.navigate('HistoryExercise')
+        if(user == 'andrej.sport@gmail.com'){
+          navigation.navigate('HistoryExercise')
+        }
+        if(user == 'martin.trener@gmail.com'){
+          navigation.replace('NoRating')
+        }
       })
       .catch(error => alert(error.message))    
     }

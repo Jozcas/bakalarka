@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Text, View, ScrollView, ImageBackground, StyleSheet, Dimensions } from "react-native";
-import { db } from "../firebaseConfig";
+import { db, storage } from "../firebaseConfig";
 import { Image, CheckBox } from "react-native-elements";
 import Menu from "../static/menu";
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/core'
+import firebase from "firebase";
 
 const RGallery = ({route}) => {
     const [images, setImages] = useState()
@@ -43,6 +44,45 @@ const RGallery = ({route}) => {
         }
         if (images.length == 1) {
             return { flex: 1, flexDirection: 'row', alignSelf: 'flex-start', flexWrap: 'wrap' }
+        }
+    }
+
+    const deletePictures = () => {
+        try {
+            let pictures = images;
+            let tmp = []
+            let delCat = true 
+            pictures.map((el, index) => {
+                if(check[index]){
+                    console.log(index + el.name)
+                    storage.ref().child(el.name).delete().then(() => {
+                        console.log('Image deleted successfully')
+                        db.collection("cviky").doc('category').collection(route.params.name).doc(el.name).delete()
+                    }).catch((error) => {
+                        console.log('Error while deleting image', error)
+                    });
+                }
+                if (!check[index]) {
+                    delCat = false
+                }
+                /*if (check[index]) {
+                    let filePath = RNFS.DocumentDirectoryPath + el
+                    RNFS.exists(filePath).then((exist) => {
+                        if (exist) {
+                            RNFS.unlink(filePath)
+                        }
+                    })
+                }*/
+                if (index == (images.length - 1)) {
+                    if(delCat){
+                        console.log('zmaz category')
+                        db.collection("category").doc("9iNgWPVq54tw7SFebSfw").update({name: firebase.firestore.FieldValue.arrayRemove(route.params.name)})
+                        navigation.navigate('RatingGallery')
+                    }
+                }
+            })
+        } catch (error) {
+            console.log(error)
         }
     }
 
@@ -88,7 +128,7 @@ const RGallery = ({route}) => {
                     action &&
                     <View style={{ marginTop: 35 }}>
                         <View style={styles.line}>
-                            <Icon name="trash-bin" size={40} color="black" />
+                            <Icon name="trash-bin" size={40} color="black" onPress={() => {deletePictures()}} />
                             <Icon name="close" size={40} color="black" onPress={() => { setCheck(new Array(images.length).fill(false)); setAction(false) }} />
                         </View>
                     </View>
