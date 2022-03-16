@@ -26,16 +26,18 @@ const TMenu = ({showing, indexing}) => {
                     value={index}
                     onChange={(e) => {setIndex(e); console.log(e)}}
                     indicatorStyle={{
-                    backgroundColor: 'white',
+                    backgroundColor: 'black',
                     height: 3,
                     }}
                     variant="primary"
                 >
                     <Tab.Item
-                    icon={{ name: 'images-outline', type: 'ionicon', color: 'white', size: 45, onPress: () => navigation.navigate('NoRating') }}
+                    title={"Nehodnotené cviky"} titleStyle={{fontSize: 9}}
+                    icon={{ name: 'images-outline', type: 'ionicon', color: 'white', size: 35, onPress: () => navigation.navigate('NoRating') }}
                     />
                     <Tab.Item
-                    icon={{ name: 'comment-check', type: 'material-community', color: 'white', size: 45, onPress: () => navigation.navigate('Rating') }}
+                    title={"Hodnotené cviky"} titleStyle={{fontSize: 9}}
+                    icon={{ name: 'comment-check', type: 'material-community', color: 'white', size: 35, onPress: () => navigation.navigate('Rating') }}
                     />
                 </Tab>
                 </ThemeProvider>
@@ -56,12 +58,12 @@ const TMenu = ({showing, indexing}) => {
                     variant="primary"
                 >
                     <Tab.Item
-                    //title="Recent"
-                    //titleStyle={{ fontSize: 12 }}
-                    icon={{ name: 'images-outline', type: 'ionicon', color: 'white', size: 45, onPress: () => navigation.navigate('NoRating') }}
+                    title={"Nehodnotené cviky"} titleStyle={{fontSize: 9}}
+                    icon={{ name: 'images-outline', type: 'ionicon', color: 'white', size: 35, onPress: () => navigation.navigate('NoRating') }}
                     />
                     <Tab.Item
-                    icon={{ name: 'comment-check', type: 'material-community', color: 'white', size: 45, onPress: () => navigation.navigate('Rating') }}
+                    title={"Hodnotené cviky"} titleStyle={{fontSize: 9}}
+                    icon={{ name: 'comment-check', type: 'material-community', color: 'white', size: 35, onPress: () => navigation.navigate('Rating') }}
                     />
                 </Tab>
                 </ThemeProvider>

@@ -16,6 +16,7 @@ import RGallery from './components/RGallery';
 import RCarouselScreen from './components/RCarouselScreen';
 import NoRatingScreen from './tComponents/noRatingScreen';
 import RatingScreen from './tComponents/RatingScreen';
+import SetRateScreen from './tComponents/SetRateScreen';
 
 import Logout from './components/Logout';
 
@@ -35,12 +36,13 @@ export default function App() {
         <Stack.Screen name="Category" component={CategoryScreen} options={{headerShown: false}}/>
         <Stack.Screen name="HESGallery" component={HESGallery} options={({route}) => ({headerShown: true, title: route.params.name})}/>
         <Stack.Screen name="Compare" component={CompareScreen} options={({route}) => ({headerShown: true, title: route.params.name})}/>
-        <Stack.Screen name="RatingGallery" component={RatingGalleryScreen} options={{headerShown: true,  title: 'Hodnotené cviky', headerRight: () => <Logout/>}}/>
+        <Stack.Screen name="RatingGallery" component={RatingGalleryScreen} options={{headerBackVisible: false, headerShown: true,  title: 'Hodnotené cviky', headerRight: () => <Logout/>}}/>
         <Stack.Screen name="RGallery" component={RGallery} options={({route}) => ({headerShown: true, title: route.params.name})}/>
         <Stack.Screen name="RCarousel" component={RCarouselScreen} options={({route}) => ({headerShown: true, title: route.params.name})}/>
 
-        <Stack.Screen name="NoRating" component={NoRatingScreen} options={{headerLeft: null, title: 'Nehodnotené cviky'}}/>
-        <Stack.Screen name="Rating" component={RatingScreen} options={{headerLeft: null, title: 'Hodnotené cviky', headerRight: () => <Logout/>}}/>
+        <Stack.Screen name="NoRating" component={NoRatingScreen} options={{headerBackVisible: false, title: 'Nehodnotené cviky'}}/>
+        <Stack.Screen name="Rating" component={RatingScreen} options={{headerBackVisible: false, title: 'Hodnotené cviky', headerRight: () => <Logout/>}}/>
+        <Stack.Screen name="SetRate" component={SetRateScreen} options={({route}) => ({headerShown: true, title: route.params.name})}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

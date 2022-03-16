@@ -93,7 +93,9 @@ const NoRatingScreen = () => {
                                     <Card.Title style={{alignSelf: 'flex-start'}}>{element}</Card.Title>
                                     {images[element].length != 0 && <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={{flex: 1}}>
                                     {
-                                        images[element].map((el) => (<Image key={el['name']} source={{uri: el['image']}} style={styles.image} />)).reverse()
+                                        images[element].map((el, index) => (<Image /*resizeMode='contain'*/ key={el['name']} source={{uri: el['image']}} style={styles.image} 
+                                            onPress={() => { navigation.navigate('SetRate', { name: element, data: JSON.stringify(images[element]), index: index }) }}
+                                        />)).reverse()
                                     }
                                     </ScrollView>
                                     }
