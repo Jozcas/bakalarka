@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, ImageBackground, StyleSheet, Dimensions, TextInput, ScrollView, Keyboard } from "react-native";
-import { Image } from "react-native-elements";
+import { View, Text, ImageBackground, StyleSheet, Dimensions, TextInput, ScrollView, Keyboard, TouchableOpacity } from "react-native";
+import { Image, Button } from "react-native-elements";
 import TMenu from "../static/Tmenu";
 import Carousel from 'react-native-snap-carousel';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { storage, db } from "../firebaseConfig";
 
 const SetRateScreen = ({route}) => {
     const [slideIndex, setSlideIndex] = useState(route.params.index);
     const [show, setShow] = useState(true)
+    const [comment, updateComment] = useState(new Array(JSON.parse(route.params.data).length).fill(''))
 
     const { width: screenWidth } = Dimensions.get('window');
 
@@ -37,6 +40,12 @@ const SetRateScreen = ({route}) => {
             </View>
         )
     } 
+
+    const setRate = (exercise, tmpComment) => {
+        console.log(exercise)
+        db.collection("cviky").doc("category").collection(route.params.name).doc(exercise).update({state: true, comment: tmpComment})
+    }
+
     return (
         <ImageBackground source={require('../static/images/background.jpg')} style={{ flex: 1 }} imageStyle={{ opacity: 0.3 }}>
         <View style={{flex: 1}}>
@@ -50,8 +59,15 @@ const SetRateScreen = ({route}) => {
                     <View style={{flex: 1}}>
                     <Image key={index} /*resizeMode='contain'*/ style={{width: Dimensions.get('window').height/2-100, height: Dimensions.get('window').height/2-100}} source={{uri: "file:///data/user/0/com.bakalarka/files" + item.name}}/>
                     {getDate(item.name)}
+                    <TouchableOpacity style={{width: '90%', alignSelf: 'center', alignItems: 'center', backgroundColor: 'grey', borderRadius: 5}}>
+                        <Icon name="pencil" size={35} color='black'/>
+                    </TouchableOpacity>
                     <Text style={{fontSize: 30, color: 'black'}}>Hodnotenie:</Text>
-                    <TextInput multiline={true} style={{textAlign: 'left', textAlignVertical: 'top' ,backgroundColor: 'white', borderColor: 'grey', borderWidth: 1,  borderRadius: 10, height: Dimensions.get('window').height/2-150}}/>                    
+                    <TextInput placeholder="Zadaj hodnotenie" multiline={true} style={styles.input} 
+                        value={comment[index]}
+                        onChangeText={(val) => updateComment(comment => ({ ...comment, [index]: val }))}
+                    />
+                    <Button title={"Odoslať hodnotenie"} containerStyle={{borderRadius: 5}} onPress={() => {setRate(item.name, comment[index])}} />      
                     </View>
                     </ScrollView>
                 )}
@@ -72,5 +88,15 @@ const styles = StyleSheet.create({
         width: Dimensions.get('window').height/2-100, 
         height: Dimensions.get('window').height/2-100,
         marginHorizontal: 10,
+    },
+    input: {
+        textAlign: 'left',
+        textAlignVertical: 'top',
+        backgroundColor: 'white',
+        borderColor: 'grey',
+        borderWidth: 1,
+        borderRadius: 10,
+        height: Dimensions.get('window').height/2-200,
+        marginBottom: 10
     }
 })
