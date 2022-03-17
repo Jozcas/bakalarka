@@ -17,6 +17,7 @@ import RCarouselScreen from './components/RCarouselScreen';
 import NoRatingScreen from './tComponents/noRatingScreen';
 import RatingScreen from './tComponents/RatingScreen';
 import SetRateScreen from './tComponents/SetRateScreen';
+import DrawingScreen from './tComponents/DrawingScreen';
 
 import Logout from './components/Logout';
 
@@ -43,6 +44,7 @@ export default function App() {
         <Stack.Screen name="NoRating" component={NoRatingScreen} options={{headerBackVisible: false, title: 'Nehodnotené cviky'}}/>
         <Stack.Screen name="Rating" component={RatingScreen} options={{headerBackVisible: false, title: 'Hodnotené cviky', headerRight: () => <Logout/>}}/>
         <Stack.Screen name="SetRate" component={SetRateScreen} options={({route}) => ({headerShown: true, title: route.params.name})}/>
+        <Stack.Screen name="Drawing" component={DrawingScreen} options={({route}) => ({headerShown: true, title: "Editor"})}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

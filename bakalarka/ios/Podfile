@@ -21,6 +21,8 @@ target 'bakalarka' do
 
   pod 'react-native-voice', :path => '../node_modules/@react-native-voice/voice'
 
+  pod 'RNSketchCanvas', :path => '../node_modules/@terrylinla/react-native-sketch-canvas'
+
   target 'bakalarkaTests' do
     inherit! :complete
     # Pods for testing
