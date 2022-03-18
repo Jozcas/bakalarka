@@ -37,7 +37,7 @@ const RCarouselScreen = ({route}) => {
                 data={JSON.parse(route.params.data)}
                 renderItem={({ item, index }) => (
                     <View>
-                    <Image key={index} style={{width: Dimensions.get('window').height/2-100, height: Dimensions.get('window').height/2-100}} source={{uri: "file:///data/user/0/com.bakalarka/files" + item.name}}/>
+                    <Image key={index} style={{width: Dimensions.get('window').height/2-100, height: Dimensions.get('window').height/2-100}} source={{uri: item['image']}}/>
                     {getDate(item.name)}
                     <Text style={{fontSize: 30, color: 'black'}}>Hodnotenie:</Text>
                     {item.comment == "" ? <Text style={{color: 'black'}}>Hodnotenie zatiaľ nebolo zadané</Text> : <Text style={{color: 'black'}}>{item.comment}</Text>}

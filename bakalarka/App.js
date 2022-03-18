@@ -18,6 +18,7 @@ import NoRatingScreen from './tComponents/noRatingScreen';
 import RatingScreen from './tComponents/RatingScreen';
 import SetRateScreen from './tComponents/SetRateScreen';
 import DrawingScreen from './tComponents/DrawingScreen';
+import RatingExerciseGallery from './tComponents/RatingExerciseGallery';
 
 import Logout from './components/Logout';
 
@@ -45,6 +46,7 @@ export default function App() {
         <Stack.Screen name="Rating" component={RatingScreen} options={{headerBackVisible: false, title: 'Hodnotené cviky', headerRight: () => <Logout/>}}/>
         <Stack.Screen name="SetRate" component={SetRateScreen} options={({route}) => ({headerShown: true, title: route.params.name})}/>
         <Stack.Screen name="Drawing" component={DrawingScreen} options={({route}) => ({headerShown: true, title: "Editor"})}/>
+        <Stack.Screen name="RatingExercise" component={RatingExerciseGallery} options={({route}) => ({headerShown: true, title: route.params.name})}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

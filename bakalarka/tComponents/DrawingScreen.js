@@ -34,6 +34,18 @@ const DrawingScreen = ({sketch, imageUrl, name, exercise}) => {
         download()
     }, [])
 
+    const close = () => {
+      RNFS.exists(RNFS.DocumentDirectoryPath + file).then((exist) => {
+        if (exist) {
+            console.log('existruje file')
+            RNFS.unlink(RNFS.DocumentDirectoryPath + file).then(() => {
+                console.log('deleted file')
+            })
+        }
+      })
+      sketch(false)
+    }
+
     const leave = (filePath) => {
         console.log(filePath)
         RNFS.exists(filePath).then((exist) => {
@@ -98,7 +110,7 @@ const DrawingScreen = ({sketch, imageUrl, name, exercise}) => {
             canvasStyle={{ backgroundColor: 'transparent', flex: 1 }}
             defaultStrokeIndex={0}
             defaultStrokeWidth={5}
-            closeComponent={<View style={styles.functionButton}><Text style={{color: 'white'}} onPress={() => {sketch(false)}}>Close</Text></View>}
+            closeComponent={<View style={styles.functionButton}><Text style={{color: 'white'}} onPress={() => {close()}}>Close</Text></View>}
             undoComponent={<View style={styles.functionButton}><Text style={{color: 'white'}}>Undo</Text></View>}
             clearComponent={<View style={styles.functionButton}><Text style={{color: 'white'}}>Clear</Text></View>}
             eraseComponent={<View style={styles.functionButton}><Text style={{color: 'white'}}>Eraser</Text></View>}

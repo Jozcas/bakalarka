@@ -12,6 +12,8 @@ const SetRateScreen = ({route}) => {
     const [slideIndex, setSlideIndex] = useState(route.params.index);
     const [show, setShow] = useState(true)
     const [comment, updateComment] = useState(new Array(JSON.parse(route.params.data).length).fill(''))
+    const [loading, isLoading] = useState(true)
+    const [images, setImages] = useState()
 
     const [sketch, setSketch] = useState(false)
     const [imageUrl, setImageUrl] = useState()
@@ -21,7 +23,24 @@ const SetRateScreen = ({route}) => {
 
     const navigation = useNavigation()
 
+    const Data = () => {
+        db.collection("cviky").doc("category").collection(route.params.name).onSnapshot((querySnapshot) => {
+            let arr = [];
+            querySnapshot.forEach((doc) => {
+                if(doc.data().state == false){
+                    arr.push(doc.data())
+                }
+            });
+            if(arr.length == 0){
+                navigation.navigate('NoRating')
+            }
+            setImages(arr)
+            isLoading(false)
+        })
+    }
+
     useEffect(() => {
+        Data()
         Keyboard.addListener('keyboardDidShow', () => {setShow(false)})
         Keyboard.addListener('keyboardDidHide', () => {setShow(true)})
 
@@ -55,45 +74,56 @@ const SetRateScreen = ({route}) => {
         alert('Hodnotenie odoslané')
     }
 
-    if(sketch == false){
-        return (
-            <ImageBackground source={require('../static/images/background.jpg')} style={{ flex: 1 }} imageStyle={{ opacity: 0.3 }}>
-            <View style={{flex: 1}}>
-                <Carousel                  
-                    layout={'default'}
-                    sliderWidth={screenWidth}
-                    itemWidth={Dimensions.get('window').height/2-100}
-                    data={JSON.parse(route.params.data)}
-                    renderItem={({ item, index }) => (
-                        <ScrollView>
-                        <View style={{flex: 1}}>
-                        <Image key={index} /*resizeMode='contain'*/ style={{width: Dimensions.get('window').height/2-100, height: Dimensions.get('window').height/2-100}} source={{uri: item['image']}}/>
-                        {getDate(item.name)}
-                        <TouchableOpacity style={{width: '90%', alignSelf: 'center', alignItems: 'center', backgroundColor: 'grey', borderRadius: 5}} onPress={() => {setSketch(true), setImageUrl(item['image']), setName(item.name) }} >
-                            <Icon name="pencil" size={35} color='black'/>
-                        </TouchableOpacity>
-                        <Text style={{fontSize: 30, color: 'black'}}>Hodnotenie:</Text>
-                        <TextInput placeholder="Zadaj hodnotenie" multiline={true} style={styles.input} 
-                            value={comment[index]}
-                            onChangeText={(val) => updateComment(comment => ({ ...comment, [index]: val }))}
-                        />
-                        <Button title={"Odoslať hodnotenie"} containerStyle={{borderRadius: 5}} onPress={() => {setRate(item.name, comment[index])}} />      
-                        </View>
-                        </ScrollView>
-                    )}
-                    onSnapToItem={index => onSlide(index)}
-                    firstItem={route.params.index}
-                    //loop={true}
-                />
+    if(loading){
+        return (            
+            <View>
+                <Text>
+                    Loading
+                </Text>
             </View>
-            {show && <TMenu showing={false} indexing={0}/>}
-            </ImageBackground>
         )
     }
-    if(sketch == true){
-        return (
-            <DrawingScreen sketch={setSketch} imageUrl={imageUrl} name={name} exercise={route.params.name} />
-        )
+    else{
+        if(sketch == false){
+            return (
+                <ImageBackground source={require('../static/images/background.jpg')} style={{ flex: 1 }} imageStyle={{ opacity: 0.3 }}>
+                <View style={{flex: 1}}>
+                    <Carousel                  
+                        layout={'default'}
+                        sliderWidth={screenWidth}
+                        itemWidth={Dimensions.get('window').height/2-100}
+                        data={images}
+                        renderItem={({ item, index }) => (
+                            <ScrollView>
+                            <View style={{flex: 1}}>
+                            <Image key={index} /*resizeMode='contain'*/ style={{width: Dimensions.get('window').height/2-100, height: Dimensions.get('window').height/2-100}} source={{uri: item['drawImage'] ? item['drawImage'] : item['image']}}/>
+                            {getDate(item.name)}
+                            <TouchableOpacity style={{width: '90%', alignSelf: 'center', alignItems: 'center', backgroundColor: 'grey', borderRadius: 5}} onPress={() => {setSketch(true), setImageUrl(item['image']), setName(item.name) }} >
+                                <Icon name="pencil" size={35} color='black'/>
+                            </TouchableOpacity>
+                            <Text style={{fontSize: 30, color: 'black'}}>Hodnotenie:</Text>
+                            <TextInput placeholder="Zadaj hodnotenie" multiline={true} style={styles.input} 
+                                value={comment[index]}
+                                onChangeText={(val) => updateComment(comment => ({ ...comment, [index]: val }))}
+                            />
+                            <Button title={"Odoslať hodnotenie"} containerStyle={{borderRadius: 5}} onPress={() => {setRate(item.name, comment[index])}} />      
+                            </View>
+                            </ScrollView>
+                        )}
+                        onSnapToItem={index => onSlide(index)}
+                        firstItem={route.params.index}
+                        //loop={true}
+                    />
+                </View>
+                {show && <TMenu showing={false} indexing={0}/>}
+                </ImageBackground>
+            )
+        }
+        if(sketch == true){
+            return (
+                <DrawingScreen sketch={setSketch} imageUrl={imageUrl} name={name} exercise={route.params.name} />
+            )
+        }
     }
 }
 export default SetRateScreen

@@ -1,13 +1,16 @@
+/*
+    Component for displaying rated exercises to trainer
+*/
+
 import React, { useState, useEffect } from "react";
 import { Text, View, ScrollView, ImageBackground, StyleSheet, Dimensions } from "react-native";
 import { db, storage } from "../firebaseConfig";
 import { Image, CheckBox } from "react-native-elements";
-import Menu from "../static/menu";
+import TMenu from "../static/Tmenu";
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/core'
-import firebase from "firebase";
 
-const RGallery = ({route}) => {
+const RatingExerciseGallery = ({route}) => {
     const [images, setImages] = useState()
     const [loading, isLoading] = useState(true)
     const [action, setAction] = useState(false)
@@ -21,7 +24,9 @@ const RGallery = ({route}) => {
                 db.collection("cviky").doc("category").collection(route.params.name).onSnapshot((querySnapshot) => {
                     let arr = []
                     querySnapshot.forEach((doc) => {
-                        arr.unshift(doc.data())
+                        if(doc.data().state == true){
+                            arr.unshift(doc.data())
+                        }
                     });
                     setImages(arr)
                     isLoading(false)
@@ -32,10 +37,6 @@ const RGallery = ({route}) => {
         };
 
         fetchData();
-        /*if(images != null){
-            isLoading(false)
-        }*/
-
     }, []);
     
     const styling = () => {
@@ -44,45 +45,6 @@ const RGallery = ({route}) => {
         }
         if (images.length == 1) {
             return { flex: 1, flexDirection: 'row', alignSelf: 'flex-start', flexWrap: 'wrap' }
-        }
-    }
-
-    const deletePictures = () => {
-        try {
-            let pictures = images;
-            let tmp = []
-            let delCat = true 
-            pictures.map((el, index) => {
-                if(check[index]){
-                    console.log(index + el.name)
-                    storage.ref().child(el.name).delete().then(() => {
-                        console.log('Image deleted successfully')
-                        db.collection("cviky").doc('category').collection(route.params.name).doc(el.name).delete()
-                    }).catch((error) => {
-                        console.log('Error while deleting image', error)
-                    });
-                }
-                if (!check[index]) {
-                    delCat = false
-                }
-                /*if (check[index]) {
-                    let filePath = RNFS.DocumentDirectoryPath + el
-                    RNFS.exists(filePath).then((exist) => {
-                        if (exist) {
-                            RNFS.unlink(filePath)
-                        }
-                    })
-                }*/
-                if (index == (images.length - 1)) {
-                    if(delCat){
-                        console.log('zmaz category')
-                        db.collection("category").doc("9iNgWPVq54tw7SFebSfw").update({name: firebase.firestore.FieldValue.arrayRemove(route.params.name)})
-                        navigation.navigate('RatingGallery')
-                    }
-                }
-            })
-        } catch (error) {
-            console.log(error)
         }
     }
 
@@ -109,15 +71,15 @@ const RGallery = ({route}) => {
                             const array = tmpDate.split("_")
                             return (
                                 <View key={el.name}>
-                                    {action &&
-                                        <CheckBox containerStyle={styles.checkbox} checked={check[index]} onPress={() => setCheck(check => ({ ...check, [index]: !check[index] }))} />
+                                    {//action &&
+                                        //<CheckBox containerStyle={styles.checkbox} checked={check[index]} onPress={() => setCheck(check => ({ ...check, [index]: !check[index] }))} />
                                     }
-                                    <Image key={el.name} source={{ uri: el['image'] }} style={styles.image}
-                                        onPress={() => { navigation.navigate('RCarousel', { name: route.params.name, data: JSON.stringify(images), index: index }) }}
-                                        onLongPress={() => { setCheck(new Array(images.length).fill(false)); setAction(true) }}
+                                    <Image key={el.name} source={{ uri: el['drawImage'] ? el['drawImage'] : el['image'] }} style={styles.image}
+                                        /*onPress={() => { navigation.navigate('RCarousel', { name: route.params.name, data: JSON.stringify(images), index: index }) }}*/
+                                        /*onLongPress={() => { setCheck(new Array(images.length).fill(false)); setAction(true) }}*/
                                     />
-                                    <Text style={{ fontSize: 20, color: 'black', alignSelf: 'center' }}>{array[2] + '.' + array[1] + '.' + array[0]}</Text>
-                                    <Text style={{ fontSize: 15, color: 'black', paddingBottom: 10, alignSelf: 'center' }}>{time[0] + ':' + time[1] + ':' + time[2]}</Text>
+                                    <Text style={{ fontSize: 15, color: 'black', alignSelf: 'center' }}>{array[2] + '.' + array[1] + '.' + array[0] + '    ' + time[0] + ':' + time[1] + ':' + time[2]}</Text>
+                                    {/*<Text style={{ fontSize: 15, color: 'black', paddingBottom: 10, alignSelf: 'center' }}>{time[0] + ':' + time[1] + ':' + time[2]}</Text>*/}
                                 </View>
                             )
                         })}
@@ -125,22 +87,22 @@ const RGallery = ({route}) => {
                     </View>
                 </ScrollView>
                 {
-                    action &&
+                    /*action &&
                     <View style={{ marginTop: 35 }}>
                         <View style={styles.line}>
                             <Icon name="trash-bin" size={40} color="black" onPress={() => {deletePictures()}} />
                             <Icon name="close" size={40} color="black" onPress={() => { setCheck(new Array(images.length).fill(false)); setAction(false) }} />
                         </View>
-                    </View>
+                    </View>*/
                 }
-                <Menu showing={false} indexing={2}/>
+                <TMenu showing={false} indexing={1}/>
             </View>
             </ImageBackground>
         )
     }
 
 }
-export default RGallery
+export default RatingExerciseGallery
 
 const styles = StyleSheet.create({
     image: {
