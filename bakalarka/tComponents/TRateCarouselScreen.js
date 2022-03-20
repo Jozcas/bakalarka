@@ -4,7 +4,7 @@ import { Image } from "react-native-elements";
 import Menu from "../static/menu";
 import Carousel from 'react-native-snap-carousel';
 
-const RCarouselScreen = ({route}) => {
+const TRateCarouselScreen = ({route}) => {
     const [slideIndex, setSlideIndex] = useState(route.params.index);
 
     const { width: screenWidth } = Dimensions.get('window');
@@ -52,7 +52,7 @@ const RCarouselScreen = ({route}) => {
         </ImageBackground>
     )
 }
-export default RCarouselScreen
+export default TRateCarouselScreen
 
 const styles = StyleSheet.create({
     image: {

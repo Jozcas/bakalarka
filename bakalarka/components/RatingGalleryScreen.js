@@ -127,7 +127,7 @@ const RatingGalleryScreen = () => {
                                     <Card.Title style={{alignSelf: 'flex-start'}}>{element}</Card.Title>
                                     <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={{flex: 1}}>
                                     {
-                                        images[element].map((el) => (<Image key={el['name']} source={{uri: el['image']}} style={styles.image} onPress={() => {navigation.navigate('RGallery', {name: element, data: el})}}/>)).reverse()
+                                        images[element].map((el) => (<Image key={el['name']} source={{uri: el['drawImage'] ? el['drawImage'] : el['image']}} style={styles.image} onPress={() => {navigation.navigate('RGallery', {name: element, data: el})}}/>)).reverse()
                                     }
                                     </ScrollView>
                                 </Card>
