@@ -12,6 +12,8 @@ const RGallery = ({route}) => {
     const [loading, isLoading] = useState(true)
     const [action, setAction] = useState(false)
     const [check, setCheck] = useState();
+    //for remembering number of selected pictures
+    const [count, setCount] = useState(0)
 
     const navigation = useNavigation()
 
@@ -99,6 +101,16 @@ const RGallery = ({route}) => {
         return (
             <ImageBackground source={require('../static/images/background.jpg')} style={{ flex: 1 }} imageStyle={{ opacity: 0.3 }}>
             <View style={{ flex: 1 }}>
+                {
+                    action &&
+                    <View style={{ marginTop: 45 }}>
+                        <View style={styles.line}>
+                            <Icon name="close" size={40} color="black" onPress={() => { setCheck(new Array(images.length).fill(false)); setAction(false) }} />
+                            <Text style={{color: 'black', fontSize: 30}}>{count}</Text>
+                            <Icon name="trash-bin" size={40} color="black" onPress={() => {deletePictures()}} />
+                        </View>
+                    </View>
+                }
                 <ScrollView>
                     <View style={styling()}>
                         {images.map((el, index) => {
@@ -110,11 +122,11 @@ const RGallery = ({route}) => {
                             return (
                                 <View key={el.name}>
                                     {action &&
-                                        <CheckBox containerStyle={styles.checkbox} checked={check[index]} onPress={() => setCheck(check => ({ ...check, [index]: !check[index] }))} />
+                                        <CheckBox containerStyle={styles.checkbox} checked={check[index]} onPress={() => {setCheck(check => ({ ...check, [index]: !check[index] })); if(check[index] == false){setCount(count+1)} if(check[index] == true){setCount(count-1)}}} />
                                     }
                                     <Image key={el.name} source={{ uri: el['drawImage'] ? el['drawImage'] : el['image'] }} style={styles.image}
                                         onPress={() => { navigation.navigate('RCarousel', { name: route.params.name, data: JSON.stringify(images), index: index }) }}
-                                        onLongPress={() => { setCheck(new Array(images.length).fill(false)); setAction(true) }}
+                                        onLongPress={() => { setCheck(new Array(images.length).fill(false)); setCount(0); setAction(true) }}
                                     />
                                     <Text style={{ fontSize: 20, color: 'black', alignSelf: 'center' }}>{array[2] + '.' + array[1] + '.' + array[0]}</Text>
                                     <Text style={{ fontSize: 15, color: 'black', paddingBottom: 10, alignSelf: 'center' }}>{time[0] + ':' + time[1] + ':' + time[2]}</Text>
@@ -124,15 +136,6 @@ const RGallery = ({route}) => {
 
                     </View>
                 </ScrollView>
-                {
-                    action &&
-                    <View style={{ marginTop: 35 }}>
-                        <View style={styles.line}>
-                            <Icon name="trash-bin" size={40} color="black" onPress={() => {deletePictures()}} />
-                            <Icon name="close" size={40} color="black" onPress={() => { setCheck(new Array(images.length).fill(false)); setAction(false) }} />
-                        </View>
-                    </View>
-                }
                 <Menu showing={false} indexing={2}/>
             </View>
             </ImageBackground>

@@ -15,6 +15,8 @@ const HESGallery = ({ route }) => {
     const [action, setAction] = useState(false)
     const navigation = useNavigation()
 
+    //for remembering number of selected pictures
+    const [count, setCount] = useState(0)
     const [check, setCheck] = useState(new Array(JSON.parse(route.params.data).length).fill(false));
     const [imageUrl, setImageUrl] = useState()
 
@@ -215,6 +217,17 @@ const HESGallery = ({ route }) => {
     return (
         <ImageBackground source={require('../static/images/background.jpg')} style={{ flex: 1 }} imageStyle={{ opacity: 0.3 }}>
             <View style={{ flex: 1 }}>
+                {
+                    action &&
+                    <View style={{ marginTop: 45 }}>
+                        <View style={styles.line}>
+                            <Icon name="close-outline" size={40} color="black" onPress={() => { setCheck(new Array(data.length).fill(false)); setAction(false) }} />
+                            <Text style={{color: 'black', fontSize: 30}}>{count}</Text>
+                            <Icon name="share-outline" size={40} color="black" onPress={() => {sendPictures()}}/> 
+                            <Icon name="trash-bin-outline" size={40} color="black" onPress={() => {deletePictures()}} />                           
+                        </View>
+                    </View>
+                }
                 <ScrollView>
                     <View style={styling()}>
                         {data.map((el, index) => {
@@ -225,7 +238,7 @@ const HESGallery = ({ route }) => {
                             return (
                                 <View key={el}>
                                     {action && (reference != el) ?
-                                        <CheckBox containerStyle={styles.checkbox} checked={check[index]} onPress={() => setCheck(check => ({ ...check, [index]: !check[index] }))} />
+                                        <CheckBox containerStyle={styles.checkbox} checked={check[index]} onPress={() => {setCheck(check => ({ ...check, [index]: !check[index] })); if(check[index] == false){setCount(count+1)} if(check[index] == true){setCount(count-1)}}} />
                                         :
                                         <TouchableOpacity style={{ position: 'absolute', top: 5, zIndex: 1000, right: 15 }} onPress={() => { referencePicture(el) }}>
                                             {reference != el ? <Icon name="star-outline" size={30} color="yellow" /> : <Icon name="star" size={30} color="yellow" />}
@@ -233,7 +246,7 @@ const HESGallery = ({ route }) => {
                                     }
                                     <Image key={el} source={{ uri: "file:///data/user/0/com.bakalarka/files" + el }} style={styles.image}
                                         onPress={() => { navigation.navigate('Compare', { name: route.params.name, data: JSON.stringify(data), picture: el, ref: reference, index: index }) }}
-                                        onLongPress={() => { setCheck(new Array(data.length).fill(false)); setAction(true) }}
+                                        onLongPress={() => { setCheck(new Array(data.length).fill(false)); setCount(0); setAction(true) }}
                                     />
                                     <Text style={{ fontSize: 20, color: 'black', alignSelf: 'center' }}>{array[2] + '.' + array[1] + '.' + array[0]}</Text>
                                     <Text style={{ fontSize: 15, color: 'black', paddingBottom: 10, alignSelf: 'center' }}>{time[0] + ':' + time[1] + ':' + time[2]}</Text>
@@ -243,16 +256,6 @@ const HESGallery = ({ route }) => {
 
                     </View>
                 </ScrollView>
-                {
-                    action &&
-                    <View style={{ marginTop: 35 }}>
-                        <View style={styles.line}>
-                            <Icon name="trash-bin" size={40} color="black" onPress={() => {deletePictures()}} />
-                            <Icon name="send" size={40} color="black" onPress={() => {sendPictures()}}/>
-                            <Icon name="close" size={40} color="black" onPress={() => { setCheck(new Array(data.length).fill(false)); setAction(false) }} />
-                        </View>
-                    </View>
-                }
                 <View style={{ marginTop: 65 }}></View>
                 <View style={{ flex: 1, position: 'absolute', bottom: 0, width: '100%' }}>
                     <Menu showing={false} indexing={0} />
