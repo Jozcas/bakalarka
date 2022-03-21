@@ -32,10 +32,10 @@ export default function App() {
         
         <Stack.Screen name="Login" component={LoginScreen} options={{headerShown: false}}/>
         <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'Welcome' }}/>
-        <Stack.Screen name="HistoryExercise" component={HisScreen} options={{ headerShown: false }}/>
+        <Stack.Screen name="HistoryExercise" component={HisScreen} options={{headerBackVisible: false, title: 'História cvikov' }}/>
         <Stack.Screen name="Camera" component={CameraScreen} options={{headerShown: false}}/>
         <Stack.Screen name="Timer" component={TimerScreen} options={{headerShown: false}}/>
-        <Stack.Screen name="Picture" component={PictureScreen} options={{headerShown: true,  title: 'Odfotený cvik' }}/>
+        <Stack.Screen name="Picture" component={PictureScreen} options={{headerShown: false,  title: 'Odfotený cvik' }}/>
         <Stack.Screen name="Category" component={CategoryScreen} options={{headerShown: false}}/>
         <Stack.Screen name="HESGallery" component={HESGallery} options={({route}) => ({headerShown: true, title: route.params.name})}/>
         <Stack.Screen name="Compare" component={CompareScreen} options={({route}) => ({headerShown: true, title: route.params.name})}/>

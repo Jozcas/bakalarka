@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, Dimensions, Image, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Dimensions, Image, Text, TouchableOpacity, Button } from "react-native";
 import { useNavigation } from '@react-navigation/core'
 import Icon from "react-native-vector-icons/Ionicons"
 import Carousel, { Pagination } from 'react-native-snap-carousel';
@@ -47,7 +47,11 @@ const PictureScreen = ({route}) => {
 
     return (
         <View style={styles.container}>
-            <View style={{paddingBottom: 130}}>
+            <Text style={{fontSize: 30, color: 'black', paddingLeft: 10}}>
+                Krok 1: Fotografie
+            </Text>
+            <Text style={{color: 'black', paddingLeft: 10}}>Vyber fotografiu, ktorá bude uložená medzi ostatné fotky cvikov</Text>
+            <View style={{flex: 1, paddingVertical: 30, alignContent: 'center', justifyContent: 'center'}}>            
                 <Carousel                  
                     layout={'default'}
                     sliderWidth={screenWidth}
@@ -57,17 +61,18 @@ const PictureScreen = ({route}) => {
                         transform == true ?
                         <Image key={index} style={{ width: '100%', height: '100%', transform: [{scaleX: -1}]}} resizeMode='contain' source={{uri: item.picture}}/>
                         :
-                        <Image key={index} style={{ width: '100%', height: '100%' }} resizeMode='contain' source={{uri: item.picture}}/>
+                        <Image key={index} style={{alignSelf: 'center', width: screenWidth+100,  height: screenWidth+100}} resizeMode='contain' source={{uri: item.picture}}/>
                     )}
                     onSnapToItem={index => onSlide(index)}
                 />
             </View>
-            <View style={{position: 'absolute', bottom: 110, alignSelf: 'center'}}>
+            <View style={{position: 'absolute', bottom: 120, alignSelf: 'center'}}>
                 <Pagination dotsLength={pictureUri.length} activeDotIndex={slideIndex} dotColor={'#ff9999'} inactiveDotColor='#737270'/>
-            </View>                
-            <View style={ styles.line}>
+            </View>               
+            <View style={ styles.line} >
+                <Button title="Uložiť" onPress={() => {saveImage(pictureUri[slideIndex])}}/> 
                 {/*<Icon name="pencil-outline" size={40} color="black" style={{paddingHorizontal: 20}}/>
-                <Icon name="md-arrow-redo-outline" size={40} color="black" style={{paddingHorizontal: 30}} onPress={() => {setTransform(!transform)}} />*/}
+                <Icon name="md-arrow-redo-outline" size={40} color="black" style={{paddingHorizontal: 30}} onPress={() => {setTransform(!transform)}} />}
                 <TouchableOpacity style={styles.buttonSave} onPress={() => {saveImage(pictureUri[slideIndex])}}>
                     <Text style={{paddingHorizontal: 40, paddingVertical: 7, color: 'black'}}>Uložiť</Text>
                 </TouchableOpacity>
@@ -88,7 +93,8 @@ const styles = StyleSheet.create({
 	},
     line: {
         flex: 1,
-        flexDirection: 'row',
+        //flexDirection: 'row',
+        width: '90%',
         position: 'absolute',
         bottom: 0,
         alignSelf: 'center',

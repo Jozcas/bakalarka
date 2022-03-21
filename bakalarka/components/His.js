@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, Image, StatusBar, Dimensions, ScrollView, ImageBackground } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Image, StatusBar, Dimensions, ScrollView, ImageBackground, Alert } from "react-native";
 import Menu from "../static/menu";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Card} from 'react-native-elements';
@@ -175,7 +175,24 @@ const HisScreen = () => {
                 <Dialog.Description children="Zmeň názov kategórie cviku"/>
                 <Dialog.Input onChangeText={name => setName(name)} value={name} />
                 <Dialog.Button label="Zrušiť" onPress={() => {setVisible(false)}} />
-                <Dialog.Button label="Vymazať" onPress={() => {removeCategorie(name)}} />
+                <Dialog.Button label="Vymazať" onPress={() => {Alert.alert("POZOR!", "Naozaj chceš vymazať celú kategóriu " + name,
+                    [
+                        {
+                            text: "Zrušiť",
+                            onPress: () => {setVisible(false)},
+                            style: "cancel",
+                        },
+                        {
+                            text: "Vymazať",
+                            onPress: () => {removeCategorie(name)},
+                            style: "default",
+                        },
+                    ],
+                    {
+                        cancelable: true,
+                        //onDismiss: () => {setVisible(false)}
+                    }
+                )}} />
                 <Dialog.Button label="Premenovať" onPress={() => {renameCategorie(name)}} />
             </Dialog.Container>
             <ScrollView style={{flex: 1}}>

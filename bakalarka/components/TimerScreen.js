@@ -67,7 +67,7 @@ const TimerScreen = () => {
                         </TouchableOpacity>
                     </View>
 
-                    <Text style={{color: 'white', fontSize: 40, marginTop: 10}}>
+                    <Text style={{color: 'white', fontSize: 30, marginTop: 10}}>
                         Počet fotiek
                     </Text>
                     <View style={{flexDirection: 'row', width: '90%'}}>
@@ -97,7 +97,7 @@ const TimerScreen = () => {
                         </TouchableOpacity>
                     </View>
 
-                    <Text style={{color: 'white', fontSize: 40, marginTop: 10}}>
+                    <Text style={{color: 'white', fontSize: 30, marginTop: 10}}>
                         Hlasový pokyn
                     </Text>
                     <Text style={{color: 'white', fontSize: 20, marginTop: 10}}>

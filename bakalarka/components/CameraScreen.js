@@ -265,8 +265,8 @@ const CameraScreen = () => {
 					<TouchableOpacity
 						style={styles.flash}
 						onPress={() => {
-							settingTimer()
-							//setFlash(flash === "off" ? "on" : "off");
+							//settingTimer()
+							setFlash(flash === "off" ? "on" : "off");
 						}}
 					>
 						{ flash === "off" ? 
@@ -282,13 +282,12 @@ const CameraScreen = () => {
 							navigation.navigate("Timer", {
 								paramKey: 'timer 5',
 							  })
-							console.log("Timer pressed")
 						}}
 					>
-						{voiceFlag ? 
+						{/*voiceFlag ? 
 							<Icon name="mic-outline" size={15} color="white" style={{position: 'absolute', top: 0, right: 0, marginTop: 15}}/>
 							: <Icon name="timer-outline" size={15} color="white" style={{position: 'absolute', top: 0, right: 0, marginTop: 15}}/>
-						}
+						*/}
 						<Icon name="menu" size={40} color="white" style={styles.timer}/>
 					</TouchableOpacity>
 					

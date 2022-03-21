@@ -17,11 +17,11 @@ const CompareScreen = ({route}) => {
     return (
         <ImageBackground source={require('../static/images/background.jpg')} style={{ flex: 1 }} imageStyle={{ opacity: 0.3 }}>
         <View style={{flex: 1}}>
-            <Text style={{fontSize: 25, color: 'black'}}>Referenčná fotografia cviku</Text>
+            <Text style={{fontSize: 25, color: 'black', paddingLeft: 10}}>Referenčná fotografia cviku</Text>
             <View style={{alignSelf: 'center'}}>
             <Image source={{ uri: "file:///data/user/0/com.bakalarka/files" + route.params.ref }} style={styles.image}/>
             </View>
-            <Text style={{fontSize: 25, color: 'black'}}>Odfotená fotografia cviku</Text>
+            <Text style={{fontSize: 25, color: 'black', paddingLeft: 10}}>Odfotená fotografia cviku</Text>
             <Carousel                  
                 layout={'default'}
                 sliderWidth={screenWidth}

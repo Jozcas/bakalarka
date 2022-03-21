@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Dimensions } from "react-native";
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Dimensions, Button } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons"
 import Dialog from "react-native-dialog"
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -56,6 +56,7 @@ const CategoryScreen = ({route}) => {
         array.push(route.params.path)
         await AsyncStorage.setItem(name, JSON.stringify(array))
         //getCategories();
+        alert('Fotografia cviku uložená do kategórie ' + name)
         navigation.navigate('HistoryExercise')        
     }
 
@@ -79,10 +80,10 @@ const CategoryScreen = ({route}) => {
             </Dialog.Container>
             <ScrollView>
                 <Text style={{fontSize: 30, color: 'black', paddingLeft: 20}}>
-                    Kategórie
+                    Krok 2: Kategórie
                 </Text>
-                <Text style={{fontSize: 20, paddingLeft: 20}}>
-                    Vyber kam sa má cvik uložiť
+                <Text style={{color: 'black', paddingLeft: 20}}>
+                    Vyber, do ktorej kategórie sa má cvik uložiť
                 </Text>
             </ScrollView>
             <TouchableOpacity style={{flex: 1, position: 'absolute', bottom: 20, right: 20}}>
@@ -99,25 +100,38 @@ const CategoryScreen = ({route}) => {
             </Dialog.Container>
             <ScrollView>
                 <Text style={{fontSize: 30, color: 'black', paddingLeft: 20}}>
-                    Kategórie
+                    Krok 2: Kategórie
                 </Text>
-                <Text style={{fontSize: 20, paddingLeft: 20}}>
-                    Vyber kam sa má cvik uložiť
+                <Text style={{color: 'black', paddingLeft: 20}}>
+                    Vyber, do ktorej kategórie sa má cvik uložiť
                 </Text>
-                <View style={styling()}>
+                <View /*style={styling()}*/ style={{flex: 1, paddingVertical: 10, alignItems: 'center'}}>
                     {
                         categorie.map((element) => (
-                            <TouchableOpacity style={[styles.categorieBox, {backgroundColor: generateColor()}]} key={element} 
+                            <View key={element} style={{marginBottom: 8, width: '90%'}}>
+                            <Button title={element} 
                                 onPress={async () => {
                                     var array = JSON.parse(await AsyncStorage.getItem(element));
                                     //array.push(route.params.path)
                                     array.unshift(route.params.path)
                                     await AsyncStorage.setItem(element , JSON.stringify(array))
+                                    alert('Fotografia cviku uložená do kategórie ' + element)
+                                    navigation.navigate('HistoryExercise')}
+                                }
+                            />
+                            </View>
+                            /*<TouchableOpacity style={[styles.categorieBox, {backgroundColor: generateColor()}]} key={element} 
+                                onPress={async () => {
+                                    var array = JSON.parse(await AsyncStorage.getItem(element));
+                                    //array.push(route.params.path)
+                                    array.unshift(route.params.path)
+                                    await AsyncStorage.setItem(element , JSON.stringify(array))
+                                    alert('Fotografia cviku uložená do kategórie ' + element)
                                     navigation.navigate('HistoryExercise')}
                                 }
                             >
                                 <Text style={styles.name}>{element}</Text>
-                            </TouchableOpacity>
+                            </TouchableOpacity>*/
                         ))
                     }
                 </View>
