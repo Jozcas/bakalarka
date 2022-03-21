@@ -8,6 +8,7 @@ import Menu from "../static/menu";
 import RNFS from 'react-native-fs';
 import { storage, db } from "../firebaseConfig";
 import firebase from "firebase";
+import { useFocusEffect } from '@react-navigation/native';
 
 const HESGallery = ({ route }) => {
     const [data, setData] = useState(JSON.parse(route.params.data))
@@ -20,6 +21,14 @@ const HESGallery = ({ route }) => {
     const [check, setCheck] = useState(new Array(JSON.parse(route.params.data).length).fill(false));
     const [imageUrl, setImageUrl] = useState()
 
+    useFocusEffect(
+        React.useCallback(() => { 
+            AsyncStorage.getItem('reference').then((res) => {
+                setReference(JSON.parse(res)[route.params.name])
+            })
+        }, [reference])
+    );
+
     useEffect(
         () => {
             AsyncStorage.getItem('reference').then((res) => {
@@ -28,7 +37,7 @@ const HESGallery = ({ route }) => {
         }, [reference]
     );
 
-    const referencePicture = async (path) => {
+    /*const referencePicture = async (path) => {
         if (path != reference) {
             AsyncStorage.getItem('reference').then((res) => {
                 let ref = JSON.parse(res);
@@ -38,7 +47,7 @@ const HESGallery = ({ route }) => {
                 })
             })
         }
-    }
+    }*/
 
     const styling = () => {
         if (data.length != 1) {
@@ -240,9 +249,13 @@ const HESGallery = ({ route }) => {
                                     {action && (reference != el) ?
                                         <CheckBox containerStyle={styles.checkbox} checked={check[index]} onPress={() => {setCheck(check => ({ ...check, [index]: !check[index] })); if(check[index] == false){setCount(count+1)} if(check[index] == true){setCount(count-1)}}} />
                                         :
-                                        <TouchableOpacity style={{ position: 'absolute', top: 5, zIndex: 1000, right: 15 }} onPress={() => { referencePicture(el) }}>
-                                            {reference != el ? <Icon name="star-outline" size={30} color="yellow" /> : <Icon name="star" size={30} color="yellow" />}
-                                        </TouchableOpacity>
+                                        <View style={{zIndex: 1}}>
+                                            {reference == el && 
+                                                <View style={{position: 'absolute', zIndex: 1, marginLeft: 20,  marginTop: 20, width: 30, height: 30, borderRadius: 30/2, borderWidth: 2, justifyContent: 'center', backgroundColor: 'yellow'}} >
+                                                    <Text style={{color: 'black'}}>REF</Text>
+                                                </View>
+                                            }
+                                        </View>
                                     }
                                     <Image key={el} source={{ uri: "file:///data/user/0/com.bakalarka/files" + el }} style={styles.image}
                                         onPress={() => { navigation.navigate('Compare', { name: route.params.name, data: JSON.stringify(data), picture: el, ref: reference, index: index }) }}
