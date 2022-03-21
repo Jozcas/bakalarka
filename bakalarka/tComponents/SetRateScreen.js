@@ -111,7 +111,7 @@ const SetRateScreen = ({route}) => {
                             </ScrollView>
                         )}
                         onSnapToItem={index => onSlide(index)}
-                        firstItem={route.params.index}
+                        firstItem={slideIndex}
                         //loop={true}
                     />
                 </View>

@@ -95,7 +95,7 @@ const RatingScreen = () => {
                                     {
                                         images[element].map((el) => (<Image key={el['name']} source={{uri: el['drawImage'] ? el['drawImage'] : el['image']}} style={styles.image} 
                                         onPress={() => { navigation.navigate('RatingExercise', {name: element})}}
-                                        />)).reverse()                                        
+                                        />))                                        
                                     }
                                     </ScrollView>
                                     }

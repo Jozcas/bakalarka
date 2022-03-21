@@ -64,8 +64,8 @@ const DrawingScreen = ({sketch, imageUrl, name, exercise}) => {
                 })
             }
         })
-        sketch(false)
         alert('Upravená (editovaná) fotografia cviku uložená')
+        sketch(false)        
     }
 
     const uploadImageToStorage = async (filePath) => {

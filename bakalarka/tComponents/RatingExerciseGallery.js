@@ -25,7 +25,7 @@ const RatingExerciseGallery = ({route}) => {
                     let arr = []
                     querySnapshot.forEach((doc) => {
                         if(doc.data().state == true){
-                            arr.unshift(doc.data())
+                            arr.push(doc.data())
                         }
                     });
                     setImages(arr)
