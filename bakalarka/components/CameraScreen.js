@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Dimensions } from 'react-native';
 import { RNCamera } from 'react-native-camera';
 import { useNavigation} from '@react-navigation/core'
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -17,6 +17,8 @@ const CameraScreen = () => {
     const [timerValue, setTimerValue] = useState('0')
 	const [voiceFlag, setVoiceFlag] = useState(false)
 	const [{ cameraRef }, { takePicture }] = useCamera(null);
+
+	const [display, setDisplay] = useState('')
 
 	//for voice command
 	const [results, setResults] = useState([]);
@@ -43,7 +45,7 @@ const CameraScreen = () => {
 					console.log(err);
 				}
 			};
-
+			setDisplay('')
 			firstLoad();
 		}, [])
 	);
@@ -207,7 +209,19 @@ const CameraScreen = () => {
 			if(timerValue != '0'){
 				await setAsyncTimeout(() => {
 					console.log('timer end');
-				}, timerValue*1000);
+				}, (parseInt(timerValue)-3)*1000);
+				setDisplay('3')
+				await setAsyncTimeout(() => {
+					console.log('timer end');
+				}, 1000);
+				setDisplay('2')
+				await setAsyncTimeout(() => {
+					console.log('timer end');
+				}, 1000);
+				setDisplay('1')
+				await setAsyncTimeout(() => {
+					console.log('timer end');
+				}, 1000);
 				if(camera) {
 					await timerTakePicture(options);
 				}
@@ -290,7 +304,11 @@ const CameraScreen = () => {
 						*/}
 						<Icon name="menu" size={40} color="white" style={styles.timer}/>
 					</TouchableOpacity>
-					
+
+					{
+						timerValue != '0' && <Text style={{fontSize: 200, color: 'white', textAlign: 'center', marginTop: Dimensions.get('window').height/2-200}}>{display}</Text>
+					}
+
 					<View style={styles.takeButton}>
 						<TouchableOpacity onPress={() => {if(voiceFlag == false){takePictures()}else{_onRecordVoice()}}} style={styles.takeBStyle} />
 					</View>
