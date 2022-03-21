@@ -65,48 +65,6 @@ const RatingGalleryScreen = () => {
         Data();
     }, []);
 
-    /*useEffect(() => {
-        const fetchData = async () => {
-            try {
-                let category;
-                await db.collection("category").get().then((querySnapshot) => {
-                    querySnapshot.forEach((doc) => {
-                        //ids.push('/' + doc.id)
-                        category = doc.data()['name']
-                        setCat(category)
-                        console.log('datat', doc.data()['name'])
-                    });
-                });
-                let pictures = {}
-                category.map(async (el, index) => {
-                    let arr = [];
-
-                    console.log(el)
-                    await db.collection("cviky").doc("category").collection(el).get().then((querySnapshot) => {
-                        querySnapshot.forEach((doc) => {
-                            arr.push(doc.data())
-                        });
-                    })
-                    pictures[el] = arr
-                    if(index == category.length - 1){
-                        console.log(index, pictures)
-                        setImages(pictures)
-                        isLoading(false)
-                    }
-                    console.log(index);
-                })
-            } catch (err) {
-                console.error(err);
-            }
-        };
-
-        fetchData();
-        if(images != null){
-            isLoading(false)
-        }
-
-    }, []);*/
-
     if(loading){
         return (            
             <View>
@@ -127,7 +85,7 @@ const RatingGalleryScreen = () => {
                                     <Card.Title style={{alignSelf: 'flex-start'}}>{element}</Card.Title>
                                     <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={{flex: 1}}>
                                     {
-                                        images[element].map((el) => (<Image key={el['name']} source={{uri: el['drawImage'] ? el['drawImage'] : el['image']}} style={styles.image} onPress={() => {navigation.navigate('RGallery', {name: element, data: el})}}/>)).reverse()
+                                        images[element].map((el) => (<Image key={el['name']} source={{uri: el['drawImage'] ? el['drawImage'] : el['image']}} resizeMode={'contain'} style={styles.image} onPress={() => {navigation.navigate('RGallery', {name: element, data: el})}}/>)).reverse()
                                     }
                                     </ScrollView>
                                 </Card>
@@ -144,11 +102,11 @@ export default RatingGalleryScreen
 
 const styles = StyleSheet.create({
     image: {
-        aspectRatio: 1,
+        //aspectRatio: 1,
         //width: 150,
         //height: 150,
         width: Dimensions.get('window').width/3-20, 
         height: Dimensions.get('window').width/3-20,
-        marginHorizontal: 10
+        //marginHorizontal: 10
     }
 })

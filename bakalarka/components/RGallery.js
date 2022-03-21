@@ -124,7 +124,7 @@ const RGallery = ({route}) => {
                                     {action &&
                                         <CheckBox containerStyle={styles.checkbox} checked={check[index]} onPress={() => {setCheck(check => ({ ...check, [index]: !check[index] })); if(check[index] == false){setCount(count+1)} if(check[index] == true){setCount(count-1)}}} />
                                     }
-                                    <Image key={el.name} source={{ uri: el['drawImage'] ? el['drawImage'] : el['image'] }} style={styles.image}
+                                    <Image key={el.name} source={{ uri: el['drawImage'] ? el['drawImage'] : el['image'] }} style={styles.image} resizeMode={'contain'}
                                         onPress={() => { navigation.navigate('RCarousel', { name: route.params.name, data: JSON.stringify(images), index: index }) }}
                                         onLongPress={() => { setCheck(new Array(images.length).fill(false)); setCount(0); setAction(true) }}
                                     />

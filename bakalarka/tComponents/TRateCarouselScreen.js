@@ -99,7 +99,7 @@ const TRateCarouselScreen = ({route}) => {
                         renderItem={({ item, index }) => (
                             <ScrollView>
                             <View style={{flex: 1}}>
-                            <Image key={index} /*resizeMode='contain'*/ style={{width: Dimensions.get('window').height/2-100, height: Dimensions.get('window').height/2-100}} source={{uri: item['drawImage'] ? item['drawImage'] : item['image']}}/>
+                            <Image key={index} resizeMode='contain' style={{width: Dimensions.get('window').height/2-100, height: Dimensions.get('window').height/2-100}} source={{uri: item['drawImage'] ? item['drawImage'] : item['image']}}/>
                             {getDate(item.name)}
                             <TouchableOpacity style={{width: '90%', alignSelf: 'center', alignItems: 'center', backgroundColor: 'grey', borderRadius: 5}} onPress={() => {setSketch(true), setImageUrl(item['image']), setName(item.name) }} >
                                 <Icon name="pencil" size={35} color='black'/>

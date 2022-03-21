@@ -24,7 +24,7 @@ const TMenu = ({showing, indexing}) => {
                 <ThemeProvider theme={theme}>
                 <Tab
                     value={index}
-                    onChange={(e) => {setIndex(e); console.log(e)}}
+                    onChange={(e) => {setIndex(e); if(e == 0){navigation.navigate('NoRating')}; if(e == 1){navigation.navigate('Rating')}}}
                     indicatorStyle={{
                     backgroundColor: 'black',
                     height: 3,
@@ -50,11 +50,8 @@ const TMenu = ({showing, indexing}) => {
                 <ThemeProvider theme={theme}>
                 <Tab
                     //value={index}
-                    //onChange={(e) => {setIndex(e); console.log(e)}}
-                    indicatorStyle={{
-                        backgroundColor: '#ff9999',
-                        height: 3,
-                    }}                  
+                    onChange={(e) => {setIndex(e); if(e == 0){navigation.navigate('NoRating')}; if(e == 1){navigation.navigate('Rating')}}}
+                    disableIndicator={true}                  
                     variant="primary"
                 >
                     <Tab.Item

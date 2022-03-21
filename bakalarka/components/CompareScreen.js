@@ -42,26 +42,26 @@ const CompareScreen = ({route}) => {
         <View style={{flex: 1}}>
             <Text style={{fontSize: 25, color: 'black', paddingLeft: 10}}>Referenčná fotografia cviku</Text>
             <View style={{alignSelf: 'center'}}>
-            <Image source={{ uri: "file:///data/user/0/com.bakalarka/files" + reference }} style={styles.image}/>
+            <Image source={{ uri: "file:///data/user/0/com.bakalarka/files" + reference }} style={styles.image} resizeMode={'contain'}/>
             </View>
             <Text style={{fontSize: 25, color: 'black', paddingLeft: 10}}>Odfotená fotografia cviku</Text>
             <Carousel                  
                 layout={'default'}
                 sliderWidth={screenWidth}
-                itemWidth={Dimensions.get('window').height/2-100}
+                itemWidth={Dimensions.get('window').height/2-110}
                 data={JSON.parse(route.params.data)}
                 renderItem={({ item, index }) => (
                     <View>
                         {item == reference ? 
-                            <TouchableOpacity style={{position: 'absolute', zIndex: 1, marginLeft: 20,  marginTop: 20, width: 30, height: 30, borderRadius: 30/2, borderWidth: 2, justifyContent: 'center', backgroundColor: 'yellow'}}>
+                            <TouchableOpacity style={{position: 'absolute', zIndex: 1, marginLeft: 40,  marginTop: 40, width: 30, height: 30, borderRadius: 30/2, borderWidth: 2, justifyContent: 'center', backgroundColor: 'yellow'}}>
                                 <Text style={{color: 'black'}}>REF</Text>
                             </TouchableOpacity>
                             :
-                            <TouchableOpacity onPress={() => {referencePicture(item)}} style={{position: 'absolute', zIndex: 1, marginLeft: 20,  marginTop: 20, width: 30, height: 30, borderRadius: 30/2, borderWidth: 2, justifyContent: 'center'}}>
+                            <TouchableOpacity onPress={() => {referencePicture(item)}} style={{position: 'absolute', zIndex: 1, marginLeft: 40,  marginTop: 40, width: 30, height: 30, borderRadius: 30/2, borderWidth: 2, justifyContent: 'center'}}>
                                 <Text style={{color: 'black'}}>REF</Text>
                             </TouchableOpacity>
                         }
-                    <Image key={index} style={{width: Dimensions.get('window').height/2-100, height: Dimensions.get('window').height/2-100}} source={{uri: "file:///data/user/0/com.bakalarka/files" + item}}/>
+                    <Image key={index} resizeMode={'contain'} style={{width: Dimensions.get('window').height/2-110, height: Dimensions.get('window').height/2-110}} source={{uri: "file:///data/user/0/com.bakalarka/files" + item}}/>
                     </View>
                 )}
                 onSnapToItem={index => onSlide(index)}
@@ -77,9 +77,9 @@ export default CompareScreen
 
 const styles = StyleSheet.create({
     image: {
-        aspectRatio: 1,
-        width: Dimensions.get('window').height/2-100, 
-        height: Dimensions.get('window').height/2-100,
-        marginHorizontal: 10,
+        //aspectRatio: 1,
+        width: Dimensions.get('window').height/2-110, 
+        height: Dimensions.get('window').height/2-110,
+        //marginLeft: 10,
     }
 })

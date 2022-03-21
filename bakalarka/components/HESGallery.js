@@ -251,13 +251,13 @@ const HESGallery = ({ route }) => {
                                         :
                                         <View style={{zIndex: 1}}>
                                             {reference == el && 
-                                                <View style={{position: 'absolute', zIndex: 1, marginLeft: 20,  marginTop: 20, width: 30, height: 30, borderRadius: 30/2, borderWidth: 2, justifyContent: 'center', backgroundColor: 'yellow'}} >
+                                                <View style={{position: 'absolute', zIndex: 1, marginLeft: 35,  marginTop: 25, width: 30, height: 30, borderRadius: 30/2, borderWidth: 2, justifyContent: 'center', backgroundColor: 'yellow'}} >
                                                     <Text style={{color: 'black'}}>REF</Text>
                                                 </View>
                                             }
                                         </View>
                                     }
-                                    <Image key={el} source={{ uri: "file:///data/user/0/com.bakalarka/files" + el }} style={styles.image}
+                                    <Image key={el} source={{ uri: "file:///data/user/0/com.bakalarka/files" + el }} style={styles.image} resizeMode={'contain'}
                                         onPress={() => { navigation.navigate('Compare', { name: route.params.name, data: JSON.stringify(data), picture: el, ref: reference, index: index }) }}
                                         onLongPress={() => { setCheck(new Array(data.length).fill(false)); setCount(0); setAction(true) }}
                                     />
@@ -281,7 +281,7 @@ export default HESGallery
 
 const styles = StyleSheet.create({
     image: {
-        aspectRatio: 1,
+        //aspectRatio: 1,
         width: Dimensions.get('window').width / 2 - 20,
         height: Dimensions.get('window').width / 2 - 20,
         marginHorizontal: 10

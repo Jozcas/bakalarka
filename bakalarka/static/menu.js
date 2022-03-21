@@ -24,7 +24,7 @@ const Menu = ({showing, indexing}) => {
                 <ThemeProvider theme={theme}>
                 <Tab
                     value={index}
-                    onChange={(e) => {setIndex(e); console.log(e)}}
+                    onChange={(e) => {setIndex(e); if(e == 0){navigation.navigate('HistoryExercise')}; if(e == 1){navigation.navigate('Camera')}; if(e == 2){navigation.navigate('RatingGallery')}}}
                     indicatorStyle={{
                     backgroundColor: 'black',
                     height: 3,
@@ -54,7 +54,7 @@ const Menu = ({showing, indexing}) => {
                 <ThemeProvider theme={theme}>
                 <Tab
                     //value={index}
-                    //onChange={(e) => {setIndex(e); console.log(e)}}
+                    onChange={(e) => {setIndex(e); if(e == 0){navigation.navigate('HistoryExercise')}; if(e == 1){navigation.navigate('Camera')}; if(e == 2){navigation.navigate('RatingGallery')}}}
                     indicatorStyle={{
                         backgroundColor: '#ff9999',
                         height: 3,

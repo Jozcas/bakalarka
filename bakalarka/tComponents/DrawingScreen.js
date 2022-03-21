@@ -137,7 +137,8 @@ const DrawingScreen = ({sketch, imageUrl, name, exercise}) => {
                 folder: '/data/user/0/com.bakalarka/files',
                 filename: file,
                 transparent: false,
-                imageType: 'jpg'
+                imageType: 'jpg',
+                cropToImageSize: true
               }
             }}
             onSketchSaved={(success, filePath) => { uploadImageToStorage(filePath)}}

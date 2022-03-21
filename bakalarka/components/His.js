@@ -205,7 +205,7 @@ const HisScreen = () => {
                         {
                             element[1] && JSON.parse(element[1]).map((el) => (
                                 <TouchableOpacity key={el} onPress={() => {navigation.navigate('HESGallery', {name: element[0], data: element[1]})}}>
-                                    <Image key={el} source={{uri: "file:///data/user/0/com.bakalarka/files" + el}} style={styles.image}/>
+                                    <Image key={el} source={{uri: "file:///data/user/0/com.bakalarka/files" + el}} style={styles.image} resizeMode={'contain'}/>
                                 </TouchableOpacity>        
                             ))
                         }
@@ -226,11 +226,11 @@ export default HisScreen
 
 const styles = StyleSheet.create({
     image: {
-        aspectRatio: 1,
+        //aspectRatio: 1,
         //width: 150,
-        //height: 150,
-        width: Dimensions.get('window').width/3-20, 
-        height: ((Dimensions.get('window').width/3-20)/1500)*2000,
-        marginHorizontal: 10
+        height: Dimensions.get('window').width/3-10,
+        width: Dimensions.get('window').width/3-10, 
+        //height: ((Dimensions.get('window').width/3-20)/1500)*2000,
+        //marginHorizontal: 5
     }
 })

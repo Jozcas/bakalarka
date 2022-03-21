@@ -74,7 +74,7 @@ const RatingExerciseGallery = ({route}) => {
                                     {//action &&
                                         //<CheckBox containerStyle={styles.checkbox} checked={check[index]} onPress={() => setCheck(check => ({ ...check, [index]: !check[index] }))} />
                                     }
-                                    <Image key={el.name} source={{ uri: el['drawImage'] ? el['drawImage'] : el['image'] }} style={styles.image}
+                                    <Image key={el.name} source={{ uri: el['drawImage'] ? el['drawImage'] : el['image'] }} resizeMode={'contain'} style={styles.image}
                                         onPress={() => { navigation.navigate('TRateCarousel', { name: route.params.name, data: JSON.stringify(images), index: index }) }}
                                         /*onLongPress={() => { setCheck(new Array(images.length).fill(false)); setAction(true) }}*/
                                     />
@@ -106,7 +106,7 @@ export default RatingExerciseGallery
 
 const styles = StyleSheet.create({
     image: {
-        aspectRatio: 1,
+        //aspectRatio: 1,
         width: Dimensions.get('window').width / 2 - 20,
         height: Dimensions.get('window').width / 2 - 20,
         marginHorizontal: 10
