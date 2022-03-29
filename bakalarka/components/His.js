@@ -6,6 +6,7 @@ import {Card} from 'react-native-elements';
 import { useFocusEffect } from '@react-navigation/native';
 import Dialog from "react-native-dialog";
 import Icon from 'react-native-vector-icons/Entypo';
+import IoIcon from 'react-native-vector-icons/Ionicons'
 import RNFS from 'react-native-fs';
 import { useNavigation} from '@react-navigation/core'
 
@@ -18,6 +19,7 @@ const HisScreen = () => {
     const [name, setName] = useState()
     const [oldname, setOldName] = useState()
     const [visible, setVisible] = useState(false)
+    const [visibleRemove, setVisibleRemove] = useState(false)
 
     const [first, setFirst] = useState(false)
     const navigation = useNavigation();
@@ -128,7 +130,7 @@ const HisScreen = () => {
                                         rem.splice(rem.indexOf(catName), 1)
                                         AsyncStorage.setItem('categorie', JSON.stringify(rem)).then(() => {
                                             console.log('now remove cat and path from async')
-                                            setVisible(false)
+                                            setVisibleRemove(false)
                                             isSet(false)                                            
                                         })
                                     })
@@ -175,7 +177,7 @@ const HisScreen = () => {
                 <Dialog.Description children="Zmeň názov kategórie cviku"/>
                 <Dialog.Input onChangeText={name => setName(name)} value={name} />
                 <Dialog.Button label="Zrušiť" onPress={() => {setVisible(false)}} />
-                <Dialog.Button label="Vymazať" onPress={() => {Alert.alert("POZOR!", "Naozaj chceš vymazať celú kategóriu " + name,
+                {/*<Dialog.Button label="Vymazať" onPress={() => {Alert.alert("POZOR!", "Naozaj chceš vymazať celú kategóriu " + name,
                     [
                         {
                             text: "Zrušiť",
@@ -193,19 +195,28 @@ const HisScreen = () => {
                         //onDismiss: () => {setVisible(false)}
                     }
                 )}} />
+                */}
                 <Dialog.Button label="Premenovať" onPress={() => {renameCategorie(name)}} />
+            </Dialog.Container>
+            {/*Remove category*/}
+            <Dialog.Container visible={visibleRemove} onBackdropPress={() => {setVisibleRemove(false)}} contentStyle={{borderRadius: 10}}>
+                <Dialog.Description children={"POZOR! Naozaj chceš vymazať celú kategóriu " + name}/>
+                <Dialog.Button label="Zrušiť" onPress={() => {setVisibleRemove(false)}} />
+                <Dialog.Button label="Vymazať" onPress={() => {removeCategorie(name)}} />
             </Dialog.Container>
             <ScrollView style={{flex: 1}}>
                 {pictures.map((element) => (    
                     <Card key={element[0]} style={{flex: 1}}>
                         <Card.Title style={{alignSelf: 'flex-start'}}>{element[0]}</Card.Title>
-                        <Icon name="dots-three-vertical" size={20} color="black" style={{position: 'absolute', top: 0, right: 0 }} onPress={() => {setOldName(element[0]); setName(element[0]); setVisible(true)}} />
-                        
+                        {/*<Icon name="dots-three-vertical" size={20} color="black" style={{position: 'absolute', top: 0, right: 40 }} onPress={() => {setOldName(element[0]); setName(element[0]); setVisible(true)}} />*/}
+                        <IoIcon name="pencil-outline" size={20} color="black" style={{position: 'absolute', top: 0, right: 25 }} onPress={() => {setOldName(element[0]); setName(element[0]); setVisible(true)}} />
+                        <IoIcon name="trash-bin-outline" size={20} color="black" style={{position: 'absolute', top: 0, right: 0 }} onPress={() => {setOldName(element[0]); setName(element[0]); setVisibleRemove(true)}} />
+
                         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={{flex: 1}}>
                         {
                             element[1] && JSON.parse(element[1]).map((el) => (
-                                <TouchableOpacity key={el} onPress={() => {navigation.navigate('HESGallery', {name: element[0], data: element[1]})}}>
-                                    <Image key={el} source={{uri: "file:///data/user/0/com.bakalarka/files" + el}} style={styles.image} resizeMode={'contain'}/>
+                                <TouchableOpacity key={el} onPress={() => {navigation.navigate('HESGallery', {name: element[0], data: element[1], layout: false})}}>
+                                    <Image key={el} source={{uri: "file:///data/user/0/com.bakalarka/files" + el}} style={styles.image}/>
                                 </TouchableOpacity>        
                             ))
                         }
@@ -229,7 +240,8 @@ const styles = StyleSheet.create({
         //aspectRatio: 1,
         //width: 150,
         height: Dimensions.get('window').width/3-10,
-        width: Dimensions.get('window').width/3-10, 
+        width: Dimensions.get('window').width/3-10,
+        marginRight: 2
         //height: ((Dimensions.get('window').width/3-20)/1500)*2000,
         //marginHorizontal: 5
     }

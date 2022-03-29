@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, ImageBackground, ScrollView, StyleSheet, Dimensions, TouchableOpacity } from "react-native";
+import { View, Text, ImageBackground, ScrollView, StyleSheet, Dimensions, TouchableOpacity, Alert } from "react-native";
 import { Image, CheckBox } from "react-native-elements";
 import { useNavigation } from '@react-navigation/core'
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -9,6 +9,7 @@ import RNFS from 'react-native-fs';
 import { storage, db } from "../firebaseConfig";
 import firebase from "firebase";
 import { useFocusEffect } from '@react-navigation/native';
+import AntIcon from 'react-native-vector-icons/AntDesign'
 
 const HESGallery = ({ route }) => {
     const [data, setData] = useState(JSON.parse(route.params.data))
@@ -21,6 +22,16 @@ const HESGallery = ({ route }) => {
     const [check, setCheck] = useState(new Array(JSON.parse(route.params.data).length).fill(false));
     const [imageUrl, setImageUrl] = useState()
 
+    const [layout, setLayout] = useState(false)
+
+    React.useLayoutEffect(() => {
+        navigation.setOptions({
+            headerRight: () => (
+                <AntIcon name='layout' size={30} color='black' onPress={() => {setLayout(value => !value)}}/>
+            ),
+        });
+    }, [navigation]);
+    
     useFocusEffect(
         React.useCallback(() => { 
             AsyncStorage.getItem('reference').then((res) => {
@@ -128,6 +139,13 @@ const HESGallery = ({ route }) => {
                             setData(JSON.parse(res))
                             setCheck(new Array(data.length).fill(false))
                             setAction(false)
+                            console.log(count)
+                            if(count == 1){
+                                Alert.alert('Oznam', 'Fotografia bola odstránená')
+                            }
+                            if(count > 1){
+                                Alert.alert('Oznam', 'Fotografie boli odstránené')
+                            }
                         })
                     })
                 }
@@ -178,6 +196,12 @@ const HESGallery = ({ route }) => {
 
                 if (index == (data.length - 1)) {
                     setAction(false)
+                    if(count == 1){
+                        Alert.alert('Oznam', 'Fotografia bola odoslaná trénerovi')
+                    }
+                    if(count > 1){
+                        Alert.alert('Oznam', 'Fotografie boli odoslané trénerovi')
+                    }
                 }
             })
             
@@ -228,10 +252,10 @@ const HESGallery = ({ route }) => {
             <View style={{ flex: 1 }}>
                 {
                     action &&
-                    <View style={{ marginTop: 45 }}>
+                    <View style={{ marginTop: 43 }}>
                         <View style={styles.line}>
                             <Icon name="close-outline" size={40} color="black" onPress={() => { setCheck(new Array(data.length).fill(false)); setAction(false) }} />
-                            <Text style={{color: 'black', fontSize: 30}}>{count}</Text>
+                            <Text style={{color: 'black', fontSize: 20, textAlignVertical: 'center'}}>{'Vybrané fotky: ' + count}</Text>
                             <Icon name="share-outline" size={40} color="black" onPress={() => {sendPictures()}}/> 
                             <Icon name="trash-bin-outline" size={40} color="black" onPress={() => {deletePictures()}} />                           
                         </View>
@@ -251,18 +275,30 @@ const HESGallery = ({ route }) => {
                                         :
                                         <View style={{zIndex: 1}}>
                                             {reference == el && 
-                                                <View style={{position: 'absolute', zIndex: 1, marginLeft: 35,  marginTop: 25, width: 30, height: 30, borderRadius: 30/2, borderWidth: 2, justifyContent: 'center', backgroundColor: 'yellow'}} >
-                                                    <Text style={{color: 'black'}}>REF</Text>
+                                                <View style={{position: 'absolute', zIndex: 1, right: 0, marginRight: 15,  marginTop: 5, width: 30, height: 30, borderRadius: 30/2, borderWidth: 2, justifyContent: 'center', borderColor: '#3366ff'}} >
+                                                    <Text style={{color: '#3366ff'}}>REF</Text>
                                                 </View>
                                             }
                                         </View>
                                     }
-                                    <Image key={el} source={{ uri: "file:///data/user/0/com.bakalarka/files" + el }} style={styles.image} resizeMode={'contain'}
-                                        onPress={() => { navigation.navigate('Compare', { name: route.params.name, data: JSON.stringify(data), picture: el, ref: reference, index: index }) }}
-                                        onLongPress={() => { setCheck(new Array(data.length).fill(false)); setCount(0); setAction(true) }}
-                                    />
-                                    <Text style={{ fontSize: 20, color: 'black', alignSelf: 'center' }}>{array[2] + '.' + array[1] + '.' + array[0]}</Text>
-                                    <Text style={{ fontSize: 15, color: 'black', paddingBottom: 10, alignSelf: 'center' }}>{time[0] + ':' + time[1] + ':' + time[2]}</Text>
+                                    {layout ? 
+                                        <View>
+                                        <Image key={el} source={{ uri: "file:///data/user/0/com.bakalarka/files" + el }} style={styles.image3} 
+                                            onPress={() => { navigation.navigate('Compare', { name: route.params.name, data: JSON.stringify(data), picture: el, ref: reference, index: index }) }}
+                                            onLongPress={() => { setCheck(new Array(data.length).fill(false)); setCount(0); setAction(true) }}
+                                        />
+                                        <Text style={{ fontSize: 10, color: 'black', alignSelf: 'center' }}>{array[2] + '.' + array[1] + '.' + array[0] + '    ' + time[0] + ':' + time[1] + ':' + time[2]}</Text>
+                                        </View>
+                                        :
+                                        <View>
+                                        <Image key={el} source={{ uri: "file:///data/user/0/com.bakalarka/files" + el }} style={styles.image} 
+                                            onPress={() => { navigation.navigate('Compare', { name: route.params.name, data: JSON.stringify(data), picture: el, ref: reference, index: index }) }}
+                                            onLongPress={() => { setCheck(new Array(data.length).fill(false)); setCount(0); setAction(true) }}
+                                        />
+                                        <Text style={{ fontSize: 15, color: 'black', alignSelf: 'center' }}>{array[2] + '.' + array[1] + '.' + array[0] + '    ' + time[0] + ':' + time[1] + ':' + time[2]}</Text>
+                                        </View>
+                                    }
+                                    
                                 </View>
                             )
                         })}
@@ -286,6 +322,11 @@ const styles = StyleSheet.create({
         height: Dimensions.get('window').width / 2 - 20,
         marginHorizontal: 10
     },
+    image3: {
+        width: Dimensions.get('window').width / 3 - 4,
+        height: Dimensions.get('window').width / 3 - 4,
+        marginHorizontal: 2
+    },
     line: {
         flex: 1,
         flexDirection: 'row',
@@ -295,7 +336,7 @@ const styles = StyleSheet.create({
         paddingBottom: 0,
         justifyContent: 'space-around',
         width: '100%',
-        backgroundColor: 'white',
+        backgroundColor: 'grey',
     },
     checkbox: {
         position: 'absolute',

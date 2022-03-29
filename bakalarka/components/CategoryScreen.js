@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Dimensions, Button } from "react-native";
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Dimensions, Button, Alert } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons"
 import Dialog from "react-native-dialog"
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -38,6 +38,14 @@ const CategoryScreen = ({route}) => {
     const newCategorie = async () => {
         setVisible(false)
         let category = JSON.parse(await AsyncStorage.getItem('categorie'))
+        console.log('thishihs', category)
+        console.log(category.indexOf(name))
+        const indexOfName = category.indexOf(name)
+        if(indexOfName != -1){
+            Alert.alert('POZOR!', 'Táto kategória už existuje')
+            setName(null);
+            return
+        }
         let reference = JSON.parse(await AsyncStorage.getItem('reference'))
         if(category == null)
         {
@@ -58,15 +66,6 @@ const CategoryScreen = ({route}) => {
         //getCategories();
         alert('Fotografia cviku uložená do kategórie ' + name)
         navigation.navigate('HistoryExercise')        
-    }
-
-    const styling = () => {
-        if (categorie.length != 1) {
-            return { flex: 1, flexDirection: 'row', alignSelf: 'center', flexWrap: 'wrap' }
-        }
-        if (categorie.length == 1) {
-            return { flex: 1, flexDirection: 'row', alignSelf: 'flex-start', flexWrap: 'wrap' }
-        }
     }
 
     return (

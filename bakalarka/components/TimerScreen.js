@@ -34,6 +34,17 @@ const TimerScreen = () => {
     return (
         <View style={stylesTimer.container}>
             <View style={stylesTimer.view}>
+                <TouchableOpacity style={{flex: 1, position: 'absolute', top: 0, left: 0, marginTop: 20}}
+                    onPress={() => {
+                        AsyncStorage.setItem('timerValue', timerValue);
+                        AsyncStorage.setItem('photoCount', photoCount);
+                        AsyncStorage.setItem('voiceFlag', JSON.stringify(voiceFlag));
+                        //AsyncStorage.setItem('voiceCommand', voiceCommand);
+                        navigation.navigate("Camera")                        
+                    }}
+                >
+                    <Icon name="arrow-back" size={40} color="white" />
+                </TouchableOpacity>
 
                 <TouchableOpacity
                     style={stylesTimer.timer}
@@ -53,6 +64,9 @@ const TimerScreen = () => {
                         Časovač
                     </Text>
                     <View style={{flexDirection: 'row', width: '90%'}}>
+                        <Text style={{fontSize: 20, color: 'white', textAlignVertical: 'center', paddingRight: 10}}>
+                            Časovač:
+                        </Text>
                         <TouchableOpacity style={{backgroundColor: timerValue === '0' ? '#5c5b5a' : '#737270', justifyContent: 'center', padding: 10}} onPress={() => setTimerValue('0')}>
                             <Text style={{color: 'white', fontSize: 20}}>Vyp.</Text>
                         </TouchableOpacity>
@@ -67,10 +81,10 @@ const TimerScreen = () => {
                         </TouchableOpacity>
                     </View>
 
-                    <Text style={{color: 'white', fontSize: 30, marginTop: 10}}>
-                        Počet fotiek
-                    </Text>
-                    <View style={{flexDirection: 'row', width: '90%'}}>
+                    <View style={{flexDirection: 'row', width: '90%', marginTop: 10}}>
+                        <Text style={{color: 'white', fontSize: 20, textAlignVertical: 'center', paddingRight: 10}}>
+                            Počet fotiek:
+                        </Text>
                         <TouchableOpacity style={{backgroundColor: photoCount === '1' ? '#5c5b5a' : '#737270', justifyContent: 'center', padding: 10}} onPress={() => setPhotoCount('1')}>
                             <Text style={{color: 'white', fontSize: 20}}>1</Text>
                         </TouchableOpacity>
@@ -85,10 +99,15 @@ const TimerScreen = () => {
                         </TouchableOpacity>
                     </View>
 
+                    <View style={{borderBottomWidth: 2, borderColor: 'grey', width: '100%', marginTop: 10}} />
+
                     <Text style={{color: 'white', fontSize: 40, marginTop: 10}}>
                         Hlasové ovládanie
                     </Text>
                     <View style={{flexDirection: 'row', width: '90%'}}>
+                        <Text style={{color: 'white', fontSize: 20, textAlignVertical: 'center', paddingRight: 10}}>
+                            Hlasové ovládanie:
+                        </Text>
                         <TouchableOpacity style={{backgroundColor: voiceFlag === false ? '#5c5b5a' : '#737270', justifyContent: 'center', padding: 10}} onPress={() => setVoiceFlag(false)}>
                             <Text style={{color: 'white', fontSize: 20}}>Vyp.</Text>
                         </TouchableOpacity>
@@ -97,12 +116,11 @@ const TimerScreen = () => {
                         </TouchableOpacity>
                     </View>
 
-                    <Text style={{color: 'white', fontSize: 30, marginTop: 10}}>
-                        Hlasový pokyn
-                    </Text>
                     <Text style={{color: 'white', fontSize: 20, marginTop: 10}}>
-                        Pre odfotenie povedz 'FOTO'
+                        Hlasový pokyn: Pre odfotenie povedz 'FOTO'
                     </Text>
+
+                    <View style={{borderBottomWidth: 2, borderColor: 'grey', width: '100%', marginTop: 10}} />
                     {//<TextInput style={{width: '90%', color: 'white', borderColor: "#ccc", borderWidth: 2, backgroundColor: '#737270'}} placeholder="Pokyn pre vyhotovenie foto" onChangeText={setVoiceCommand} value={voiceCommand} />                    
                     }
             </View>            
