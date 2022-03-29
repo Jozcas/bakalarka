@@ -11,7 +11,7 @@ import Voice from '@react-native-voice/voice';
 import { useCamera } from 'react-native-camera-hooks';
 
 const CameraScreen = () => {
-    const [type, setType] = useState(RNCamera.Constants.Type.back);
+    const [type, setType] = useState(RNCamera.Constants.Type.front);
 	const [flash, setFlash] = useState("off");
 	const [photoCount, setPhotoCount] = useState('1')
     const [timerValue, setTimerValue] = useState('0')
@@ -199,7 +199,7 @@ const CameraScreen = () => {
 		
 		if(photoCount == '1' && timerValue == '0'){
 			if(camera){
-				RNBeep.beep();
+				//RNBeep.beep();		
 				const data = await takePicture(options);
 				console.log(data.uri);
 				pictureUri.push({id: '1', picture: data.uri})
@@ -302,7 +302,7 @@ const CameraScreen = () => {
 							<Icon name="mic-outline" size={15} color="white" style={{position: 'absolute', top: 0, right: 0, marginTop: 15}}/>
 							: <Icon name="timer-outline" size={15} color="white" style={{position: 'absolute', top: 0, right: 0, marginTop: 15}}/>
 						*/}
-						<Icon name="menu" size={40} color="white" style={styles.timer}/>
+						<Icon name="settings-outline" size={40} color="white" style={styles.timer}/>
 					</TouchableOpacity>
 
 					{
@@ -339,6 +339,12 @@ const CameraScreen = () => {
 						</TouchableOpacity>
 					</View>
 				</View>
+
+				<View style={{borderBottomWidth: 2, borderColor: 'white', position: 'absolute', width: Dimensions.get('window').width-40, marginLeft: 20, top: Dimensions.get('window').height-240, left: 0, zIndex: 1000}}/>
+				<View style={{borderBottomWidth: 2, borderColor: 'white', position: 'absolute', width: Dimensions.get('window').width-20, marginLeft: 10, top: Dimensions.get('window').height-190, left: 0, zIndex: 1000}}/>
+				<View style={{borderLeftWidth: 2, borderColor: 'white', position: 'absolute', height: 52, marginLeft: 15, top: Dimensions.get('window').height-240, left: 0, zIndex: 1000, transform: [{rotate: '11deg'}] }}/>
+				<View style={{borderLeftWidth: 2, borderColor: 'white', position: 'absolute', height: 52, marginRight: 15, top: Dimensions.get('window').height-240, right: 0, zIndex: 1000, transform: [{rotate: '-11deg'}] }}/>
+
             </RNCamera>
         </View> :
 		<View></View>

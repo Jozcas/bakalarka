@@ -45,7 +45,7 @@ const TimerScreen = () => {
                         navigation.navigate("Camera")                        
                     }}
                 >
-                    <Icon name="menu" size={40} color="white" />
+                    <Icon name="settings-outline" size={40} color="white" />
                 </TouchableOpacity>
                 
                 
