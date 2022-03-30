@@ -23,6 +23,8 @@ target 'bakalarka' do
 
   pod 'RNSketchCanvas', :path => '../node_modules/@terrylinla/react-native-sketch-canvas'
 
+  pod 'RNSound', :path => '../node_modules/react-native-sound'
+
   target 'bakalarkaTests' do
     inherit! :complete
     # Pods for testing

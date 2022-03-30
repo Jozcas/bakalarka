@@ -10,6 +10,9 @@ import RNBeep from 'react-native-a-beep';
 import Voice from '@react-native-voice/voice';
 import { useCamera } from 'react-native-camera-hooks';
 
+import Sound from 'react-native-sound';
+import dings from '../static/captureSound.mp3';
+
 const CameraScreen = () => {
     const [type, setType] = useState(RNCamera.Constants.Type.front);
 	const [flash, setFlash] = useState("off");
@@ -30,6 +33,17 @@ const CameraScreen = () => {
 
     let pictureUri = [];
 
+	Sound.setCategory('Playback');
+
+	var ding = new Sound(dings, error => {
+	if (error) {
+		console.log('failed to load the sound', error);
+		return;
+	}
+	// if loaded successfully
+	console.log('duration in seconds: ' + ding.getDuration() + 'number of channels: ' + ding.getNumberOfChannels(),);
+	});
+
 	//to set timerValue and photoCount when return from TimerScreen 
 	useFocusEffect(
 		React.useCallback(() => {
@@ -47,6 +61,7 @@ const CameraScreen = () => {
 			};
 			setDisplay('')
 			firstLoad();
+			ding.setVolume(1);
 		}, [])
 	);
 
@@ -71,10 +86,13 @@ const CameraScreen = () => {
 		Voice.onSpeechEnd = onSpeechEnd;
 		Voice.onSpeechError = onSpeechError;
 		Voice.onSpeechPartialResults = onSpeechPartialResults;
+
+		ding.setVolume(1);
 	
 		return () => {
 		  	//destroy the process after switching the screen
 		  	Voice.destroy().then(Voice.removeAllListeners);
+			ding.release();
 		};
     }, []);
 
@@ -135,6 +153,7 @@ const CameraScreen = () => {
 		if(type == RNCamera.Constants.Type.back){
 			options = {fixOrientation: true}
 		}
+		ding.play()
 		const data = await takePicture(options);
 		console.log(data.uri);
 		pictureUri.push({id: '1', picture: data.uri})
@@ -169,7 +188,8 @@ const CameraScreen = () => {
 	const timerTakePicture = async (options) => {
 		for (let index = 0; index < photoCount; index++) {
 			if(camera){
-				RNBeep.beep();
+				//RNBeep.beep();
+				ding.play()
 				const data = await takePicture(options);
 				console.log(data.uri);
 				pictureUri.push({id: index + 1, picture: data.uri})
@@ -199,7 +219,8 @@ const CameraScreen = () => {
 		
 		if(photoCount == '1' && timerValue == '0'){
 			if(camera){
-				//RNBeep.beep();		
+				//RNBeep.beep();	
+				ding.play()	
 				const data = await takePicture(options);
 				console.log(data.uri);
 				pictureUri.push({id: '1', picture: data.uri})
@@ -211,14 +232,17 @@ const CameraScreen = () => {
 					console.log('timer end');
 				}, (parseInt(timerValue)-3)*1000);
 				setDisplay('3')
+				RNBeep.beep();
 				await setAsyncTimeout(() => {
 					console.log('timer end');
 				}, 1000);
 				setDisplay('2')
+				RNBeep.beep();
 				await setAsyncTimeout(() => {
 					console.log('timer end');
 				}, 1000);
 				setDisplay('1')
+				RNBeep.beep();
 				await setAsyncTimeout(() => {
 					console.log('timer end');
 				}, 1000);
