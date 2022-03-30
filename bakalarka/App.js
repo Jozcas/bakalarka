@@ -14,6 +14,8 @@ import CompareScreen from './components/CompareScreen';
 import RatingGalleryScreen from './components/RatingGalleryScreen';
 import RGallery from './components/RGallery';
 import RCarouselScreen from './components/RCarouselScreen';
+import CompareClickScreen from './components/CompareClickScreen';
+
 import NoRatingScreen from './tComponents/noRatingScreen';
 import RatingScreen from './tComponents/RatingScreen';
 import SetRateScreen from './tComponents/SetRateScreen';
@@ -42,6 +44,7 @@ export default function App() {
         <Stack.Screen name="RatingGallery" component={RatingGalleryScreen} options={{headerBackVisible: false, headerShown: true,  title: 'Hodnotené cviky', headerRight: () => <Logout/>}}/>
         <Stack.Screen name="RGallery" component={RGallery} options={({route}) => ({headerShown: true, title: route.params.name})}/>
         <Stack.Screen name="RCarousel" component={RCarouselScreen} options={({route}) => ({headerShown: true, title: route.params.name})}/>
+        <Stack.Screen name="CompareClick" component={CompareClickScreen} options={({route}) => ({headerShown: true, title: route.params.name})}/>
 
         <Stack.Screen name="NoRating" component={NoRatingScreen} options={{headerBackVisible: false, title: 'Nehodnotené cviky'}}/>
         <Stack.Screen name="Rating" component={RatingScreen} options={{headerBackVisible: false, title: 'Hodnotené cviky', headerRight: () => <Logout/>}}/>
