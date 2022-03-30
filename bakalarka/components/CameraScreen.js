@@ -9,6 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import RNBeep from 'react-native-a-beep';
 import Voice from '@react-native-voice/voice';
 import { useCamera } from 'react-native-camera-hooks';
+import MatIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import Sound from 'react-native-sound';
 import dings from '../static/captureSound.mp3';
@@ -19,6 +20,7 @@ const CameraScreen = () => {
 	const [photoCount, setPhotoCount] = useState('1')
     const [timerValue, setTimerValue] = useState('0')
 	const [voiceFlag, setVoiceFlag] = useState(false)
+	const [mat, setMat] = useState(false)
 	const [{ cameraRef }, { takePicture }] = useCamera(null);
 
 	const [display, setDisplay] = useState('')
@@ -41,7 +43,7 @@ const CameraScreen = () => {
 		return;
 	}
 	// if loaded successfully
-	console.log('duration in seconds: ' + ding.getDuration() + 'number of channels: ' + ding.getNumberOfChannels(),);
+	//console.log('duration in seconds: ' + ding.getDuration() + 'number of channels: ' + ding.getNumberOfChannels(),);
 	});
 
 	//to set timerValue and photoCount when return from TimerScreen 
@@ -362,13 +364,17 @@ const CameraScreen = () => {
 							<Icon name="images-outline" size={40} color="white" />
 						</TouchableOpacity>
 					</View>
+					
+					<TouchableOpacity style={{position: "absolute", top: 0,	left: Dimensions.get('window').width/2-40, marginTop: 20}} onPress={() => {setMat(value => !value)}}>
+						<MatIcon name='rectangle-outline' size={40} color='white' />					
+					</TouchableOpacity>
 				</View>
 
-				<View style={{borderBottomWidth: 2, borderColor: 'white', position: 'absolute', width: Dimensions.get('window').width-40, marginLeft: 20, top: Dimensions.get('window').height-240, left: 0, zIndex: 1000}}/>
-				<View style={{borderBottomWidth: 2, borderColor: 'white', position: 'absolute', width: Dimensions.get('window').width-20, marginLeft: 10, top: Dimensions.get('window').height-190, left: 0, zIndex: 1000}}/>
-				<View style={{borderLeftWidth: 2, borderColor: 'white', position: 'absolute', height: 52, marginLeft: 15, top: Dimensions.get('window').height-240, left: 0, zIndex: 1000, transform: [{rotate: '11deg'}] }}/>
-				<View style={{borderLeftWidth: 2, borderColor: 'white', position: 'absolute', height: 52, marginRight: 15, top: Dimensions.get('window').height-240, right: 0, zIndex: 1000, transform: [{rotate: '-11deg'}] }}/>
-
+				{mat == true &&	<View style={{borderBottomWidth: 2, borderColor: 'white', position: 'absolute', width: Dimensions.get('window').width-40, marginLeft: 20, top: Dimensions.get('window').height-240, left: 0, zIndex: 1000}}/>}
+				{mat == true &&	<View style={{borderBottomWidth: 2, borderColor: 'white', position: 'absolute', width: Dimensions.get('window').width-20, marginLeft: 10, top: Dimensions.get('window').height-190, left: 0, zIndex: 1000}}/>}
+				{mat == true &&	<View style={{borderLeftWidth: 2, borderColor: 'white', position: 'absolute', height: 52, marginLeft: 15, top: Dimensions.get('window').height-240, left: 0, zIndex: 1000, transform: [{rotate: '11deg'}] }}/>}
+				{mat == true &&	<View style={{borderLeftWidth: 2, borderColor: 'white', position: 'absolute', height: 52, marginRight: 15, top: Dimensions.get('window').height-240, right: 0, zIndex: 1000, transform: [{rotate: '-11deg'}] }}/>}
+				
             </RNCamera>
         </View> :
 		<View></View>
