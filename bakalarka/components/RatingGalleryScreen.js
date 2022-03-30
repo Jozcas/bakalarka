@@ -6,6 +6,7 @@ import Menu from "../static/menu";
 import { Image } from "react-native-elements";
 import { useNavigation} from '@react-navigation/core'
 import { useFocusEffect } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/Ionicons'
 
 const RatingGalleryScreen = () => {
     const [cat, setCat] = useState()
@@ -30,7 +31,7 @@ const RatingGalleryScreen = () => {
     }
 
     const Exercise = (category) => {
-        console.log(category)
+        //console.log(category)
         let pictures = {}
         category.map((el, index) => {            
             db.collection("cviky").doc("category").collection(el).onSnapshot((querySnapshot) => {
@@ -40,7 +41,7 @@ const RatingGalleryScreen = () => {
                 });
                 pictures[el] = arr
                 if(index == category.length - 1){
-                    console.log(index, pictures)
+                    //console.log(index, pictures)
                     setImages(pictures)
                     isLoading(false)
                 }
@@ -85,7 +86,12 @@ const RatingGalleryScreen = () => {
                                     <Card.Title style={{alignSelf: 'flex-start'}}>{element}</Card.Title>
                                     <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={{flex: 1}}>
                                     {
-                                        images[element].map((el) => (<Image key={el['name']} source={{uri: el['drawImage'] ? el['drawImage'] : el['image']}} resizeMode={'contain'} style={styles.image} onPress={() => {navigation.navigate('RGallery', {name: element, data: el})}}/>)).reverse()
+                                        images[element].map((el) => (
+                                            <View key={el['name']}>
+                                                {(el.state == true) && <Icon name='trophy-outline' size={20} style={{position: 'absolute', top: 5, right: 5, zIndex: 1}}/>}
+                                                <Image key={el['name']} source={{uri: (el['drawImage'] && el.state == true) ? el['drawImage'] : el['image']}} /*resizeMode={'contain'}*/ style={styles.image} onPress={() => {navigation.navigate('RGallery', {name: element, data: el})}}/>
+                                            </View>
+                                        )).reverse()
                                     }
                                     </ScrollView>
                                 </Card>
@@ -102,11 +108,8 @@ export default RatingGalleryScreen
 
 const styles = StyleSheet.create({
     image: {
-        //aspectRatio: 1,
-        //width: 150,
-        //height: 150,
-        width: Dimensions.get('window').width/3-20, 
-        height: Dimensions.get('window').width/3-20,
-        //marginHorizontal: 10
+        height: Dimensions.get('window').width/3-10,
+        width: Dimensions.get('window').width/3-10,
+        marginRight: 2
     }
 })

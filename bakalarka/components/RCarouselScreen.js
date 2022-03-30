@@ -3,11 +3,15 @@ import { View, Text, ImageBackground, StyleSheet, Dimensions } from "react-nativ
 import { Image } from "react-native-elements";
 import Menu from "../static/menu";
 import Carousel from 'react-native-snap-carousel';
+import { useNavigation } from '@react-navigation/core'
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const RCarouselScreen = ({route}) => {
     const [slideIndex, setSlideIndex] = useState(route.params.index);
 
     const { width: screenWidth } = Dimensions.get('window');
+
+    const navigation = useNavigation()
 
     //used for Carousel
     const onSlide = slideIndex => {
@@ -37,10 +41,13 @@ const RCarouselScreen = ({route}) => {
                 data={JSON.parse(route.params.data)}
                 renderItem={({ item, index }) => (
                     <View>
-                    <Image key={index} resizeMode={'contain'} style={{width: Dimensions.get('window').height/2-100, height: Dimensions.get('window').height/2-100}} source={{uri: item['drawImage'] ? item['drawImage'] : item['image']}}/>
-                    {getDate(item.name)}
-                    <Text style={{fontSize: 30, color: 'black'}}>Hodnotenie:</Text>
-                    {item.comment == "" ? <Text style={{color: 'black'}}>Hodnotenie zatiaľ nebolo zadané</Text> : <Text style={{color: 'black'}}>{item.comment}</Text>}
+                        {(item.state == true) && <Icon name='trophy-outline' size={20} style={{position: 'absolute', top: 5, right: 20, zIndex: 1}}/>}
+                        <Image key={index} resizeMode={'contain'} style={{width: Dimensions.get('window').height/2-100, height: Dimensions.get('window').height/2-40}} source={{uri: (item.state == true && item['drawImage']) ? item['drawImage'] : item['image']}}
+                            onPress={() => {navigation.navigate('RCarouselClick', { name: route.params.name, item: item})}}
+                        />
+                        {getDate(item.name)}
+                        <Text style={{fontSize: 30, color: 'black'}}>Hodnotenie:</Text>
+                        {item.state == false ? <Text style={{color: 'black'}}>Hodnotenie zatiaľ nebolo zadané</Text> : <Text style={{color: 'black'}}>{item.comment}</Text>}
                     </View>
                 )}
                 onSnapToItem={index => onSlide(index)}
