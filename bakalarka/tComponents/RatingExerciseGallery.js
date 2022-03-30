@@ -64,7 +64,6 @@ const RatingExerciseGallery = ({route}) => {
                 <ScrollView>
                     <View style={styling()}>
                         {images.map((el, index) => {
-                            console.log(el.name)
                             const tmpDate = el.name.substring(1, el.name.indexOf('-'))
                             const tmpTime = el.name.split('-')
                             const time = tmpTime[1].split('_')
@@ -74,12 +73,11 @@ const RatingExerciseGallery = ({route}) => {
                                     {//action &&
                                         //<CheckBox containerStyle={styles.checkbox} checked={check[index]} onPress={() => setCheck(check => ({ ...check, [index]: !check[index] }))} />
                                     }
-                                    <Image key={el.name} source={{ uri: el['drawImage'] ? el['drawImage'] : el['image'] }} resizeMode={'contain'} style={styles.image}
+                                    <Image key={el.name} source={{ uri: el['drawImage'] ? el['drawImage'] : el['image'] }} style={styles.image}
                                         onPress={() => { navigation.navigate('TRateCarousel', { name: route.params.name, data: JSON.stringify(images), index: index }) }}
                                         /*onLongPress={() => { setCheck(new Array(images.length).fill(false)); setAction(true) }}*/
                                     />
                                     <Text style={{ fontSize: 15, color: 'black', alignSelf: 'center' }}>{array[2] + '.' + array[1] + '.' + array[0] + '    ' + time[0] + ':' + time[1] + ':' + time[2]}</Text>
-                                    {/*<Text style={{ fontSize: 15, color: 'black', paddingBottom: 10, alignSelf: 'center' }}>{time[0] + ':' + time[1] + ':' + time[2]}</Text>*/}
                                 </View>
                             )
                         })}
@@ -106,7 +104,6 @@ export default RatingExerciseGallery
 
 const styles = StyleSheet.create({
     image: {
-        //aspectRatio: 1,
         width: Dimensions.get('window').width / 2 - 20,
         height: Dimensions.get('window').width / 2 - 20,
         marginHorizontal: 10

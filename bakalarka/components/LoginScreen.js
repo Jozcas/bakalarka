@@ -30,7 +30,7 @@ const LoginScreen = ({ navigation }) => {
     if(email === '' && password === '') {
       Alert.alert('Zadaj údaje pre prihlásenie!')
     } else {
-      updateLoading(true)
+      //updateLoading(true)
       auth
       .signInWithEmailAndPassword(email, password)
       .then((res) => {

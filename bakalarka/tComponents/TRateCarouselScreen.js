@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, ImageBackground, StyleSheet, Dimensions, TextInput, ScrollView, Keyboard, TouchableOpacity } from "react-native";
+import { View, Text, ImageBackground, StyleSheet, Dimensions, TextInput, ScrollView, Keyboard, TouchableOpacity, Alert } from "react-native";
 import { Image, Button } from "react-native-elements";
 import TMenu from "../static/Tmenu";
 import Carousel from 'react-native-snap-carousel';
@@ -74,7 +74,7 @@ const TRateCarouselScreen = ({route}) => {
     const setRate = (exercise, tmpComment) => {
         console.log(exercise)
         db.collection("cviky").doc("category").collection(route.params.name).doc(exercise).update({comment: tmpComment})
-        alert('Hodnotenie upravené')
+        Alert.alert('Oznam', 'Hodnotenie upravené')
     }
 
     if(loading){
@@ -91,6 +91,10 @@ const TRateCarouselScreen = ({route}) => {
             return (
                 <ImageBackground source={require('../static/images/background.jpg')} style={{ flex: 1 }} imageStyle={{ opacity: 0.3 }}>
                 <View style={{flex: 1}}>
+                    <View style={{flexDirection: 'row',backgroundColor: 'white', height: 60, borderBottomWidth: 1.5, borderColor: '#e6e6e6'}}>
+                        <Icon name="arrow-back" color={'black'} size={25} style={{alignSelf: 'center', paddingLeft: 15}} onPress={() => {navigation.navigate('RatingExercise', {name: route.params.name})}}/>
+                        <Text style={{alignSelf: 'center', paddingLeft: 35, fontSize: 20, color: 'black', fontWeight: '600'}}>{route.params.name}</Text>
+                    </View>
                     <Carousel                  
                         layout={'default'}
                         sliderWidth={screenWidth}
@@ -99,7 +103,9 @@ const TRateCarouselScreen = ({route}) => {
                         renderItem={({ item, index }) => (
                             <ScrollView>
                             <View style={{flex: 1}}>
-                            <Image key={index} resizeMode='contain' style={{width: Dimensions.get('window').height/2-100, height: Dimensions.get('window').height/2-100}} source={{uri: item['drawImage'] ? item['drawImage'] : item['image']}}/>
+                            <Image key={index} resizeMode='contain' style={{width: Dimensions.get('window').height/2-100, height: Dimensions.get('window').height/2-100}} source={{uri: item['drawImage'] ? item['drawImage'] : item['image']}}
+                                onPress={() => {navigation.navigate('SetRateClick', {name: route.params.name, item: item})}}
+                            />
                             {getDate(item.name)}
                             <TouchableOpacity style={{width: '90%', alignSelf: 'center', alignItems: 'center', backgroundColor: 'grey', borderRadius: 5}} onPress={() => {setSketch(true), setImageUrl(item['image']), setName(item.name) }} >
                                 <Icon name="pencil" size={35} color='black'/>

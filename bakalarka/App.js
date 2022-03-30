@@ -23,6 +23,7 @@ import SetRateScreen from './tComponents/SetRateScreen';
 import DrawingScreen from './tComponents/DrawingScreen';
 import RatingExerciseGallery from './tComponents/RatingExerciseGallery';
 import TRateCarouselScreen from './tComponents/TRateCarouselScreen';
+import SetRateClick from './tComponents/SetRateClick';
 
 import Logout from './components/Logout';
 
@@ -50,10 +51,11 @@ export default function App() {
 
         <Stack.Screen name="NoRating" component={NoRatingScreen} options={{headerBackVisible: false, title: 'Nehodnotené cviky'}}/>
         <Stack.Screen name="Rating" component={RatingScreen} options={{headerBackVisible: false, title: 'Hodnotené cviky', headerRight: () => <Logout/>}}/>
-        <Stack.Screen name="SetRate" component={SetRateScreen} options={({route}) => ({headerShown: true, title: route.params.name})}/>
+        <Stack.Screen name="SetRate" component={SetRateScreen} options={({route}) => ({headerShown: false, title: route.params.name})}/>
         <Stack.Screen name="Drawing" component={DrawingScreen} options={({route}) => ({headerShown: true, title: "Editor"})}/>
         <Stack.Screen name="RatingExercise" component={RatingExerciseGallery} options={({route}) => ({headerShown: true, title: route.params.name})}/>
-        <Stack.Screen name="TRateCarousel" component={TRateCarouselScreen} options={({route}) => ({headerShown: true, title: route.params.name})}/>
+        <Stack.Screen name="TRateCarousel" component={TRateCarouselScreen} options={({route}) => ({headerShown: false, title: route.params.name})}/>
+        <Stack.Screen name="SetRateClick" component={SetRateClick} options={({route}) => ({headerShown: true, title: route.params.name})}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

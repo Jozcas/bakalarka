@@ -93,7 +93,7 @@ const RatingScreen = () => {
                                     <Card.Title style={{alignSelf: 'flex-start'}}>{element}</Card.Title>
                                     {images[element].length != 0 && <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={{flex: 1}}>
                                     {
-                                        images[element].map((el) => (<Image key={el['name']} source={{uri: el['drawImage'] ? el['drawImage'] : el['image']}} resizeMode={'contain'} style={styles.image} 
+                                        images[element].map((el) => (<Image key={el['name']} source={{uri: el['drawImage'] ? el['drawImage'] : el['image']}} /*resizeMode={'contain'}*/ style={styles.image} 
                                         onPress={() => { navigation.navigate('RatingExercise', {name: element})}}
                                         />))                                        
                                     }
@@ -114,9 +114,8 @@ export default RatingScreen
 
 const styles = StyleSheet.create({
     image: {
-        //aspectRatio: 1,
         width: Dimensions.get('window').width/3-20, 
         height: Dimensions.get('window').width/3-20, 
-        //marginHorizontal: 10
+        marginHorizontal: 2
     }
 })

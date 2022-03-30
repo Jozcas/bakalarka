@@ -10,8 +10,9 @@ import {
 import RNSketchCanvas from '@terrylinla/react-native-sketch-canvas';
 import { storage, db } from "../firebaseConfig";
 import RNFS from 'react-native-fs';
-
-
+import { BackHandler } from 'react-native';
+import { useNavigation } from '@react-navigation/core'
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const DrawingScreen = ({sketch, imageUrl, name, exercise}) => {
     const [file, setFile] = useState()
@@ -30,14 +31,24 @@ const DrawingScreen = ({sketch, imageUrl, name, exercise}) => {
         })
     }
 
+    const handleBackButton = () => {
+      close()
+      return true
+    }
+
     useEffect(() => {
         download()
+        BackHandler.addEventListener('hardwareBackPress', handleBackButton);
+
+        return () => {
+          BackHandler.removeEventListener('hardwareBackPress', handleBackButton);
+        };
     }, [])
 
     const close = () => {
       RNFS.exists(RNFS.DocumentDirectoryPath + file).then((exist) => {
         if (exist) {
-            console.log('existruje file')
+            console.log('existuje file')
             RNFS.unlink(RNFS.DocumentDirectoryPath + file).then(() => {
                 console.log('deleted file')
             })
@@ -103,6 +114,10 @@ const DrawingScreen = ({sketch, imageUrl, name, exercise}) => {
 
     return (
       <View style={styles.container}>
+        <View style={{flexDirection: 'row',backgroundColor: 'white', height: 50, borderBottomWidth: 1.5, borderColor: '#e6e6e6'}}>
+          <Icon name="arrow-back" color={'black'} size={25} style={{alignSelf: 'center', paddingLeft: 15}} onPress={() => {close()}}/>
+          <Text style={{alignSelf: 'center', paddingLeft: 35, fontSize: 20, color: 'black', fontWeight: '600'}}>{exercise}</Text>
+        </View>
         <View style={{ flex: 1, flexDirection: 'row' }}>
           <RNSketchCanvas
             localSourceImage={{ filename: '/data/user/0/com.bakalarka/files' + file, mode: 'AspectFit' }}
@@ -110,10 +125,10 @@ const DrawingScreen = ({sketch, imageUrl, name, exercise}) => {
             canvasStyle={{ backgroundColor: 'transparent', flex: 1 }}
             defaultStrokeIndex={0}
             defaultStrokeWidth={5}
-            closeComponent={<View style={styles.functionButton}><Text style={{color: 'white'}} onPress={() => {close()}}>Close</Text></View>}
-            undoComponent={<View style={styles.functionButton}><Text style={{color: 'white'}}>Undo</Text></View>}
-            clearComponent={<View style={styles.functionButton}><Text style={{color: 'white'}}>Clear</Text></View>}
-            eraseComponent={<View style={styles.functionButton}><Text style={{color: 'white'}}>Eraser</Text></View>}
+            closeComponent={<View style={styles.functionButton}><Text style={{color: 'white'}} onPress={() => {close()}}>Zavrieť</Text></View>}
+            undoComponent={<View style={styles.functionButton}><Text style={{color: 'white'}}>Späť</Text></View>}
+            clearComponent={<View style={styles.functionButton}><Text style={{color: 'white'}}>Vyčistiť</Text></View>}
+            eraseComponent={<View style={styles.functionButton}><Text style={{color: 'white'}}>Guma</Text></View>}
             strokeComponent={color => (
               <View style={[{ backgroundColor: color }, styles.strokeColorButton]} />
             )}
@@ -130,7 +145,7 @@ const DrawingScreen = ({sketch, imageUrl, name, exercise}) => {
                 }} />
               </View>
             )}}
-            saveComponent={<View style={styles.functionButton}><Text style={{color: 'white'}}>Save</Text></View>}
+            saveComponent={<View style={styles.functionButton}><Text style={{color: 'white'}}>Uložiť</Text></View>}
             savePreference={() => {
                 console.log(file)
               return {
