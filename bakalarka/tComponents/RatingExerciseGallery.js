@@ -9,14 +9,24 @@ import { Image, CheckBox } from "react-native-elements";
 import TMenu from "../static/Tmenu";
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/core'
+import AntIcon from 'react-native-vector-icons/AntDesign'
 
 const RatingExerciseGallery = ({route}) => {
     const [images, setImages] = useState()
     const [loading, isLoading] = useState(true)
     const [action, setAction] = useState(false)
     const [check, setCheck] = useState();
+    const [layout, setLayout] = useState(false)
 
     const navigation = useNavigation()
+
+    React.useLayoutEffect(() => {
+        navigation.setOptions({
+            headerRight: () => (
+                <AntIcon name='layout' size={30} color='black' onPress={() => {setLayout(value => !value)}}/>
+            ),
+        });
+    }, [navigation]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -73,11 +83,24 @@ const RatingExerciseGallery = ({route}) => {
                                     {//action &&
                                         //<CheckBox containerStyle={styles.checkbox} checked={check[index]} onPress={() => setCheck(check => ({ ...check, [index]: !check[index] }))} />
                                     }
-                                    <Image key={el.name} source={{ uri: el['drawImage'] ? el['drawImage'] : el['image'] }} style={styles.image}
-                                        onPress={() => { navigation.navigate('TRateCarousel', { name: route.params.name, data: JSON.stringify(images), index: index }) }}
-                                        /*onLongPress={() => { setCheck(new Array(images.length).fill(false)); setAction(true) }}*/
-                                    />
-                                    <Text style={{ fontSize: 15, color: 'black', alignSelf: 'center' }}>{array[2] + '.' + array[1] + '.' + array[0] + '    ' + time[0] + ':' + time[1] + ':' + time[2]}</Text>
+                                    {layout ?
+                                        <View>
+                                            <Image key={el.name} source={{ uri: el['drawImage'] ? el['drawImage'] : el['image'] }} style={styles.image3}
+                                                onPress={() => { navigation.navigate('TRateCarousel', { name: route.params.name, data: JSON.stringify(images), index: index }) }}
+                                                /*onLongPress={() => { setCheck(new Array(images.length).fill(false)); setAction(true) }}*/
+                                            />
+                                            <Text style={{ fontSize: 10, color: 'black', alignSelf: 'center' }}>{array[2] + '.' + array[1] + '.' + array[0] + '    ' + time[0] + ':' + time[1] + ':' + time[2]}</Text>
+                                        </View>
+                                        :
+                                        <View>
+                                            <Image key={el.name} source={{ uri: el['drawImage'] ? el['drawImage'] : el['image'] }} style={styles.image}
+                                                onPress={() => { navigation.navigate('TRateCarousel', { name: route.params.name, data: JSON.stringify(images), index: index }) }}
+                                                /*onLongPress={() => { setCheck(new Array(images.length).fill(false)); setAction(true) }}*/
+                                            />
+                                            <Text style={{ fontSize: 15, color: 'black', alignSelf: 'center' }}>{array[2] + '.' + array[1] + '.' + array[0] + '    ' + time[0] + ':' + time[1] + ':' + time[2]}</Text>
+                                        </View>
+                                    }
+                                    
                                 </View>
                             )
                         })}
@@ -107,6 +130,11 @@ const styles = StyleSheet.create({
         width: Dimensions.get('window').width / 2 - 20,
         height: Dimensions.get('window').width / 2 - 20,
         marginHorizontal: 10
+    },
+    image3: {
+        width: Dimensions.get('window').width / 3 - 4,
+        height: Dimensions.get('window').width / 3 - 4,
+        marginHorizontal: 2
     },
     line: {
         flex: 1,
