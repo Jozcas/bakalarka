@@ -34,9 +34,9 @@ const TRateCarouselScreen = ({route}) => {
                     i++
                 }
             });
-            if(arr.length == 0){
-                navigation.navigate('NoRating')
-            }
+            /*if(arr.length == 0){
+                navigation.navigate('Rating')
+            }*/
             setImages(arr)
             isLoading(false)
         })

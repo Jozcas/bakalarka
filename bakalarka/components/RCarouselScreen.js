@@ -41,7 +41,7 @@ const RCarouselScreen = ({route}) => {
                 data={JSON.parse(route.params.data)}
                 renderItem={({ item, index }) => (
                     <View>
-                        {(item.state == true) && <Icon name='trophy-outline' size={20} style={{position: 'absolute', top: 5, right: 20, zIndex: 1}}/>}
+                        {(item.state == true) && <Icon name='trophy-outline' size={20} color='#a6a6a6' style={{position: 'absolute', top: 5, right: 20, zIndex: 1}}/>}
                         <Image key={index} resizeMode={'contain'} style={{width: Dimensions.get('window').height/2-100, height: Dimensions.get('window').height/2-40}} source={{uri: (item.state == true && item['drawImage']) ? item['drawImage'] : item['image']}}
                             onPress={() => {navigation.navigate('RCarouselClick', { name: route.params.name, item: item})}}
                         />

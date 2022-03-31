@@ -27,7 +27,7 @@ const HisScreen = () => {
     const getCategories = () => {
         try {
             AsyncStorage.getItem('categorie').then((res) => {
-                console.log('categorie his', res);
+                //console.log('categorie his', res);
                 if(res == null){
                     setFirst(true)
                     return
@@ -46,7 +46,7 @@ const HisScreen = () => {
 
     const getPath = () => {
         try {
-            AsyncStorage.multiGet(categorie, (err, items) => {console.log(items); setPictures(items); isLoading(false)})
+            AsyncStorage.multiGet(categorie, (err, items) => {/*console.log(items)*/; setPictures(items); isLoading(false)})
         } catch (error) {
             console.log(error);
         }
@@ -74,7 +74,7 @@ const HisScreen = () => {
                 getPath()
 
             return () => {
-                console.log('destroy')
+                //console.log('destroy')
                 isLoading(true)
             }
         }, [set]

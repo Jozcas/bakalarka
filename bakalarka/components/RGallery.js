@@ -68,6 +68,15 @@ const RGallery = ({route}) => {
             pictures.map((el, index) => {
                 if(check[index]){
                     //console.log(index + el.name)
+                    if(el.drawImage != null){
+                        let draw = el.name.substring(0, el.name.indexOf('.'))
+                        draw = draw + 'd.jpg'
+                        storage.ref().child(draw).delete().then(() => {
+                            console.log('drawImage deleted')
+                        }).catch((error) => {
+                            console.log('Error while deleting drawImage', error)
+                        })
+                    }
                     storage.ref().child(el.name).delete().then(() => {
                         console.log('Image deleted successfully')
                         db.collection("cviky").doc('category').collection(route.params.name).doc(el.name).delete()
@@ -78,14 +87,6 @@ const RGallery = ({route}) => {
                 if (!check[index]) {
                     delCat = false
                 }
-                /*if (check[index]) {
-                    let filePath = RNFS.DocumentDirectoryPath + el
-                    RNFS.exists(filePath).then((exist) => {
-                        if (exist) {
-                            RNFS.unlink(filePath)
-                        }
-                    })
-                }*/
                 if (index == (images.length - 1)) {
                     if(delCat){
                         console.log('zmaz category')
@@ -127,7 +128,7 @@ const RGallery = ({route}) => {
                     <View style={{ marginTop: 45 }}>
                         <View style={styles.line}>
                             <Icon name="close" size={40} color="black" onPress={() => { setCheck(new Array(images.length).fill(false)); setAction(false) }} />
-                            <Text style={{color: 'black', fontSize: 30}}>{count}</Text>
+                            <Text style={{color: 'black', fontSize: 20, textAlignVertical: 'center'}}>{'Vybrané fotky: ' + count}</Text>
                             <Icon name="trash-bin" size={40} color="black" onPress={() => {deletePictures()}} />
                         </View>
                     </View>
@@ -144,7 +145,7 @@ const RGallery = ({route}) => {
                                     {action &&
                                         <CheckBox containerStyle={styles.checkbox} checked={check[index]} onPress={() => {setCheck(check => ({ ...check, [index]: !check[index] })); if(check[index] == false){setCount(count+1)} if(check[index] == true){setCount(count-1)}}} />
                                     }
-                                    {((action == false) && (el.state == true)) && <Icon name='trophy-outline' size={20} style={{position: 'absolute', top: 5, right: 15, zIndex: 1}}/>}
+                                    {((action == false) && (el.state == true)) && <Icon name='trophy-outline' size={20} color='#a6a6a6' style={{position: 'absolute', top: 5, right: 15, zIndex: 1}}/>}
                                     { layout ?
                                         <View>
                                             <Image key={el.name} source={{ uri: (el['drawImage'] && el.state == true) ? el['drawImage'] : el['image'] }} style={styles.image3} /*resizeMode={'contain'}*/
