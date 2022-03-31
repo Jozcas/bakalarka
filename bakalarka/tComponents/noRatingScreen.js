@@ -11,6 +11,7 @@ const NoRatingScreen = () => {
     const [cat, setCat] = useState()
     const [images, setImages] = useState()
     const [loading, isLoading] = useState(true)
+    const [first, setFirst] = useState(false)
 
     const navigation = useNavigation()
 
@@ -23,6 +24,13 @@ const NoRatingScreen = () => {
                     category = doc.data()['name']
                     setCat(category)            
                 });
+                if(category.length == 0){
+                    setFirst(true)
+                    return
+                }
+                else {
+                    setFirst(false)
+                }
                 Exercise(category)
             });
         } catch (error) {
@@ -32,7 +40,6 @@ const NoRatingScreen = () => {
 
     const Exercise = (category) => {
         setImages(null)
-        console.log(category)
         let pictures = {}
         category.map((el, index) => {                     
             db.collection("cviky").doc("category").collection(el).onSnapshot((querySnapshot) => {
@@ -44,7 +51,6 @@ const NoRatingScreen = () => {
                 });
                 pictures[el] = arr
                 if(index == category.length - 1){
-                    console.log(index, pictures)
                     setImages(pictures)
                     isLoading(false)
                 }
@@ -73,41 +79,57 @@ const NoRatingScreen = () => {
         Data();
     }, []);
 
-    if(loading){
-        return (            
-            <View>
-                <Text>
-                    Loading
-                </Text>
-            </View>
-        )
-    }
-    else{
+    if(first){
         return (
             <ImageBackground source={require('../static/images/background.jpg')}  style={{flex:1}} imageStyle={{ opacity: 0.3 }}>
                 <View style={{flex: 1}}>
-                    <ScrollView style={{flex: 1}}>
-                        {
-                            cat.map((element) => (
-                                <Card key={element} style={{flex: 1}}>
-                                    <Card.Title style={{alignSelf: 'flex-start'}}>{element}</Card.Title>
-                                    {images[element].length != 0 && <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={{flex: 1}}>
-                                    {
-                                        images[element].map((el, index) => (<Image /*resizeMode='contain'*/ key={el['name']} source={{uri: el['image']}} style={styles.image} 
-                                            onPress={() => { navigation.navigate('SetRate', { name: element, data: JSON.stringify(images[element]), index: index }) }}
-                                        />)).reverse()
-                                    }
-                                    </ScrollView>
-                                    }
-                                    {images[element].length == 0 && <Text>Cviky v tejto kategórii sú už ohodnotené</Text>}
-                                </Card>
-                            ))
-                        }
-                    </ScrollView>
-                    <TMenu showing={true} indexing={0}/>
+                    <View style={{flex: 1, alignSelf: 'center', justifyContent: 'center'}}>
+                        <Text style={{fontSize: 40, textAlign: 'center'}}>Žiadne foto na hodnotenie</Text>
+                    </View>
+                    <View style={{flex:1, position: 'absolute', bottom: 0, width: '100%'}}>
+                        <TMenu showing={true} indexing={0}/>
+                    </View>
                 </View>
             </ImageBackground>
         )
+    }
+    else{
+        if(loading){
+            return (            
+                <View>
+                    <Text>
+                        Loading
+                    </Text>
+                </View>
+            )
+        }
+        else{
+            return (
+                <ImageBackground source={require('../static/images/background.jpg')}  style={{flex:1}} imageStyle={{ opacity: 0.3 }}>
+                    <View style={{flex: 1}}>
+                        <ScrollView style={{flex: 1}}>
+                            {
+                                cat.map((element) => (
+                                    <Card key={element} style={{flex: 1}}>
+                                        <Card.Title style={{alignSelf: 'flex-start'}}>{element}</Card.Title>
+                                        {images[element].length != 0 && <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={{flex: 1}}>
+                                        {
+                                            images[element].map((el, index) => (<Image /*resizeMode='contain'*/ key={el['name']} source={{uri: el['image']}} style={styles.image} 
+                                                onPress={() => { navigation.navigate('SetRate', { name: element, data: JSON.stringify(images[element]), index: index }) }}
+                                            />)).reverse()
+                                        }
+                                        </ScrollView>
+                                        }
+                                        {images[element].length == 0 && <Text>Cviky v tejto kategórii sú už ohodnotené</Text>}
+                                    </Card>
+                                ))
+                            }
+                        </ScrollView>
+                        <TMenu showing={true} indexing={0}/>
+                    </View>
+                </ImageBackground>
+            )
+        }
     }
 }
 export default NoRatingScreen
