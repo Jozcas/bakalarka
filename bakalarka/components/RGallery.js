@@ -20,6 +20,8 @@ const RGallery = ({route}) => {
 
     const navigation = useNavigation()
 
+    let unsubscribe;
+
     React.useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: () => (
@@ -31,7 +33,7 @@ const RGallery = ({route}) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                db.collection("cviky").doc("category").collection(route.params.name).onSnapshot((querySnapshot) => {
+                unsubscribe = db.collection("cviky").doc("category").collection(route.params.name).onSnapshot((querySnapshot) => {
                     let arr = []
                     querySnapshot.forEach((doc) => {
                         arr.unshift(doc.data())
@@ -48,6 +50,9 @@ const RGallery = ({route}) => {
         /*if(images != null){
             isLoading(false)
         }*/
+        return () => {
+            unsubscribe()
+        }
 
     }, []);
     
@@ -135,7 +140,7 @@ const RGallery = ({route}) => {
                 }
                 <ScrollView>
                     <View style={styling()}>
-                        {images.map((el, index) => {
+                        {(images.length != 0) && images.map((el, index) => {
                             const tmpDate = el.name.substring(1, el.name.indexOf('-'))
                             const tmpTime = el.name.split('-')
                             const time = tmpTime[1].split('_')

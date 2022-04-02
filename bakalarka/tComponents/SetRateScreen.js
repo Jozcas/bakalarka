@@ -7,6 +7,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { storage, db } from "../firebaseConfig";
 import { useNavigation } from '@react-navigation/core'
 import DrawingScreen from "./DrawingScreen";
+import { useIsFocused } from '@react-navigation/native';
 
 const SetRateScreen = ({route}) => {
     const [slideIndex, setSlideIndex] = useState(route.params.index);
@@ -22,9 +23,11 @@ const SetRateScreen = ({route}) => {
     const { width: screenWidth } = Dimensions.get('window');
 
     const navigation = useNavigation()
+    const isFocused = useIsFocused()
+    let subscribe;
 
     const Data = () => {
-        db.collection("cviky").doc("category").collection(route.params.name).onSnapshot((querySnapshot) => {
+        subscribe = db.collection("cviky").doc("category").collection(route.params.name).onSnapshot((querySnapshot) => {
             let arr = [];
             querySnapshot.forEach((doc) => {
                 if(doc.data().state == false){
@@ -32,7 +35,9 @@ const SetRateScreen = ({route}) => {
                 }
             });
             if(arr.length == 0){
-                navigation.navigate('NoRating')
+                if(isFocused){
+                    navigation.navigate('NoRating')
+                }
             }
             setImages(arr)
             isLoading(false)
@@ -41,11 +46,13 @@ const SetRateScreen = ({route}) => {
 
     useEffect(() => {
         Data()
+        console.log(route)
         Keyboard.addListener('keyboardDidShow', () => {setShow(false)})
         Keyboard.addListener('keyboardDidHide', () => {setShow(true)})
 
         return () => {
             Keyboard.removeAllListeners('keyboardDidShow', 'keyboardDidHide')
+            subscribe()
         }
     }, [])
 
@@ -68,8 +75,21 @@ const SetRateScreen = ({route}) => {
         )
     } 
 
-    const setRate = (exercise, tmpComment) => {
+    const setRate = (exercise, tmpComment, index) => {
+        let new_comment_array = {}
+        let arr = comment;
+        let j = 0
         db.collection("cviky").doc("category").collection(route.params.name).doc(exercise).update({state: true, comment: tmpComment})
+        for (let i = 0; i < Object.keys(arr).length; i++) {
+            if(i != index){
+                new_comment_array[j] = arr[i];
+                j++
+            }
+            else{
+                console.log('odoslany koment', arr[i])
+            }                
+        }
+        updateComment(new_comment_array)
         alert('Hodnotenie odoslané')
     }
 
@@ -111,7 +131,7 @@ const SetRateScreen = ({route}) => {
                                 value={comment[index]}
                                 onChangeText={(val) => updateComment(comment => ({ ...comment, [index]: val }))}
                             />
-                            <Button title={"Odoslať hodnotenie"} containerStyle={{borderRadius: 5}} onPress={() => {setRate(item.name, comment[index])}} />      
+                            <Button title={"Odoslať hodnotenie"} containerStyle={{borderRadius: 5}} onPress={() => {setRate(item.name, comment[index], index)}} />      
                             </View>
                             </ScrollView>
                         )}

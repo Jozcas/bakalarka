@@ -12,15 +12,17 @@ import { useFocusEffect } from '@react-navigation/native';
 import AntIcon from 'react-native-vector-icons/AntDesign'
 
 const HESGallery = ({ route }) => {
-    const [data, setData] = useState(JSON.parse(route.params.data))
+    const [data, setData] = useState()
     const [reference, setReference] = useState()
     const [action, setAction] = useState(false)
     const navigation = useNavigation()
 
     //for remembering number of selected pictures
     const [count, setCount] = useState(0)
-    const [check, setCheck] = useState(new Array(JSON.parse(route.params.data).length).fill(false));
+    //const [check, setCheck] = useState(new Array(JSON.parse(route.params.data).length).fill(false));
+    const [check, setCheck] = useState();
     const [imageUrl, setImageUrl] = useState()
+    const [loading, isLoading] = useState(true)
 
     const [layout, setLayout] = useState(false)
 
@@ -36,7 +38,12 @@ const HESGallery = ({ route }) => {
         React.useCallback(() => { 
             AsyncStorage.getItem('reference').then((res) => {
                 setReference(JSON.parse(res)[route.params.name])
+                isLoading(false)
             })
+            setData(JSON.parse(route.params.data))
+            return () => {
+                isLoading(true)
+            }
         }, [reference])
     );
 
@@ -44,7 +51,12 @@ const HESGallery = ({ route }) => {
         () => {
             AsyncStorage.getItem('reference').then((res) => {
                 setReference(JSON.parse(res)[route.params.name])
+                isLoading(false)
             })
+            setData(JSON.parse(route.params.data))
+            return () => {
+                isLoading(true)
+            }
         }, [reference]
     );
 
@@ -182,12 +194,12 @@ const HESGallery = ({ route }) => {
                 //upload picked images
                 if (check[index]) {
                     if(insert){
-                        console.log('cate', cat.indexOf(route.params.name))
+                        //console.log('cate', cat.indexOf(route.params.name))
                         if(cat.indexOf(route.params.name) == -1){
                             db.collection("category").doc("9iNgWPVq54tw7SFebSfw").update({name: firebase.firestore.FieldValue.arrayUnion(route.params.name)})
                         }
                     }
-                    console.log(el)    
+                    //console.log(el)    
                     //denied duplicity uploading images to database                
                     if(ids.indexOf(el) == -1){
                         uploadImageToStorage(el, el)
@@ -229,7 +241,7 @@ const HESGallery = ({ route }) => {
         let reference = storage.ref().child(name);
         const snapshot = await reference.put(blob);
         const imageurl = await snapshot.ref.getDownloadURL();
-        console.log(imageurl)
+        //console.log(imageurl)
         
         db.collection("cviky").doc('category').collection(route.params.name).doc(name).set({
             comment: "",
@@ -247,11 +259,19 @@ const HESGallery = ({ route }) => {
         blob.close();
     }
 
+    if(loading){
+        return (
+            <View>
+                <Text>Loading</Text>
+            </View>
+        )
+    }
+    else{
     return (
         <ImageBackground source={require('../static/images/background.jpg')} style={{ flex: 1 }} imageStyle={{ opacity: 0.3 }}>
             <View style={{ flex: 1 }}>
                 {
-                    action &&
+                    (action && (data != null)) &&
                     <View style={{ marginTop: 43 }}>
                         <View style={styles.line}>
                             <Icon name="close-outline" size={40} color="black" onPress={() => { setCheck(new Array(data.length).fill(false)); setAction(false) }} />
@@ -263,7 +283,7 @@ const HESGallery = ({ route }) => {
                 }
                 <ScrollView>
                     <View style={styling()}>
-                        {data.map((el, index) => {
+                        {(data != null) && data.map((el, index) => {
                             const tmpDate = el.substring(1, el.indexOf('-'))
                             const tmpTime = el.split('-')
                             const time = tmpTime[1].split('_')
@@ -305,13 +325,14 @@ const HESGallery = ({ route }) => {
 
                     </View>
                 </ScrollView>
-                <View style={{ marginTop: 65 }}></View>
+                <View style={{ marginTop: 70 }}></View>
                 <View style={{ flex: 1, position: 'absolute', bottom: 0, width: '100%' }}>
                     <Menu showing={false} indexing={0} />
                 </View>
             </View>
         </ImageBackground>
     );
+    }
 }
 export default HESGallery
 

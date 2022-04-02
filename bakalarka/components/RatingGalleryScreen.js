@@ -104,12 +104,12 @@ const RatingGalleryScreen = () => {
                     <View style={{flex: 1}}>
                         <ScrollView style={{flex: 1}}>
                             {
-                                cat.map((element) => (
+                                (cat != null) && cat.map((element) => (
                                     <Card key={element} style={{flex: 1}}>
                                         <Card.Title style={{alignSelf: 'flex-start'}}>{element}</Card.Title>
                                         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={{flex: 1}}>
                                         {
-                                            images[element].length != 0 && images[element].map((el) => (
+                                            (images != null && images[element].length != 0) && images[element].map((el) => (
                                                 <View key={el['name']}>
                                                     {(el.state == true) && <Icon name='trophy-outline' size={20} color='#a6a6a6' style={{position: 'absolute', top: 5, right: 5, zIndex: 1}}/>}
                                                     <Image key={el['name']} source={{uri: (el['drawImage'] && el.state == true) ? el['drawImage'] : el['image']}} /*resizeMode={'contain'}*/ style={styles.image} onPress={() => {navigation.navigate('RGallery', {name: element, data: el})}}/>

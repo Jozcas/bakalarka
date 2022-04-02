@@ -6,6 +6,7 @@ import TMenu from "../static/Tmenu";
 import { Image } from "react-native-elements";
 import { useNavigation} from '@react-navigation/core'
 import { useFocusEffect } from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 
 const NoRatingScreen = () => {
     const [cat, setCat] = useState()
@@ -15,11 +16,15 @@ const NoRatingScreen = () => {
 
     const navigation = useNavigation()
 
+    const isFocused = useIsFocused()
+    let unsubscribe;
+
     const Data = () => {
         try {
             let category = null;
             setCat(null)
-            db.collection("category").onSnapshot((querySnapshot) => {
+            console.log('tototusom')
+            unsubscribe = db.collection("category").onSnapshot((querySnapshot) => {
                 querySnapshot.forEach((doc) => {
                     category = doc.data()['name']
                     setCat(category)            
@@ -70,6 +75,10 @@ const NoRatingScreen = () => {
             catch (err) {
                 console.log(err);
             }
+            return () => {
+                unsubscribe()
+                isLoading(true)
+            }
         }, [])
     );
 
@@ -77,6 +86,10 @@ const NoRatingScreen = () => {
         setCat(null)
         setImages(null)
         Data();
+        return () => {
+            //unsubscribe()
+            isLoading(true)
+        }
     }, []);
 
     if(first){
@@ -105,16 +118,17 @@ const NoRatingScreen = () => {
         }
         else{
             return (
+                isFocused ?
                 <ImageBackground source={require('../static/images/background.jpg')}  style={{flex:1}} imageStyle={{ opacity: 0.3 }}>
                     <View style={{flex: 1}}>
                         <ScrollView style={{flex: 1}}>
                             {
-                                cat.map((element) => (
+                                (cat != null) && cat.map((element) => (
                                     <Card key={element} style={{flex: 1}}>
                                         <Card.Title style={{alignSelf: 'flex-start'}}>{element}</Card.Title>
                                         {images[element].length != 0 && <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={{flex: 1}}>
                                         {
-                                            images[element].map((el, index) => (<Image /*resizeMode='contain'*/ key={el['name']} source={{uri: el['image']}} style={styles.image} 
+                                            (images != null && images[element].length != 0) && images[element].map((el, index) => (<Image /*resizeMode='contain'*/ key={el['name']} source={{uri: el['image']}} style={styles.image} 
                                                 onPress={() => { navigation.navigate('SetRate', { name: element, data: JSON.stringify(images[element]), index: index }) }}
                                             />)).reverse()
                                         }
@@ -128,6 +142,9 @@ const NoRatingScreen = () => {
                         <TMenu showing={true} indexing={0}/>
                     </View>
                 </ImageBackground>
+                :
+                <View>
+                </View>
             )
         }
     }

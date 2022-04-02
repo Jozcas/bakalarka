@@ -6,6 +6,7 @@ import TMenu from "../static/Tmenu";
 import { Image } from "react-native-elements";
 import { useNavigation} from '@react-navigation/core'
 import { useFocusEffect } from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 
 const RatingScreen = () => {
     const [cat, setCat] = useState()
@@ -15,11 +16,15 @@ const RatingScreen = () => {
 
     const navigation = useNavigation()
 
+    const isFocused = useIsFocused()
+    let unsubscribe;
+
     const Data = () => {
         try {
             let category = null;
             setCat(null)
-            db.collection("category").onSnapshot((querySnapshot) => {
+            console.log('ratingscreen')
+            unsubscribe = db.collection("category").onSnapshot((querySnapshot) => {
                 querySnapshot.forEach((doc) => {
                     category = doc.data()['name']
                     setCat(category)            
@@ -72,6 +77,10 @@ const RatingScreen = () => {
             catch (err) {
                 console.log(err);
             }
+            return () => {
+                unsubscribe()
+                isLoading(true)
+            }
         }, [])
     );
 
@@ -79,6 +88,10 @@ const RatingScreen = () => {
         setCat(null)
         setImages(null)
         Data();
+        return () => {
+            unsubscribe()
+            isLoading(true)
+        }
     }, []);
 
     if(first){
@@ -107,16 +120,17 @@ const RatingScreen = () => {
         }
         else{
             return (
+                isFocused ?
                 <ImageBackground source={require('../static/images/background.jpg')}  style={{flex:1}} imageStyle={{ opacity: 0.3 }}>
                     <View style={{flex: 1}}>
                         <ScrollView style={{flex: 1}}>
                             {
-                                cat.map((element) => (
+                                (cat != null) && cat.map((element) => (
                                     <Card key={element} style={{flex: 1}}>
                                         <Card.Title style={{alignSelf: 'flex-start'}}>{element}</Card.Title>
                                         {images[element].length != 0 && <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={{flex: 1}}>
                                         {
-                                            images[element].map((el) => (<Image key={el['name']} source={{uri: el['drawImage'] ? el['drawImage'] : el['image']}} /*resizeMode={'contain'}*/ style={styles.image} 
+                                            (images != null && images[element].length != 0) && images[element].map((el) => (<Image key={el['name']} source={{uri: el['drawImage'] ? el['drawImage'] : el['image']}} /*resizeMode={'contain'}*/ style={styles.image} 
                                             onPress={() => { navigation.navigate('RatingExercise', {name: element})}}
                                             />))                                        
                                         }
@@ -130,6 +144,8 @@ const RatingScreen = () => {
                         <TMenu showing={true} indexing={1}/>
                     </View>
                 </ImageBackground>
+                :
+                <View></View>
             )
         }
     }
