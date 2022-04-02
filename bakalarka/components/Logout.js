@@ -1,3 +1,7 @@
+/**
+ * Author: Jozef Čásar (xcasar)
+ * This is component that is used for logout user 
+ */
 import React from 'react';
 import { auth } from "../firebaseConfig";
 import AsyncStorage from '@react-native-async-storage/async-storage';

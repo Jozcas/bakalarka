@@ -1,4 +1,7 @@
-
+/**
+ * Author: Jozef Čásar (xcasar)
+ * This is component that shows camera to user, take picture on button click or voice command 'foto' and display user where to stand   
+ */
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Dimensions } from 'react-native';
 import { RNCamera } from 'react-native-camera';
@@ -37,13 +40,12 @@ const CameraScreen = () => {
 
 	Sound.setCategory('Playback');
 
+	//capture sound
 	var ding = new Sound(dings, error => {
 	if (error) {
 		console.log('failed to load the sound', error);
 		return;
 	}
-	// if loaded successfully
-	//console.log('duration in seconds: ' + ding.getDuration() + 'number of channels: ' + ding.getNumberOfChannels(),);
 	});
 
 	//to set timerValue and photoCount when return from TimerScreen 
@@ -106,7 +108,6 @@ const CameraScreen = () => {
 			await Voice.start('sk-SK', { EXTRA_SPEECH_INPUT_MINIMUM_LENGTH_MILLIS: 10000 });
 			setResults([]);
 		}
-		//setIsRecord(!isRecord);
 	};
 
 	const onSpeechResults = async (e) => {
@@ -145,6 +146,7 @@ const CameraScreen = () => {
 		}
 	};
 
+	//take picture when "foto" was recognized
 	const voicePicture = async () => {
 		console.log(camera)
 		pictureUri = []
@@ -178,14 +180,6 @@ const CameraScreen = () => {
 		await picture(date);
 	}
 
-    const settingTimer = async() => {
-		console.log(photoCount + 'a' + timerValue)
-		const categorie = await AsyncStorage.getItem('voiceFlag')
-		
-		console.log(categorie)
-		console.log(results)
-	}
-
 	//when timer is active or need to take more photos than one
 	const timerTakePicture = async (options) => {
 		for (let index = 0; index < photoCount; index++) {
@@ -207,7 +201,7 @@ const CameraScreen = () => {
 		}, timeout);
 	});
 
-	//take picture function, 
+	//take picture function,
 	const takePictures = async () => {
 		//const options = { quality: 0.5, base64: true, skipProcessing: true };
 		let options
@@ -305,7 +299,6 @@ const CameraScreen = () => {
 					<TouchableOpacity
 						style={styles.flash}
 						onPress={() => {
-							//settingTimer()
 							setFlash(flash === "off" ? "on" : "off");
 						}}
 					>

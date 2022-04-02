@@ -1,3 +1,7 @@
+/**
+ * Author: Jozef Čásar (xcasar)
+ * This is component that show image in fullsize and user can delete, send or set image as reference image
+ */
 import React, { useState, useEffect } from "react";
 import { View, Text, ImageBackground, StyleSheet, Dimensions, TouchableOpacity, Alert } from "react-native";
 import { Image } from "react-native-elements";
@@ -36,6 +40,7 @@ const CompareClickScreen = ({route}) => {
         }
     }
 
+    //delete picture from AsyncStorage and image from file system
     const deletePictures = () => {
         try {
             let filePath = RNFS.DocumentDirectoryPath + route.params.image
@@ -58,6 +63,7 @@ const CompareClickScreen = ({route}) => {
         }
     }
 
+    //insert picture category to firestore
     const sendPictures = async () => {
         try {
             let ids = []
@@ -89,12 +95,12 @@ const CompareClickScreen = ({route}) => {
                 uploadImageToStorage(route.params.image, route.params.image)
             }            
             Alert.alert('Oznam', 'Fotografia bola odoslaná trénerovi')
-            //db.collection("cviky").doc('category').collection(route.params.name).get().then(snapshot => console.log(snapshot))
         } catch (error) {
             console.log(error)
         }
     }
 
+    //insert data about image to firestore and image to storage
     const uploadImageToStorage = async (path, name) => {
         const blob = await new Promise((resolve, reject) => {
             const xhr = new XMLHttpRequest();

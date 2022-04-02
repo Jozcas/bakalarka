@@ -1,3 +1,7 @@
+/**
+ * Author: Jozef Čásar (xcasar)
+ * This is component where user can set timer, number of taken pictures or voice command
+ */
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, TextInput } from "react-native";
 import { useNavigation } from '@react-navigation/core';

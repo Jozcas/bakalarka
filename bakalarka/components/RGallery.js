@@ -1,3 +1,7 @@
+/**
+ * Author: Jozef Čásar (xcasar)
+ * This is component that display images in selected category and user can see which images are rated and can delete images from firebase
+ */
 import React, { useState, useEffect } from "react";
 import { Text, View, ScrollView, ImageBackground, StyleSheet, Dimensions, Alert } from "react-native";
 import { db, storage } from "../firebaseConfig";
@@ -65,6 +69,7 @@ const RGallery = ({route}) => {
         }
     }
 
+    //delete images from firebase
     const deletePictures = () => {
         try {
             let pictures = images;

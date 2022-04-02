@@ -1,3 +1,7 @@
+/**
+ * Author: Jozef Čásar (xcasar)
+ * This is component where user can compare image with reference image
+ */
 import React, { useState, useEffect } from "react";
 import { View, Text, ImageBackground, StyleSheet, Dimensions, TouchableOpacity } from "react-native";
 import { Image } from "react-native-elements";
@@ -37,7 +41,7 @@ const CompareScreen = ({route}) => {
     };
 
     //changing reference picture path in AsyncStorage
-    const referencePicture = async (path) => {
+    /*const referencePicture = async (path) => {
         if (path != reference) {
             AsyncStorage.getItem('reference').then((res) => {
                 let ref = JSON.parse(res);
@@ -47,7 +51,7 @@ const CompareScreen = ({route}) => {
                 })
             })
         }
-    }
+    }*/
 
     return (
         <ImageBackground source={require('../static/images/background.jpg')} style={{ flex: 1 }} imageStyle={{ opacity: 0.3 }}>
@@ -94,9 +98,7 @@ export default CompareScreen
 
 const styles = StyleSheet.create({
     image: {
-        //aspectRatio: 1,
         width: Dimensions.get('window').height/2-110, 
         height: Dimensions.get('window').height/2-110,
-        //marginLeft: 10,
     }
 })

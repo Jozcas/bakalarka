@@ -1,3 +1,7 @@
+/**
+ * Author: Jozef Čásar (xcasar)
+ * This is component that show images in selected category, show reference image and user can make action (delete, send) with image
+ */
 import React, { useState, useEffect } from "react";
 import { View, Text, ImageBackground, ScrollView, StyleSheet, Dimensions, TouchableOpacity, Alert } from "react-native";
 import { Image, CheckBox } from "react-native-elements";
@@ -19,13 +23,13 @@ const HESGallery = ({ route }) => {
 
     //for remembering number of selected pictures
     const [count, setCount] = useState(0)
-    //const [check, setCheck] = useState(new Array(JSON.parse(route.params.data).length).fill(false));
     const [check, setCheck] = useState();
     const [imageUrl, setImageUrl] = useState()
     const [loading, isLoading] = useState(true)
 
     const [layout, setLayout] = useState(false)
 
+    //changing layout
     React.useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: () => (
@@ -60,18 +64,7 @@ const HESGallery = ({ route }) => {
         }, [reference]
     );
 
-    /*const referencePicture = async (path) => {
-        if (path != reference) {
-            AsyncStorage.getItem('reference').then((res) => {
-                let ref = JSON.parse(res);
-                ref[route.params.name] = path;
-                AsyncStorage.setItem('reference', JSON.stringify(ref)).then((tmp) => {
-                    setReference(null)
-                })
-            })
-        }
-    }*/
-
+    //set style depending on number of images
     const styling = () => {
         if (data.length != 1) {
             return { flex: 1, flexDirection: 'row', alignSelf: 'center', flexWrap: 'wrap' }
@@ -81,59 +74,12 @@ const HESGallery = ({ route }) => {
         }
     }
 
-    /*const deletePictures = async () => {
-        try {
-            let pictures = data;
-            data.map((el, index) => {
-                console.log(check)
-                if(check[index]){
-                    let filePath = RNFS.DocumentDirectoryPath + el
-                    RNFS.exists(filePath).then((exist) => {
-                        if(exist){
-                            RNFS.unlink(filePath).then(async () => {
-                                pictures.splice(index, 1)
-                                if(index == data.length){
-                                    await AsyncStorage.setItem(route.params.name, JSON.stringify(pictures))
-                                    AsyncStorage.getItem(route.params.name).then((res) => {
-                                        setData(JSON.parse(res))
-                                    })
-                                }
-                                /*if(pictures.length == 0){
-                                    AsyncStorage.getItem('categorie').then(async (res) => {
-                                        let cat = JSON.parse(res);
-                                        cat.splice(cat.indexOf(route.params.name), 1)
-                                        console.log('categoria', cat)
-                                        if(cat.length != 0){
-                                            console.log('som tu')
-                                            await AsyncStorage.setItem('categorie', JSON.stringify(cat))
-                                        }
-                                        if(cat.length == 0){
-                                            console.log('je prazdne')
-                                            await AsyncStorage.removeItem('categorie')                                            
-                                        }
-                                        AsyncStorage.removeItem(route.params.name).then(() => {
-                                            setData([])
-                                            navigation.navigate('HistoryExercise')
-                                        })                                        
-                                    })
-                                }*/
-                            /* })
-                            }
-                        })
-                    }
-                setAction(false)
-                })            
-            } catch (error) {
-            console.log(error)
-        }
-    }*/
-
+    //delete image/s from AsyncStorage
     const deletePictures = () => {
         try {
             let pictures = data;
             let tmp = []
             pictures.map((el, index) => {
-                console.log(index + el)
                 if (!check[index]) {
                     tmp.push(el)
                 }
@@ -151,7 +97,6 @@ const HESGallery = ({ route }) => {
                             setData(JSON.parse(res))
                             setCheck(new Array(data.length).fill(false))
                             setAction(false)
-                            console.log(count)
                             if(count == 1){
                                 Alert.alert('Oznam', 'Fotografia bola odstránená')
                             }
@@ -167,6 +112,7 @@ const HESGallery = ({ route }) => {
         }
     }
 
+    //insert picture category to firestore
     const sendPictures = async () => {
         try {
             let ids = []
@@ -194,7 +140,6 @@ const HESGallery = ({ route }) => {
                 //upload picked images
                 if (check[index]) {
                     if(insert){
-                        //console.log('cate', cat.indexOf(route.params.name))
                         if(cat.indexOf(route.params.name) == -1){
                             db.collection("category").doc("9iNgWPVq54tw7SFebSfw").update({name: firebase.firestore.FieldValue.arrayUnion(route.params.name)})
                         }
@@ -223,6 +168,7 @@ const HESGallery = ({ route }) => {
         }
     }
 
+    //insert data about image to firestore and image to storage
     const uploadImageToStorage = async (path, name) => {
         const blob = await new Promise((resolve, reject) => {
             const xhr = new XMLHttpRequest();

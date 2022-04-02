@@ -1,3 +1,7 @@
+/**
+ * Author: Jozef Čásar (xcasar)
+ * This is component that show taken images and user can choose which one will be saved in file system 
+ */
 import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Dimensions, Image, Text, TouchableOpacity, Button } from "react-native";
 import { useNavigation } from '@react-navigation/core'
@@ -20,7 +24,7 @@ const PictureScreen = ({route}) => {
         setSlideIndex(slideIndex);
     };
 
-    //savePicture
+    //save picture to file system
     const saveImage = async (filePath) => {
         console.log(RNFS.DocumentDirectoryPath)
         let newFilePath = null; 
@@ -71,13 +75,6 @@ const PictureScreen = ({route}) => {
             </View>               
             <View style={ styles.line} >
                 <Button title="Uložiť" onPress={() => {saveImage(pictureUri[slideIndex])}}/> 
-                {/*<Icon name="pencil-outline" size={40} color="black" style={{paddingHorizontal: 20}}/>
-                <Icon name="md-arrow-redo-outline" size={40} color="black" style={{paddingHorizontal: 30}} onPress={() => {setTransform(!transform)}} />}
-                <TouchableOpacity style={styles.buttonSave} onPress={() => {saveImage(pictureUri[slideIndex])}}>
-                    <Text style={{paddingHorizontal: 40, paddingVertical: 7, color: 'black'}}>Uložiť</Text>
-                </TouchableOpacity>
-                {/*<Icon name="mail-outline" size={40} color="black" style={{paddingHorizontal: 30}}/>
-                <Icon name="trash-bin-outline" size={40} color="black" style={{paddingHorizontal: 20}}/>*/}
             </View>
             <View style={{flex:1, position: 'absolute', bottom: 0, width: '100%'}}>
                 <Menu showing={false} indexing={0}/>
@@ -93,7 +90,6 @@ const styles = StyleSheet.create({
 	},
     line: {
         flex: 1,
-        //flexDirection: 'row',
         width: '90%',
         position: 'absolute',
         bottom: 0,

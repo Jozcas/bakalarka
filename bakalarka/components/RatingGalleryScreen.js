@@ -1,3 +1,7 @@
+/**
+ * Author: Jozef Čásar (xcasar)
+ * This is component that show all categories and images that are send to trainer 
+ */
 import React, { useState, useEffect } from "react";
 import { View, Text, ImageBackground, StyleSheet, Dimensions, ScrollView } from "react-native";
 import { db } from "../firebaseConfig";
@@ -16,6 +20,7 @@ const RatingGalleryScreen = () => {
 
     const navigation = useNavigation()
 
+    //retrieve categories from firestore
     const Data = () => {
         try {
             let category;
@@ -38,6 +43,7 @@ const RatingGalleryScreen = () => {
         }
     }
 
+    //retrieve data about images stored in firestore
     const Exercise = (category) => {
         //console.log(category)
         let pictures = {}
