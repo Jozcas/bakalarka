@@ -1,3 +1,7 @@
+/**
+ * Author: Jozef Čásar (xcasar)
+ * This is component that shows trainer all categories and images that are not rated yet
+ */
 import React, { useState, useEffect } from "react";
 import { View, Text, ImageBackground, StyleSheet, Dimensions, ScrollView } from "react-native";
 import { db } from "../firebaseConfig";
@@ -19,11 +23,11 @@ const NoRatingScreen = () => {
     const isFocused = useIsFocused()
     let unsubscribe;
 
+    //get category from firestore
     const Data = () => {
         try {
             let category = null;
             setCat(null)
-            console.log('tototusom')
             unsubscribe = db.collection("category").onSnapshot((querySnapshot) => {
                 querySnapshot.forEach((doc) => {
                     category = doc.data()['name']
@@ -43,6 +47,7 @@ const NoRatingScreen = () => {
         }
     }
 
+    //get images from firestore
     const Exercise = (category) => {
         setImages(null)
         let pictures = {}

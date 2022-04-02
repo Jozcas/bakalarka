@@ -1,12 +1,9 @@
+/**
+ * Author: Jozef Čásar (xcasar)
+ * This is component where trainer can draw into image
+ */
 import React, { useState, useEffect } from 'react';
-import {
-  Platform, 
-  StyleSheet,
-  Text,
-  View,
-  Alert,
-} from 'react-native';
-
+import { Platform, StyleSheet, Text, View, Alert } from 'react-native';
 import RNSketchCanvas from '@terrylinla/react-native-sketch-canvas';
 import { storage, db } from "../firebaseConfig";
 import RNFS from 'react-native-fs';
@@ -17,6 +14,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 const DrawingScreen = ({sketch, imageUrl, name, exercise}) => {
     const [file, setFile] = useState()
 
+	//download image from storage
     const download = () => {
         console.log(name)
         let tmp = name.substring(0, name.indexOf('.'))
@@ -41,14 +39,14 @@ const DrawingScreen = ({sketch, imageUrl, name, exercise}) => {
         BackHandler.addEventListener('hardwareBackPress', handleBackButton);
 
         return () => {
-          BackHandler.removeEventListener('hardwareBackPress', handleBackButton);
+          	BackHandler.removeEventListener('hardwareBackPress', handleBackButton);
         };
     }, [])
 
+	//delete image from file system
     const close = () => {
       RNFS.exists(RNFS.DocumentDirectoryPath + file).then((exist) => {
         if (exist) {
-            console.log('existuje file')
             RNFS.unlink(RNFS.DocumentDirectoryPath + file).then(() => {
                 console.log('deleted file')
             })
@@ -57,11 +55,11 @@ const DrawingScreen = ({sketch, imageUrl, name, exercise}) => {
       sketch(false)
     }
 
+	//delete image stored with rn-sketch-canvas and image from filesystem
     const leave = (filePath) => {
         console.log(filePath)
         RNFS.exists(filePath).then((exist) => {
             if (exist) {
-                console.log('existruje')
                 RNFS.unlink(filePath).then(() => {
                     console.log('deleted')
                 })
@@ -69,16 +67,16 @@ const DrawingScreen = ({sketch, imageUrl, name, exercise}) => {
         })
         RNFS.exists(RNFS.DocumentDirectoryPath + file).then((exist) => {
             if (exist) {
-                console.log('existruje file')
                 RNFS.unlink(RNFS.DocumentDirectoryPath + file).then(() => {
                     console.log('deleted file')
                 })
             }
         })
-        alert('Upravená (editovaná) fotografia cviku uložená')
+        Alert.alert('Oznam', 'Upravená (editovaná) fotografia cviku uložená')
         sketch(false)        
     }
 
+	//upload image with drawing to storage
     const uploadImageToStorage = async (filePath) => {
         const blob = await new Promise((resolve, reject) => {
             const xhr = new XMLHttpRequest();
