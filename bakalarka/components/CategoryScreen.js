@@ -37,13 +37,14 @@ const CategoryScreen = ({route}) => {
     const newCategorie = async () => {
         setVisible(false)
         let category = JSON.parse(await AsyncStorage.getItem('categorie'))
-        console.log('thishihs', category)
-        console.log(category.indexOf(name))
-        const indexOfName = category.indexOf(name)
-        if(indexOfName != -1){
-            Alert.alert('POZOR!', 'Táto kategória už existuje')
-            setName(null);
-            return
+        //console.log('thishihs', category)
+        if(category != null){
+            const indexOfName = category.indexOf(name)
+            if(indexOfName != -1){
+                Alert.alert('POZOR!', 'Táto kategória už existuje')
+                setName(null);
+                return
+            }
         }
         let reference = JSON.parse(await AsyncStorage.getItem('reference'))
         if(category == null)
