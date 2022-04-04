@@ -1,3 +1,7 @@
+/**
+ * Author: Jozef Čásar (xcasar)
+ * This is component that shows user categories and user can save image to one of the categories or create new
+ */
 import React, { useEffect, useState } from "react";
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, Dimensions, Button, Alert } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons"
@@ -13,6 +17,7 @@ const CategoryScreen = ({route}) => {
 
     const navigation = useNavigation()
     
+    //get categories from AsyncStorage
     const getCategories = async () => {
         try {
             const categories = JSON.parse(await AsyncStorage.getItem('categorie'));
@@ -27,24 +32,19 @@ const CategoryScreen = ({route}) => {
             getCategories();
         }, []
     );
-
-    const generateColor = () => {
-        const randomColor = Math.floor(Math.random() * 16777215)
-            .toString(16)
-            .padStart(6, '0');
-        return `#${randomColor}`;
-    };
     
+    //set new category to AsyncStorage
     const newCategorie = async () => {
         setVisible(false)
         let category = JSON.parse(await AsyncStorage.getItem('categorie'))
-        console.log('thishihs', category)
-        console.log(category.indexOf(name))
-        const indexOfName = category.indexOf(name)
-        if(indexOfName != -1){
-            Alert.alert('POZOR!', 'Táto kategória už existuje')
-            setName(null);
-            return
+        //console.log('thishihs', category)
+        if(category != null){
+            const indexOfName = category.indexOf(name)
+            if(indexOfName != -1){
+                Alert.alert('POZOR!', 'Táto kategória už existuje')
+                setName(null);
+                return
+            }
         }
         let reference = JSON.parse(await AsyncStorage.getItem('reference'))
         if(category == null)
@@ -64,7 +64,7 @@ const CategoryScreen = ({route}) => {
         array.push(route.params.path)
         await AsyncStorage.setItem(name, JSON.stringify(array))
         //getCategories();
-        alert('Fotografia cviku uložená do kategórie ' + name)
+        Alert.alert('Oznam', 'Fotografia cviku uložená do kategórie ' + name)
         navigation.navigate('HistoryExercise')        
     }
 
@@ -104,7 +104,7 @@ const CategoryScreen = ({route}) => {
                 <Text style={{color: 'black', paddingLeft: 20}}>
                     Vyber, do ktorej kategórie sa má cvik uložiť
                 </Text>
-                <View /*style={styling()}*/ style={{flex: 1, paddingVertical: 10, alignItems: 'center'}}>
+                <View style={{flex: 1, paddingVertical: 10, alignItems: 'center'}}>
                     {
                         categorie.map((element) => (
                             <View key={element} style={{marginBottom: 8, width: '90%'}}>
@@ -114,23 +114,11 @@ const CategoryScreen = ({route}) => {
                                     //array.push(route.params.path)
                                     array.unshift(route.params.path)
                                     await AsyncStorage.setItem(element , JSON.stringify(array))
-                                    alert('Fotografia cviku uložená do kategórie ' + element)
+                                    Alert.alert('Oznam', 'Fotografia cviku uložená do kategórie ' + element)
                                     navigation.navigate('HistoryExercise')}
                                 }
                             />
                             </View>
-                            /*<TouchableOpacity style={[styles.categorieBox, {backgroundColor: generateColor()}]} key={element} 
-                                onPress={async () => {
-                                    var array = JSON.parse(await AsyncStorage.getItem(element));
-                                    //array.push(route.params.path)
-                                    array.unshift(route.params.path)
-                                    await AsyncStorage.setItem(element , JSON.stringify(array))
-                                    alert('Fotografia cviku uložená do kategórie ' + element)
-                                    navigation.navigate('HistoryExercise')}
-                                }
-                            >
-                                <Text style={styles.name}>{element}</Text>
-                            </TouchableOpacity>*/
                         ))
                     }
                 </View>

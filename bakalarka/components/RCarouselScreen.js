@@ -1,3 +1,7 @@
+/**
+ * Author: Jozef Čásar (xcasar)
+ * This is component that display rate from trainer to user
+ */
 import React, { useState, useEffect } from "react";
 import { View, Text, ImageBackground, StyleSheet, Dimensions } from "react-native";
 import { Image } from "react-native-elements";
@@ -18,6 +22,7 @@ const RCarouselScreen = ({route}) => {
         setSlideIndex(slideIndex);
     };
 
+    //return date and time of image
     const getDate = (el) => {
         const tmpDate = el.substring(1, el.indexOf('-'))
         const tmpTime = el.split('-')

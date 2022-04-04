@@ -1,3 +1,7 @@
+/**
+ * Author: Jozef Čásar (xcasar)
+ * This is component that display image in full size
+ */
 import React, { useState, useEffect } from "react";
 import { View, Text, ImageBackground, StyleSheet, Dimensions } from "react-native";
 import { Image } from "react-native-elements";

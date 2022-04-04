@@ -1,3 +1,7 @@
+/**
+ * Author: Jozef Čásar (xcasar)
+ * This is component that shows all categories and images that are rated by trainer
+ */
 import React, { useState, useEffect } from "react";
 import { View, Text, ImageBackground, StyleSheet, Dimensions, ScrollView } from "react-native";
 import { db } from "../firebaseConfig";
@@ -19,6 +23,7 @@ const RatingScreen = () => {
     const isFocused = useIsFocused()
     let unsubscribe;
 
+    //get categories from firestore
     const Data = () => {
         try {
             let category = null;
@@ -43,6 +48,7 @@ const RatingScreen = () => {
         }
     }
 
+    //get images from firestore
     const Exercise = (category) => {
         setImages(null)
         console.log(category)

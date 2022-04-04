@@ -1,3 +1,7 @@
+/**
+ * Author: Jozef Čásar (xcasar)
+ * This is component where trainer can see rate of image and can change rate
+ */
 import React, { useState, useEffect } from "react";
 import { View, Text, ImageBackground, StyleSheet, Dimensions, TextInput, ScrollView, Keyboard, TouchableOpacity, Alert } from "react-native";
 import { Image, Button } from "react-native-elements";
@@ -23,6 +27,7 @@ const TRateCarouselScreen = ({route}) => {
 
     const navigation = useNavigation()
 
+    //get images from firestore
     const Data = () => {
         db.collection("cviky").doc("category").collection(route.params.name).onSnapshot((querySnapshot) => {
             let arr = [];
@@ -71,6 +76,7 @@ const TRateCarouselScreen = ({route}) => {
         )
     } 
 
+    //update rate
     const setRate = (exercise, tmpComment) => {
         console.log(exercise)
         db.collection("cviky").doc("category").collection(route.params.name).doc(exercise).update({comment: tmpComment})

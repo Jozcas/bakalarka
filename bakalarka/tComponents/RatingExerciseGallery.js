@@ -1,6 +1,7 @@
-/*
-    Component for displaying rated exercises to trainer
-*/
+/**
+ * Author: Jozef Čásar (xcasar)
+ * This is component that shows rated images from selected category 
+ */
 
 import React, { useState, useEffect } from "react";
 import { Text, View, ScrollView, ImageBackground, StyleSheet, Dimensions } from "react-native";

@@ -1,3 +1,7 @@
+/**
+ * Author: Jozef Čásar (xcasar)
+ * This is component that shows image in full size
+ */
 import React from "react";
 import { View, Text, ImageBackground, Dimensions } from "react-native";
 import { Image } from "react-native-elements";

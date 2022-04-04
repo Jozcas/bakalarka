@@ -1,3 +1,7 @@
+/**
+ * Author: Jozef Čásar (xcasar)
+ * This is component that display categories and images saved in AsyncStorage
+ */
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, TouchableOpacity, Image, StatusBar, Dimensions, ScrollView, ImageBackground, Alert } from "react-native";
 import Menu from "../static/menu";
@@ -24,10 +28,10 @@ const HisScreen = () => {
     const [first, setFirst] = useState(false)
     const navigation = useNavigation();
     
+    //get categories from asyncstorage
     const getCategories = () => {
         try {
             AsyncStorage.getItem('categorie').then((res) => {
-                //console.log('categorie his', res);
                 if(res == null){
                     setFirst(true)
                     return
@@ -36,7 +40,6 @@ const HisScreen = () => {
                     setFirst(false)
                 }
                 setCategorie(JSON.parse(res))
-                //isLoading(false)
                 isSet(true)
             });
         } catch (error) {
@@ -44,9 +47,10 @@ const HisScreen = () => {
         }
     }
 
+    //get path to images from asyncstorage
     const getPath = () => {
         try {
-            AsyncStorage.multiGet(categorie, (err, items) => {/*console.log(items)*/; setPictures(items); isLoading(false)})
+            AsyncStorage.multiGet(categorie, (err, items) => {setPictures(items); isLoading(false)})
         } catch (error) {
             console.log(error);
         }
@@ -56,7 +60,6 @@ const HisScreen = () => {
         React.useCallback(() => { 
             try {   
                 isSet(false)
-                //isLoading(false)
                 getCategories()
                 if(set)
                     getPath()
@@ -74,12 +77,12 @@ const HisScreen = () => {
                 getPath()
 
             return () => {
-                //console.log('destroy')
                 isLoading(true)
             }
         }, [set]
     );
 
+    //rename categorie change category name in asyncstorage
     const renameCategorie = async (newName) => {
         try {
             if(oldname == newName){
@@ -107,6 +110,7 @@ const HisScreen = () => {
         
     }
 
+    //delete whole category from asyncstorage and images from file system
     const removeCategorie = async (catName) => {
         try {
             console.log(catName);
@@ -147,6 +151,7 @@ const HisScreen = () => {
             console.log(error);
         }
     }
+
     if(first){
         return (
             <ImageBackground source={require('../static/images/background.jpg')}  style={{flex:1}} imageStyle={{ opacity: 0.3 }}>
@@ -177,25 +182,6 @@ const HisScreen = () => {
                 <Dialog.Description children="Zmeň názov kategórie cviku"/>
                 <Dialog.Input onChangeText={name => setName(name)} value={name} />
                 <Dialog.Button label="Zrušiť" onPress={() => {setVisible(false)}} />
-                {/*<Dialog.Button label="Vymazať" onPress={() => {Alert.alert("POZOR!", "Naozaj chceš vymazať celú kategóriu " + name,
-                    [
-                        {
-                            text: "Zrušiť",
-                            onPress: () => {setVisible(false)},
-                            style: "cancel",
-                        },
-                        {
-                            text: "Vymazať",
-                            onPress: () => {removeCategorie(name)},
-                            style: "default",
-                        },
-                    ],
-                    {
-                        cancelable: true,
-                        //onDismiss: () => {setVisible(false)}
-                    }
-                )}} />
-                */}
                 <Dialog.Button label="Premenovať" onPress={() => {renameCategorie(name)}} />
             </Dialog.Container>
             {/*Remove category*/}
@@ -208,7 +194,6 @@ const HisScreen = () => {
                 {pictures.map((element) => (    
                     <Card key={element[0]} style={{flex: 1}}>
                         <Card.Title style={{alignSelf: 'flex-start'}}>{element[0]}</Card.Title>
-                        {/*<Icon name="dots-three-vertical" size={20} color="black" style={{position: 'absolute', top: 0, right: 40 }} onPress={() => {setOldName(element[0]); setName(element[0]); setVisible(true)}} />*/}
                         <IoIcon name="pencil-outline" size={20} color="black" style={{position: 'absolute', top: 0, right: 25 }} onPress={() => {setOldName(element[0]); setName(element[0]); setVisible(true)}} />
                         <IoIcon name="trash-bin-outline" size={20} color="black" style={{position: 'absolute', top: 0, right: 0 }} onPress={() => {setOldName(element[0]); setName(element[0]); setVisibleRemove(true)}} />
 
@@ -237,12 +222,8 @@ export default HisScreen
 
 const styles = StyleSheet.create({
     image: {
-        //aspectRatio: 1,
-        //width: 150,
         height: Dimensions.get('window').width/3-10,
         width: Dimensions.get('window').width/3-10,
         marginRight: 2
-        //height: ((Dimensions.get('window').width/3-20)/1500)*2000,
-        //marginHorizontal: 5
     }
 })

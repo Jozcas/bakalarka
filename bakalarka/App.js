@@ -1,12 +1,14 @@
+/**
+ * Author: Jozef Čásar (xcasar)
+ * This is component that contain navigation stack for changing screens
+ */
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from './components/LoginScreen';
-import HomeScreen from './components/HomeScreen';
 import CameraScreen from './components/CameraScreen';
 import TimerScreen from './components/TimerScreen';
 import PictureScreen from './components/PictureScreen';
-import HistoryExerciseScreen from './components/HistoryExerciseScreen';
 import CategoryScreen from './components/CategoryScreen';
 import HisScreen from './components/His';
 import HESGallery from './components/HESGallery';
@@ -35,7 +37,6 @@ export default function App() {
       <Stack.Navigator>
         
         <Stack.Screen name="Login" component={LoginScreen} options={{headerShown: false}}/>
-        <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'Welcome' }}/>
         <Stack.Screen name="HistoryExercise" component={HisScreen} options={{headerBackVisible: false, title: 'História cvikov' }}/>
         <Stack.Screen name="Camera" component={CameraScreen} options={{headerShown: false}}/>
         <Stack.Screen name="Timer" component={TimerScreen} options={{headerShown: false}}/>

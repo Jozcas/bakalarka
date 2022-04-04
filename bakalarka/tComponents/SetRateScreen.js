@@ -1,5 +1,9 @@
+/**
+ * Author: Jozef Čásar (xcasar)
+ * This is component where trainer is setting rating
+ */
 import React, { useState, useEffect } from "react";
-import { View, Text, ImageBackground, StyleSheet, Dimensions, TextInput, ScrollView, Keyboard, TouchableOpacity } from "react-native";
+import { View, Text, ImageBackground, StyleSheet, Dimensions, TextInput, ScrollView, Keyboard, TouchableOpacity, Alert } from "react-native";
 import { Image, Button } from "react-native-elements";
 import TMenu from "../static/Tmenu";
 import Carousel from 'react-native-snap-carousel';
@@ -26,6 +30,7 @@ const SetRateScreen = ({route}) => {
     const isFocused = useIsFocused()
     let subscribe;
 
+    //get images from firestore
     const Data = () => {
         subscribe = db.collection("cviky").doc("category").collection(route.params.name).onSnapshot((querySnapshot) => {
             let arr = [];
@@ -46,7 +51,6 @@ const SetRateScreen = ({route}) => {
 
     useEffect(() => {
         Data()
-        console.log(route)
         Keyboard.addListener('keyboardDidShow', () => {setShow(false)})
         Keyboard.addListener('keyboardDidHide', () => {setShow(true)})
 
@@ -75,6 +79,7 @@ const SetRateScreen = ({route}) => {
         )
     } 
 
+    //store rate in firestore
     const setRate = (exercise, tmpComment, index) => {
         let new_comment_array = {}
         let arr = comment;
@@ -90,7 +95,7 @@ const SetRateScreen = ({route}) => {
             }                
         }
         updateComment(new_comment_array)
-        alert('Hodnotenie odoslané')
+        Alert.alert('Oznam', 'Hodnotenie odoslané')
     }
 
     if(loading){
