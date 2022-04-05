@@ -153,6 +153,12 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        release {
+            storeFile file('bakalarka.keystore')
+            storePassword 'fitvut'
+            keyAlias 'bakalarka_alias'
+            keyPassword 'fitvut'
+        }
     }
     buildTypes {
         debug {
@@ -169,6 +175,10 @@ android {
             signingConfig signingConfigs.debug
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            signingConfig signingConfigs.release
+        }
+        lintOptions { 
+            checkReleaseBuilds false
         }
     }
 
