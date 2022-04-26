@@ -115,10 +115,10 @@ const CameraScreen = () => {
 		console.log('onSpeechResults: ', e);
 		setResults(e.value);
 		if (e.value.toString().includes('foto')) {
-			await Voice.stop()
+			/*await Voice.stop()
 			await Voice.destroy()
 			await Voice.cancel()
-			voicePicture()
+			voicePicture()*/
 		}
 		else {
 			await _onRecordVoice()
@@ -127,15 +127,18 @@ const CameraScreen = () => {
 
 	const onSpeechEnd = async (e) => {
 		console.log(e)
-		await Voice.stop()
+		//await Voice.stop()
 	};
 
-	const onSpeechPartialResults = (e) => {
+	const onSpeechPartialResults = async (e) => {
 		//Invoked when any results are computed
 		console.log('onSpeechPartialResults: ', e.value);
-		if (e.value.toString().includes('foto')) {
-			Voice.stop()
-		}
+		if (e.value.toString().includes('foto')) {			
+			await Voice.stop()
+			await Voice.destroy()
+			await Voice.cancel()
+			voicePicture()
+		} 
 	};
 
 	const onSpeechError = async (e) => {

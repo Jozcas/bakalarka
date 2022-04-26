@@ -5,29 +5,29 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import LoginScreen from './components/LoginScreen';
-import CameraScreen from './components/CameraScreen';
-import TimerScreen from './components/TimerScreen';
-import PictureScreen from './components/PictureScreen';
-import CategoryScreen from './components/CategoryScreen';
-import HisScreen from './components/His';
-import HESGallery from './components/HESGallery';
-import CompareScreen from './components/CompareScreen';
-import RatingGalleryScreen from './components/RatingGalleryScreen';
-import RGallery from './components/RGallery';
-import RCarouselScreen from './components/RCarouselScreen';
-import CompareClickScreen from './components/CompareClickScreen';
-import RCarouselClick from './components/RCarouselClick';
+import LoginScreen from './app/components/LoginScreen';
+import CameraScreen from './app/components/CameraScreen';
+import TimerScreen from './app/components/TimerScreen';
+import PictureScreen from './app/components/PictureScreen';
+import CategoryScreen from './app/components/CategoryScreen';
+import HisScreen from './app/components/His';
+import HESGallery from './app/components/HESGallery';
+import CompareScreen from './app/components/CompareScreen';
+import RatingGalleryScreen from './app/components/RatingGalleryScreen';
+import RGallery from './app/components/RGallery';
+import RCarouselScreen from './app/components/RCarouselScreen';
+import CompareClickScreen from './app/components/CompareClickScreen';
+import RCarouselClick from './app/components/RCarouselClick';
 
-import NoRatingScreen from './tComponents/noRatingScreen';
-import RatingScreen from './tComponents/RatingScreen';
-import SetRateScreen from './tComponents/SetRateScreen';
-import DrawingScreen from './tComponents/DrawingScreen';
-import RatingExerciseGallery from './tComponents/RatingExerciseGallery';
-import TRateCarouselScreen from './tComponents/TRateCarouselScreen';
-import SetRateClick from './tComponents/SetRateClick';
+import NoRatingScreen from './app/tComponents/noRatingScreen';
+import RatingScreen from './app/tComponents/RatingScreen';
+import SetRateScreen from './app/tComponents/SetRateScreen';
+import DrawingScreen from './app/tComponents/DrawingScreen';
+import RatingExerciseGallery from './app/tComponents/RatingExerciseGallery';
+import TRateCarouselScreen from './app/tComponents/TRateCarouselScreen';
+import SetRateClick from './app/tComponents/SetRateClick';
 
-import Logout from './components/Logout';
+import Logout from './app/components/Logout';
 
 const Stack = createNativeStackNavigator();
 

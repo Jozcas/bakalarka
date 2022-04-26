@@ -66,13 +66,13 @@ const LoginScreen = ({ navigation }) => {
 				<Text style={styles.headerText}>Prihlásenie</Text>
 				<TextInput
 					style={styles.inputStyle}
-					placeholder="Email"
+					placeholder="E-mail"
 					value={email}
 					onChangeText={(val) => updateEmail(val)}
 				/>
 				<TextInput
 					style={styles.inputStyle}
-					placeholder="Password"
+					placeholder="Heslo"
 					value={password}
 					onChangeText={(val) => updatePassword(val)}
 					maxLength={15}
@@ -80,7 +80,7 @@ const LoginScreen = ({ navigation }) => {
 				/>
 				<Button
 					color="#3740FE"
-					title="Sign in"
+					title="Prihlásiť sa"
 					onPress={() => userLogin()}
 				/>
 			</View>
