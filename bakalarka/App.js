@@ -37,7 +37,7 @@ export default function App() {
       <Stack.Navigator>
         
         <Stack.Screen name="Login" component={LoginScreen} options={{headerShown: false}}/>
-        <Stack.Screen name="HistoryExercise" component={HisScreen} options={{headerBackVisible: false, title: 'História cvikov' }}/>
+        <Stack.Screen name="HistoryExercise" component={HisScreen} options={{headerBackVisible: false, title: 'História cvikov', headerRight: () => <Logout/> }}/>
         <Stack.Screen name="Camera" component={CameraScreen} options={{headerShown: false}}/>
         <Stack.Screen name="Timer" component={TimerScreen} options={{headerShown: false}}/>
         <Stack.Screen name="Picture" component={PictureScreen} options={{headerShown: false,  title: 'Odfotený cvik' }}/>
@@ -50,7 +50,7 @@ export default function App() {
         <Stack.Screen name="CompareClick" component={CompareClickScreen} options={({route}) => ({headerShown: true, title: route.params.name})}/>
         <Stack.Screen name="RCarouselClick" component={RCarouselClick} options={({route}) => ({headerShown: true, title: route.params.name})}/>
 
-        <Stack.Screen name="NoRating" component={NoRatingScreen} options={{headerBackVisible: false, title: 'Nehodnotené cviky'}}/>
+        <Stack.Screen name="NoRating" component={NoRatingScreen} options={{headerBackVisible: false, title: 'Nehodnotené cviky', headerRight: () => <Logout/>}}/>
         <Stack.Screen name="Rating" component={RatingScreen} options={{headerBackVisible: false, title: 'Hodnotené cviky', headerRight: () => <Logout/>}}/>
         <Stack.Screen name="SetRate" component={SetRateScreen} options={({route}) => ({headerShown: false, title: route.params.name})}/>
         <Stack.Screen name="Drawing" component={DrawingScreen} options={({route}) => ({headerShown: true, title: "Editor"})}/>

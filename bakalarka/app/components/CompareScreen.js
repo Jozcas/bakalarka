@@ -70,7 +70,7 @@ const CompareScreen = ({route}) => {
             <View style={{flex: 1}}>
                 <Text style={{fontSize: 25, color: 'black', paddingLeft: 10}}>Referenčná fotografia cviku</Text>
                 <View style={{position: 'absolute', top: 40, right: 20, width: 30, height: 30, borderRadius: 30/2, borderWidth: 2, justifyContent: 'center', alignSelf: 'center', borderColor: '#3366ff'}}>
-                    <Text style={{color: '#3366ff'}}>REF</Text>
+                    <Text style={{color: '#3366ff', fontSize: 12, textAlign: "center"}}>REF</Text>
                 </View>
                 <View style={{alignSelf: 'center'}}>
                 <Image source={{ uri: "file:///data/user/0/com.bakalarka/files" + reference }} style={styles.image} resizeMode={'contain'}/>
@@ -111,7 +111,7 @@ const CompareScreen = ({route}) => {
             <ImageBackground source={require('../static/images/background.jpg')} style={{ flex: 1 }} imageStyle={{ opacity: 0.3 }}>
             <View style={{flex: 1}}>
                 <View style={{position: 'absolute', top: 40, right: 20, width: 30, height: 30, borderRadius: 30/2, borderWidth: 2, justifyContent: 'center', alignSelf: 'center', borderColor: '#3366ff'}}>
-                    <Text style={{color: '#3366ff'}}>REF</Text>
+                    <Text style={{color: '#3366ff', fontSize: 12, textAlign: "center"}}>REF</Text>
                 </View>
                 <View style={{alignSelf: 'center'}}>
                     <Image source={{ uri: "file:///data/user/0/com.bakalarka/files" + reference }} style={styles.image2} resizeMode={'contain'}/>

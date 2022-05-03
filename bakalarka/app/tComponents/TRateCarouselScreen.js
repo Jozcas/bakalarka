@@ -80,7 +80,7 @@ const TRateCarouselScreen = ({route}) => {
     const setRate = (exercise, tmpComment) => {
         console.log(exercise)
         db.collection("cviky").doc("category").collection(route.params.name).doc(exercise).update({comment: tmpComment})
-        Alert.alert('Oznam', 'Hodnotenie upravené')
+        Alert.alert('Oznam', 'Upravené hodnotenie odoslané')
     }
 
     if(loading){

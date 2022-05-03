@@ -143,16 +143,18 @@ const CompareClickScreen = ({route}) => {
             {(reference != route.params.image) ? 
                 <View style={styles.line}>
                     <TouchableOpacity onPress={() => {referencePicture(route.params.image)}} style={{width: 30, height: 30, borderRadius: 30/2, borderWidth: 2, justifyContent: 'center', alignSelf: 'center'}}>
-                        <Text style={{color: 'black'}}>REF</Text>
+                        <Text style={{color: 'black', fontSize: 12, textAlign: "center"}}>REF</Text>
                     </TouchableOpacity>
                     <Icon name="share-outline" size={40} color="black" onPress={() => {sendPictures()}}/> 
                     <Icon name="trash-bin-outline" size={40} color="black" onPress={() => {deletePictures()}} />                           
                 </View>
                 :
-                <Text style={{color: 'black', fontSize: 25, marginBottom: -36}}>REFERENČNÁ FOTOGRAFIA CVIKU</Text>
+                <Text style={{color: 'black', fontSize: 20, marginBottom: -36}}>REFERENČNÁ FOTOGRAFIA CVIKU</Text>
             }
             <Image resizeMode={'contain'} style={{width: Dimensions.get('window').width, height: Dimensions.get('window').height-120}} source={{uri: "file:///data/user/0/com.bakalarka/files" + route.params.image}}/>
-            <Menu showing={false} indexing={0}/>
+            <View style={{flex: 1, position: 'absolute', bottom: 0, zIndex: 1000, left: 0, width: '100%'}}>
+                <Menu showing={false} indexing={0}/>
+            </View>
         </View>
         </ImageBackground>
     )

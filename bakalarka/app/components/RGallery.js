@@ -160,7 +160,7 @@ const RGallery = ({route}) => {
                                         <View>
                                             <Image key={el.name} source={{ uri: (el['drawImage'] && el.state == true) ? el['drawImage'] : el['image'] }} style={styles.image3} /*resizeMode={'contain'}*/
                                                 onPress={() => { navigation.navigate('RCarousel', { name: route.params.name, data: JSON.stringify(images), index: index }) }}
-                                                onLongPress={() => { setCheck(new Array(images.length).fill(false)); setCount(0); setAction(true) }}
+                                                onLongPress={() => { setCheck(new Array(images.length).fill(false)); setCheck(check => ({ ...check, [index]: !check[index] })); setCount(1); setAction(true) }}
                                             />
                                             <Text style={{ fontSize: 10, color: 'black', alignSelf: 'center' }}>{array[2] + '.' + array[1] + '.' + array[0] + '    ' + time[0] + ':' + time[1] + ':' + time[2]}</Text>
                                         </View>
@@ -168,7 +168,7 @@ const RGallery = ({route}) => {
                                         <View>
                                             <Image key={el.name} source={{ uri: (el['drawImage'] && el.state == true) ? el['drawImage'] : el['image'] }} style={styles.image} /*resizeMode={'contain'}*/
                                                 onPress={() => { navigation.navigate('RCarousel', { name: route.params.name, data: JSON.stringify(images), index: index }) }}
-                                                onLongPress={() => { setCheck(new Array(images.length).fill(false)); setCount(0); setAction(true) }}
+                                                onLongPress={() => { setCheck(new Array(images.length).fill(false)); setCheck(check => ({ ...check, [index]: !check[index] })); setCount(1); setAction(true) }}
                                             />
                                             <Text style={{ fontSize: 15, color: 'black', alignSelf: 'center' }}>{array[2] + '.' + array[1] + '.' + array[0] + '    ' + time[0] + ':' + time[1] + ':' + time[2]}</Text>
                                         </View>

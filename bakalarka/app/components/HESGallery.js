@@ -242,7 +242,7 @@ const HESGallery = ({ route }) => {
                                         <View style={{zIndex: 1}}>
                                             {reference == el && 
                                                 <View style={{position: 'absolute', zIndex: 1, right: 0, marginRight: 15,  marginTop: 5, width: 30, height: 30, borderRadius: 30/2, borderWidth: 2, justifyContent: 'center', borderColor: '#3366ff'}} >
-                                                    <Text style={{color: '#3366ff'}}>REF</Text>
+                                                    <Text style={{color: '#3366ff', fontSize: 12, textAlign: "center"}}>REF</Text>
                                                 </View>
                                             }
                                         </View>
@@ -251,7 +251,7 @@ const HESGallery = ({ route }) => {
                                         <View>
                                         <Image key={el} source={{ uri: "file:///data/user/0/com.bakalarka/files" + el }} style={styles.image3} 
                                             onPress={() => { navigation.navigate('Compare', { name: route.params.name, data: JSON.stringify(data), picture: el, ref: reference, index: index }) }}
-                                            onLongPress={() => { setCheck(new Array(data.length).fill(false)); setCount(0); setAction(true) }}
+                                            onLongPress={() => { setCheck(new Array(data.length).fill(false)); if(reference != el){setCheck(check => ({ ...check, [index]: !check[index] })); setCount(1);}else{setCount(0)}; setAction(true) }}
                                         />
                                         <Text style={{ fontSize: 10, color: 'black', alignSelf: 'center' }}>{array[2] + '.' + array[1] + '.' + array[0] + '    ' + time[0] + ':' + time[1] + ':' + time[2]}</Text>
                                         </View>
@@ -259,7 +259,7 @@ const HESGallery = ({ route }) => {
                                         <View>
                                         <Image key={el} source={{ uri: "file:///data/user/0/com.bakalarka/files" + el }} style={styles.image} 
                                             onPress={() => { navigation.navigate('Compare', { name: route.params.name, data: JSON.stringify(data), picture: el, ref: reference, index: index }) }}
-                                            onLongPress={() => { setCheck(new Array(data.length).fill(false)); setCount(0); setAction(true) }}
+                                            onLongPress={() => { setCheck(new Array(data.length).fill(false)); if(reference != el){setCheck(check => ({ ...check, [index]: !check[index] })); setCount(1);}else{setCount(0)}; setAction(true) }}
                                         />
                                         <Text style={{ fontSize: 15, color: 'black', alignSelf: 'center' }}>{array[2] + '.' + array[1] + '.' + array[0] + '    ' + time[0] + ':' + time[1] + ':' + time[2]}</Text>
                                         </View>
