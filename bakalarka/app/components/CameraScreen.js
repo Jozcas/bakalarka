@@ -155,7 +155,7 @@ const CameraScreen = () => {
 		pictureUri = []
 		let options
 		if(type == RNCamera.Constants.Type.front){
-			options = {mirrorImage: true, fixOrientation: true}
+			options = {/*mirrorImage: true,*/ fixOrientation: true}
 		}
 		if(type == RNCamera.Constants.Type.back){
 			options = {fixOrientation: true}
@@ -210,7 +210,7 @@ const CameraScreen = () => {
 		let options
 		pictureUri = []
 		if(type == RNCamera.Constants.Type.front){
-			options = {mirrorImage: true, fixOrientation: true}
+			options = {/*mirrorImage: true,*/ fixOrientation: true}
 		}
 		if(type == RNCamera.Constants.Type.back){
 			options = {fixOrientation: true}
@@ -339,6 +339,7 @@ const CameraScreen = () => {
 						<TouchableOpacity
 						style={styles.flip}
 						onPress={() => {
+							//if(type === RNCamera.Constants.Type.front){setType(RNCamera.Constants.Type.back)}else{setType(RNCamera.Constants.Type.front)}
 							setType(
 								type === RNCamera.Constants.Type.back
 									? RNCamera.Constants.Type.front
