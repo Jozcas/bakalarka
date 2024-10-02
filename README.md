@@ -10,3 +10,6 @@ data. The result is the application, which complements a number of existing mobi
 applications, using new functionality. The benefit of this work is its real use for acquiring
 the habits of proper exercise technique in amateur athletes or more demanding exercises in
 advanced athletes.
+
+### Screenshots from aplication
+
