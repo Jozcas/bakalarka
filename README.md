@@ -19,7 +19,7 @@ The camera screen is inspired by a mobile camera application but includes additi
 <p align="center">
 <img src="https://github.com/Jozcas/bakalarka/blob/main/screenshots/kamera.jpg?raw=true" width="30%">
   &nbsp; &nbsp; &nbsp; &nbsp;
-<img src="https://github.com/Jozcas/bakalarka/blob/main/screenshots/karimatkaObrys.jpg?raw=true" width="30%">
+<img src="https://github.com/Jozcas/bakalarka/blob/main/screenshots/karimatka.jpg?raw=true" width="30%">
 </p>
 
 ### Setting screen
