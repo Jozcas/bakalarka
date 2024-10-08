@@ -27,3 +27,38 @@ On the settings screen, the athlete can choose the method for taking a photo. He
 <p align="center">
 <img src="https://github.com/Jozcas/bakalarka/blob/main/screenshots/casovac.jpg?raw=true" width="30%">
 </p>
+
+### Saving exercise photos
+- The user can choose from the captured images.
+- Exercise photos can be organized into categories, for example, based on the name of the exercise.
+
+<p align="center">
+<img src="https://github.com/Jozcas/bakalarka/blob/main/screenshots/fotenieSviecka.jpg?raw=true" width="30%">
+  &nbsp; &nbsp; &nbsp; &nbsp;
+<img src="https://github.com/Jozcas/bakalarka/blob/main/screenshots/ulozenieFotografie.jpg?raw=true" width="30%">
+  &nbsp; &nbsp; &nbsp; &nbsp;
+<img src="https://github.com/Jozcas/bakalarka/blob/main/screenshots/kategorizácia.jpg?raw=true" width="30%">
+</p>
+
+### Sending screen 
+- The choosen photos can be sent to the coach for review.
+- There are two ways to send photos to the coach: a single photo or a selected group of photos.
+
+<p align="center">
+<img src="https://github.com/Jozcas/bakalarka/blob/main/screenshots/odoslanieTrenerovi.jpg?raw=true" width="30%">
+</p>
+
+### Coach screen
+The application includes a coach side of the application, where they can view and evaluate the photos submitted by the athletes. The coach can add a textual assessment regarding the correctness of the performed exercise. Additionally, the coach has the option to draw on the photo, allowing them to add, for example, lines indicating that the athlete must align their body with a specific line or that a certain body part needs to be at a different angle, and so on. After entering the assessment, it is sent to the athlete.
+
+<p align="center">
+<img src="https://github.com/Jozcas/bakalarka/blob/main/screenshots/pisomneHodnotenie.jpg?raw=true" width="30%">
+  &nbsp; &nbsp; &nbsp; &nbsp;
+<img src="https://github.com/Jozcas/bakalarka/blob/main/screenshots/kreslenieTrener.jpg?raw=true" width="30%">
+</p>
+
+
+
+
+
+
