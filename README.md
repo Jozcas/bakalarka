@@ -45,7 +45,7 @@ On the settings screen, the athlete can choose the method for taking a photo. He
 - There are two ways to send photos to the coach: a single photo or a selected group of photos.
 
 <p align="center">
-<img src="https://github.com/Jozcas/bakalarka/blob/main/screenshots/odoslanieTrenerovi.jpg?raw=true" width="50%">
+<img src="https://github.com/Jozcas/bakalarka/blob/main/screenshots/odoslanieTrenerovi.jpg?raw=true" width="80%">
 </p>
 
 ### Coach screen
